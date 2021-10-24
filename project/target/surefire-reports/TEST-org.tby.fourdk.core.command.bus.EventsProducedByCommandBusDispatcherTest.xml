@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.tby.fourdk.core.command.bus.EventsProducedByCommandBusDispatcherTest" time="0.003" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.tby.fourdk.core.command.bus.EventsProducedByCommandBusDispatcherTest" time="0.006" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="FR"/>
     <property name="sun.boot.library.path" value="/opt/jdk-17/lib"/>
-    <property name="sun.java.command" value="/home/julien/Application/Software/ddd-dk/project/target/surefire/surefirebooter15913445165078775373.jar /home/julien/Application/Software/ddd-dk/project/target/surefire 2021-10-23T15-58-16_569-jvmRun1 surefire15595226234933328001tmp surefire_014795442258376366315tmp"/>
+    <property name="sun.java.command" value="/home/julien/Application/Software/ddd-dk/project/target/surefire/surefirebooter9937694243932304155.jar /home/julien/Application/Software/ddd-dk/project/target/surefire 2021-10-23T18-45-25_698-jvmRun1 surefire2927961467457165916tmp surefire_04576223428523497075tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/julien/Application/Software/ddd-dk/project/target/test-classes:/home/julien/Application/Software/ddd-dk/project/target/classes:/home/julien/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar:/home/julien/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar:/home/julien/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/home/julien/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/julien/.m2/repository/org/junit/platform/junit-platform-commons/1.7.1/junit-platform-commons-1.7.1.jar:/home/julien/.m2/repository/org/assertj/assertj-core/3.19.0/assertj-core-3.19.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/julien/Application/Software/ddd-dk/project/target/surefire/surefirebooter15913445165078775373.jar"/>
+    <property name="surefire.real.class.path" value="/home/julien/Application/Software/ddd-dk/project/target/surefire/surefirebooter9937694243932304155.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17+35-2724"/>
     <property name="user.name" value="julien"/>
@@ -51,5 +51,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="it_should_handle_events_after_command_dispatching" classname="org.tby.fourdk.core.command.bus.EventsProducedByCommandBusDispatcherTest" time="0.003"/>
+  <testcase name="it_should_handle_events_after_command_dispatching" classname="org.tby.fourdk.core.command.bus.EventsProducedByCommandBusDispatcherTest" time="0.005"/>
 </testsuite>

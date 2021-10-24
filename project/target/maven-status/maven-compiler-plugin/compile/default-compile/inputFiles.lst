@@ -5,6 +5,7 @@
 /home/julien/Application/Software/ddd-dk/project/src/main/java/org/tby/fourdk/core/command/CommandId.java
 /home/julien/Application/Software/ddd-dk/project/src/main/java/org/tby/fourdk/core/command/CommandHandler.java
 /home/julien/Application/Software/ddd-dk/project/src/main/java/org/tby/fourdk/core/event/EventHandler.java
+/home/julien/Application/Software/ddd-dk/project/src/main/java/org/tby/fourdk/core/event/EventHandlerLoggerFactory.java
 /home/julien/Application/Software/ddd-dk/project/src/main/java/org/tby/fourdk/core/command/bus/CommandDispatcher.java
 /home/julien/Application/Software/ddd-dk/project/src/main/java/org/tby/fourdk/core/command/bus/UnhandledCommandException.java
 /home/julien/Application/Software/ddd-dk/project/src/main/java/org/tby/fourdk/core/event/bus/EventAlreadyHandledException.java

@@ -1,7 +1,6 @@
 package org.tby.fourdk.core.event.bus;
 
 import org.junit.jupiter.api.Test;
-import org.tby.fourdk.core.command.CommandId;
 import test.fake.event.*;
 
 import java.util.Arrays;
@@ -44,7 +43,7 @@ class EventDispatcherTest {
     @Test
     public void it_should_dispatch_a_event_to_the_correct_eventhandlers() {
         // Given
-        var anEvent = new AnEvent(CommandId.create(), APR_17_1991_AT_1100AM_CET);
+        var anEvent = new AnEvent(APR_17_1991_AT_1100AM_CET);
         var anEventHandler = new AnEventHandler();
         var anotherEventHandlerHandlingTheSameEvent = new AThirdEventHandler();
         var anotherEventHandler = new AnotherEventHandler();
@@ -62,7 +61,7 @@ class EventDispatcherTest {
     @Test
     public void it_should_ignore_unhandled_event() {
         // Given
-        var anEvent = new AFourthEvent(CommandId.create(), APR_17_1991_AT_1100AM_CET);
+        var anEvent = new AFourthEvent(APR_17_1991_AT_1100AM_CET);
         var anEventHandler = new AnEventHandler();
         var anotherEventHandlerHandlingTheSameEvent = new AThirdEventHandler();
         var anotherEventHandler = new AnotherEventHandler();

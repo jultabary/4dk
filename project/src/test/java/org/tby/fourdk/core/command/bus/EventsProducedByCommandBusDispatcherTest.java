@@ -1,7 +1,6 @@
 package org.tby.fourdk.core.command.bus;
 
 import org.junit.jupiter.api.Test;
-import org.tby.fourdk.core.command.CommandId;
 import org.tby.fourdk.core.event.Event;
 import org.tby.fourdk.core.event.bus.EventDispatcher;
 import test.fake.command.ACommand;
@@ -23,7 +22,7 @@ class EventsProducedByCommandBusDispatcherTest {
     @Test
     public void it_should_handle_events_after_command_dispatching() throws InterruptedException {
         // Given
-        var anEvent = new AnEvent(CommandId.create(), APR_17_1991_AT_1100AM_CET);
+        var anEvent = new AnEvent(APR_17_1991_AT_1100AM_CET);
         var anEventHandler = new AnEventHandler();
         var anotherEventHandler = new AThirdEventHandler();
         var executorService = Executors.newSingleThreadExecutor();

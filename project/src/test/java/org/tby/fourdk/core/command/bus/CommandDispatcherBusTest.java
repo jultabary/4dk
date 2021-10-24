@@ -2,7 +2,6 @@ package org.tby.fourdk.core.command.bus;
 
 import org.junit.jupiter.api.Test;
 import org.tby.fourdk.core.command.CommandId;
-import org.tby.fourdk.core.event.EventId;
 import test.fake.command.*;
 import test.fake.event.AnEvent;
 
@@ -65,7 +64,7 @@ class CommandDispatcherBusTest {
         // Given
         var commandId = CommandId.create();
 
-        var event = new AnEvent(commandId, APR_17_1991_AT_1100AM_CET);
+        var event = new AnEvent(APR_17_1991_AT_1100AM_CET);
         var aCommand = new ACommand();
         var anotherCommandHandler = new AnotherCommandHandler();
         var aThirdCommandHandler = new CommandHandlerReturningAnEvent(Arrays.asList(event));

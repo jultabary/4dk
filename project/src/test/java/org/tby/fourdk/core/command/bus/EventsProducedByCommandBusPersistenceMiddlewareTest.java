@@ -1,7 +1,6 @@
 package org.tby.fourdk.core.command.bus;
 
 import org.junit.jupiter.api.Test;
-import org.tby.fourdk.core.command.CommandId;
 import org.tby.fourdk.core.event.Event;
 import test.fake.command.ACommand;
 import test.fake.command.CommandHandlerReturningAnEvent;
@@ -19,7 +18,7 @@ class EventsProducedByCommandBusPersistenceMiddlewareTest {
     @Test
     public void it_should_handle_events_after_command_dispatching() throws InterruptedException {
         // Given
-        var anEvent = new AnEvent(CommandId.create(), APR_17_1991_AT_1100AM_CET);
+        var anEvent = new AnEvent(APR_17_1991_AT_1100AM_CET);
         var eventRepository = new FakeEventRepository();
         var command = new ACommand();
         List<Event> eventList = Arrays.asList(anEvent);
