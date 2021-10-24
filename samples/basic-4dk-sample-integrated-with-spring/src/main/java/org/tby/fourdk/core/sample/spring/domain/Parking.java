@@ -18,6 +18,10 @@ public class Parking {
 
     private final Integer totalSpots;
 
+    public List<CarId> getParkedCars() {
+        return parkedCars;
+    }
+
     private final List<CarId> parkedCars;
 
     private final List<Event> generatedEvents;

@@ -70,4 +70,20 @@ class ApplicationE2ETest {
         performGet.andExpect(status().isConflict());
     }
 
+    @Test
+    void it_should_dispatch_TheQuery_and_succeed() throws Exception {
+        // Given
+        this.parkingRepository.add(A_PARKING);
+        A_PARKING.parkACar(A_CAR);
+        var httpRequest = MockMvcRequestBuilders.get("/parking/"  + A_PARKING.getId().id() + "/parkedCar")
+                .accept(MediaType.APPLICATION_JSON);
+
+        // When
+        ResultActions performGet = this.mockMvc.perform(httpRequest)
+                .andDo(print());
+
+        // Then
+        performGet.andExpect(status().isOk());
+    }
+
 }

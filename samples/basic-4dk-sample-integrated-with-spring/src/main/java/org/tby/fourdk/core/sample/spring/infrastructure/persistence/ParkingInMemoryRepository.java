@@ -1,16 +1,12 @@
 package org.tby.fourdk.core.sample.spring.infrastructure.persistence;
 
 import org.springframework.stereotype.Component;
-import org.tby.fourdk.core.sample.spring.domain.Parking;
-import org.tby.fourdk.core.sample.spring.domain.ParkingId;
-import org.tby.fourdk.core.sample.spring.domain.ParkingRepository;
+import org.tby.fourdk.core.sample.spring.domain.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
-public class ParkingInMemoryRepository implements ParkingRepository {
+public class ParkingInMemoryRepository implements ParkingRepository, ParkingReadRepository {
 
     private final List<Parking> registeredParkings;
 
@@ -30,5 +26,14 @@ public class ParkingInMemoryRepository implements ParkingRepository {
     @Override
     public void save(Parking parking) {
         // Nothing to do
+    }
+
+    @Override
+    public List<CarId> findByParkedCar(ParkingId id) {
+        Set<CarId> cars = new LinkedHashSet<CarId>();
+        for (Parking parking: this.registeredParkings) {
+            cars.addAll(parking.getParkedCars());
+        }
+        return cars.stream().toList();
     }
 }
