@@ -1,6 +1,5 @@
 package org.tby.fourdk.core.sample.usecases.events;
 
-import org.tby.fourdk.core.command.CommandId;
 import org.tby.fourdk.core.event.Event;
 import org.tby.fourdk.core.sample.domain.CarId;
 import org.tby.fourdk.core.sample.domain.ParkingId;

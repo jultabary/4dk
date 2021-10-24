@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 import org.tby.fourdk.core.query.Response;
 import org.tby.fourdk.core.query.bus.QueryHandler;
 import org.tby.fourdk.core.sample.spring.domain.CarId;
-import org.tby.fourdk.core.sample.spring.domain.ParkingId;
 import org.tby.fourdk.core.sample.spring.domain.ParkingReadRepository;
 
 import java.util.List;

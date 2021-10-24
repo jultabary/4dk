@@ -1,7 +1,5 @@
 package org.tby.fourdk.core.event;
 
-import org.tby.fourdk.core.command.CommandId;
-
 import java.time.ZonedDateTime;
 
 import static java.time.ZoneOffset.UTC;
