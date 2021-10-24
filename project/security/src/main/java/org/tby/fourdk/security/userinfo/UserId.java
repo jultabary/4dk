@@ -1,18 +1,8 @@
-package org.tby.fourdk.security;
+package org.tby.fourdk.security.userinfo;
 
 import java.util.Objects;
 
-public class UserId {
-
-    private String login;
-
-    public UserId(String login) {
-        this.login = login;
-    }
-
-    public String getLogin() {
-        return login;
-    }
+public record UserId(String login) {
 
     @Override
     public boolean equals(Object o) {
@@ -33,5 +23,4 @@ public class UserId {
                 "login='" + login + '\'' +
                 '}';
     }
-
 }
