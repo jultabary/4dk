@@ -6,7 +6,7 @@ OpenJDK 17 <br/>
 maven 3.8.3 <br/>
 
 No additional library are used in this project. <br/>
-Clone the project. Enter to `/project` folder and execute following command `mvn install`. <br /> 
+Clone the project. Enter to `/project/core` folder and execute following command `mvn install`. <br /> 
 
 ## Presentation
 This project proposes a framework to easily transpose an "Event Storming" into your code. <br/>
