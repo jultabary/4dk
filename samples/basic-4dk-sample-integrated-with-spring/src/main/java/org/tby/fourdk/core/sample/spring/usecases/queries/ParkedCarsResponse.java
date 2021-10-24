@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ParkedCarsResponse implements Response {
 
-    List<CarId> parkedCars;
+    public final List<CarId> parkedCars;
 
     public ParkedCarsResponse(List<CarId> parkedCars) {
         this.parkedCars = parkedCars;

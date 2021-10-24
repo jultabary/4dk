@@ -8,7 +8,7 @@ import java.util.*;
 @Component
 public class ParkingInMemoryRepository implements ParkingRepository, ParkingReadRepository {
 
-    private final List<Parking> registeredParkings;
+    private List<Parking> registeredParkings;
 
     public ParkingInMemoryRepository() {
         this.registeredParkings = new ArrayList<Parking>();
@@ -35,5 +35,9 @@ public class ParkingInMemoryRepository implements ParkingRepository, ParkingRead
             cars.addAll(parking.getParkedCars());
         }
         return cars.stream().toList();
+    }
+
+    public void reset() {
+        this.registeredParkings = new ArrayList<>();
     }
 }

@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +27,11 @@ class ApplicationE2ETest {
 
     @Resource
     private ParkingInMemoryRepository parkingRepository;
+
+    @BeforeEach
+    public void reset() {
+        this.parkingRepository.reset();
+    }
 
     @Test
     void it_should_dispatch_ParkACarCommand_and_succeed() throws Exception {
@@ -76,6 +82,7 @@ class ApplicationE2ETest {
         this.parkingRepository.add(A_PARKING);
         A_PARKING.parkACar(A_CAR);
         var httpRequest = MockMvcRequestBuilders.get("/parking/"  + A_PARKING.getId().id() + "/parkedCar")
+                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
         // When

@@ -13,7 +13,6 @@ import org.tby.fourdk.core.sample.spring.usecases.events.SampleEvent;
 import org.tby.fourdk.core.sample.spring.usecases.queries.ParkedCarsResponse;
 import org.tby.fourdk.core.sample.spring.usecases.queries.WhatAreTheParkedCarQuery;
 
-import javax.websocket.server.PathParam;
 import java.util.UUID;
 
 @RestController
