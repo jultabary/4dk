@@ -4,9 +4,9 @@ import java.util.List;
 
 public class NoSecurityStrategy implements AuthorizedStrategy {
 
-    private RoleRepository roleRepository;
+    private RoleReadRepository roleRepository;
 
-    public NoSecurityStrategy(RoleRepository roleRepository) {
+    public NoSecurityStrategy(RoleReadRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 

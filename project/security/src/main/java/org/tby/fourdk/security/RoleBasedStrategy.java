@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 public class RoleBasedStrategy implements AuthorizedStrategy {
-    private RoleRepository roleRepository;
+    private RoleReadRepository roleRepository;
 
-    public RoleBasedStrategy(RoleRepository roleRepository) {
+    public RoleBasedStrategy(RoleReadRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 

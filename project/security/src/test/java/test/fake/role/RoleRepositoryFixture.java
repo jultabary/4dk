@@ -3,14 +3,14 @@ package test.fake.role;
 import org.tby.fourdk.security.AppPermissions;
 import org.tby.fourdk.security.Permission;
 import org.tby.fourdk.security.Role;
-import org.tby.fourdk.security.RoleRepository;
+import org.tby.fourdk.security.RoleReadRepository;
 
 import java.util.*;
 
 import static test.referential.TestReferential.CUSTOMER;
 import static test.referential.TestReferential.OPERATOR;
 
-public class RoleRepositoryFixture implements RoleRepository {
+public class RoleRepositoryFixture implements RoleReadRepository {
 
     private Integer findAllRolesCount;
 
