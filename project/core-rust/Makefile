@@ -13,3 +13,7 @@ start: ## build app ✓
 .PHONY: build
 build: ## run test ✓
 	cargo build
+
+.PHONY: clean
+clean: ## clean compiled code ✓
+	cargo clean

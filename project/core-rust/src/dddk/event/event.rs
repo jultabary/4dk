@@ -1,3 +1,1 @@
-pub trait Event {
-
-}
+pub trait Event { }
