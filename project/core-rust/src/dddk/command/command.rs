@@ -5,6 +5,7 @@ pub trait Command {
 }
 
 pub struct ACommand {}
+
 impl Command for ACommand {
     fn as_any(&self) -> &dyn Any {
         self
