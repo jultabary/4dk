@@ -1,25 +1,36 @@
+use std::any::{TypeId};
+use std::collections::HashMap;
+use crate::CommandHandleInBus;
 use crate::dddk::command::command::{Command};
-use crate::dddk::command::command_handler::CommandHandler;
-use crate::dddk::command::command_handler::ACommandHandler;
 use crate::dddk::event::event::Event;
 
 pub trait CommandBus {
     fn dispatch(&self, command: Box<dyn Command>) -> Option<Box<dyn Event>>;
 }
 
-pub struct CommandDispatcher<'a>{
-    command_handler: &'a ACommandHandler
+pub struct CommandDispatcher {
+    command_handlers: HashMap<TypeId, Box<dyn CommandHandleInBus>>
 }
 
-impl<'a> CommandDispatcher<'a> {
-    pub fn new(command_handler: &'a ACommandHandler) -> Box<CommandDispatcher> {
+impl CommandDispatcher {
+    pub fn new(command_handlers: Vec<Box<dyn CommandHandleInBus>>) -> Box<CommandDispatcher> {
+        let mut map = HashMap::new();
+        command_handlers.into_iter().for_each(|item| {
+            map.insert(item.get_associated_command_from_bus(), item);
+        });
         return Box::new(CommandDispatcher {
-            command_handler
+            command_handlers: map
         });
     }
 }
-impl<'a> CommandBus for CommandDispatcher<'a> {
+
+
+impl CommandBus for CommandDispatcher {
     fn dispatch(&self, command: Box<dyn Command>) -> Option<Box<dyn Event>> {
-        return self.command_handler.handle_from_bus(command);
+        let command_handler_opt = self.command_handlers.get(&command.as_any().type_id());
+        if command_handler_opt.is_some() {
+            return command_handler_opt.unwrap().handle_from_bus(command);
+        }
+        return Option::None
     }
 }

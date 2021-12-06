@@ -11,3 +11,11 @@ impl Command for ACommand {
         self
     }
 }
+
+pub struct AnotherCommand {}
+
+impl Command for AnotherCommand {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
