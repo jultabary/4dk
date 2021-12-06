@@ -1,5 +1,8 @@
 pub mod command {
     pub mod command_bus;
+    pub mod bus {
+        pub mod command_dispatcher;
+    }
     pub mod command;
     pub mod command_handler;
 }
