@@ -51,18 +51,6 @@ mod tests {
 
     #[test]
     fn it_should_handle_correct_handler() {
-        /*
-        // Given
-        let command_handler = ACommandHandler { has_been_called: false };
-        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
-        let box_command_handler : Box<dyn CommandHandleInBus> =  Box::new(command_handler);
-        command_handlers.push(box_command_handler);
-        let mut command_bus = CommandDispatcher::new(command_handlers);
-        let a_command = ACommand { };
-
-        // When
-        command_bus.dispatch(Box::new(a_command));
-        */
         // Given
         let command_handler = ACommandHandler { has_been_called: false };
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
