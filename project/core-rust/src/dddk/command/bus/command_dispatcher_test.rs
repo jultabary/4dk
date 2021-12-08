@@ -28,24 +28,20 @@ mod tests {
         }
     }
 
-    impl <'a>CommandHandler<'a, ACommand> for ACommandHandler {
-        fn handle(&mut self, _command: &ACommand) -> Vec<Box<dyn Event>> {
+    impl CommandHandler<ACommand> for ACommandHandler {
+        fn handle<'a>(&mut self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
             self.called();
             return Vec::new();
         }
     }
 
-    impl <'a>CommandHandleInBus<'a> for ACommandHandler {
-        fn handle_from_bus(&mut self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
+    impl CommandHandleInBus for ACommandHandler {
+        fn handle_from_bus<'a>(&mut self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
             return self.handle_command(command);
         }
 
         fn get_associated_command_from_bus(&self) -> TypeId {
             return self.get_associated_command();
-        }
-
-        fn as_any(&self) -> &dyn Any {
-            self
         }
     }
 
