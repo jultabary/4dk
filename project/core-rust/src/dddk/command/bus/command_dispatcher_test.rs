@@ -28,15 +28,15 @@ mod tests {
         }
     }
 
-    impl CommandHandler<ACommand> for ACommandHandler {
+    impl <'a>CommandHandler<'a, ACommand> for ACommandHandler {
         fn handle(&mut self, _command: &ACommand) -> Vec<Box<dyn Event>> {
             self.called();
             return Vec::new();
         }
     }
 
-    impl CommandHandleInBus for ACommandHandler {
-        fn handle_from_bus(&mut self, command: Box<dyn Command>) -> Vec<Box<dyn Event>> {
+    impl <'a>CommandHandleInBus<'a> for ACommandHandler {
+        fn handle_from_bus(&mut self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
             return self.handle_command(command);
         }
 
@@ -52,19 +52,16 @@ mod tests {
     #[test]
     fn it_should_handle_correct_handler() {
         // Given
-        let command_handler = ACommandHandler { has_been_called: false };
-        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
-        let box_command_handler : Box<dyn CommandHandleInBus> =  Box::new(command_handler);
-        command_handlers.push(box_command_handler);
+        let mut command_handler = ACommandHandler { has_been_called: false };
+        let mut command_handlers = Vec::new() as Vec<&mut dyn CommandHandleInBus>;
+        command_handlers.push(&mut command_handler);
         let mut command_bus = CommandDispatcher::new(command_handlers);
         let a_command = ACommand { };
 
         // When
-        command_bus.dispatch(Box::new(a_command));
+        command_bus.dispatch(&a_command);
 
         // Then
-        let command_handle_in_bus = command_bus.get_associated_command_handler(&TypeId::of::<ACommand>());
-        let command_handler_cast = command_handle_in_bus.as_any().downcast_ref::<ACommandHandler>();
-        assert_eq!(command_handler_cast.unwrap().has_been_called(), true);
+        assert_eq!(command_handler.has_been_called(), true);
     }
 }
