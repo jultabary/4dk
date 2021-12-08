@@ -28,8 +28,6 @@ impl Command for ACommand {
 
 struct ACommandHandler {}
 
-impl ACommandHandler {}
-
 impl CommandHandler<ACommand> for ACommandHandler {
     fn handle<'a>(&mut self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
         println!("Has Been Called");
