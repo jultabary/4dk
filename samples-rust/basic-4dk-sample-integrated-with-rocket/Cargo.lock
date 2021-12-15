@@ -79,6 +79,7 @@ checksum = "a4521f3e3d031370679b3b140beb36dfe4801b09ac77e30c61941f97df3ef28b"
 name = "basic-4dk-sample-integrated-with-rocket"
 version = "0.1.0"
 dependencies = [
+ "dddk_core",
  "rocket",
 ]
 
@@ -134,6 +135,10 @@ dependencies = [
  "time",
  "version_check",
 ]
+
+[[package]]
+name = "dddk_core"
+version = "0.1.0"
 
 [[package]]
 name = "devise"
