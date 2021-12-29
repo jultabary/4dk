@@ -8,6 +8,8 @@ pub trait CommandHandleInBus: Send {
 
     fn get_associated_command_from_bus(&self) -> TypeId;
 
+    fn as_any(&self) -> &dyn Any;
+
 }
 
 pub trait CommandHandler<C: Sized + Any + Command> {
