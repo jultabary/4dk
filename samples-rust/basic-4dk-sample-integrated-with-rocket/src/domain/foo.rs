@@ -1,0 +1,3 @@
+struct Foo { }
+
+trait FooRepository { }
