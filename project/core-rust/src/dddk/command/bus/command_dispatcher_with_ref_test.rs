@@ -7,6 +7,8 @@ mod tests {
     use crate::dddk::command::command_handler::{CommandHandleInBus, CommandHandler};
     use crate::dddk::event::event::Event;
 
+    static mut HAS_BEEN_CALLED: bool = false;
+
     struct ACommand { }
     impl Command for ACommand {
         fn as_any(&self) -> &dyn Any {
@@ -15,28 +17,19 @@ mod tests {
     }
 
     struct ACommandHandler {
-        has_been_called: bool
-    }
-
-    impl ACommandHandler {
-        fn called(&mut self) {
-            self.has_been_called = true;
-        }
-
-        fn has_been_called(&self) -> bool {
-            return self.has_been_called;
-        }
     }
 
     impl CommandHandler<ACommand> for ACommandHandler {
-        fn handle<'a>(&mut self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
-            self.called();
+        fn handle<'a>(&self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
+            unsafe {
+                HAS_BEEN_CALLED = true;
+            }
             return Vec::new();
         }
     }
 
     impl CommandHandleInBus for ACommandHandler {
-        fn handle_from_bus<'a>(&mut self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
+        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
             return self.handle_command(command);
         }
 
@@ -52,23 +45,25 @@ mod tests {
     #[test]
     fn it_should_handle_correct_handler() {
         // Given
-        let mut command_handler = ACommandHandler { has_been_called: false };
+        let mut command_handler = ACommandHandler { };
         let mut command_handlers = Vec::new() as Vec<&mut dyn CommandHandleInBus>;
         command_handlers.push(&mut command_handler);
-        let mut command_bus = CommandDispatcher::new(command_handlers);
+        let command_bus = CommandDispatcher::new(command_handlers);
         let a_command = ACommand { };
 
         // When
         command_bus.dispatch(&a_command);
 
         // Then
-        assert_eq!(command_handler.has_been_called(), true);
+        unsafe {
+            assert_eq!(HAS_BEEN_CALLED, true);
+        }
     }
 
     #[test]
     fn it_should_create_command_bus_and_move_command_handler_in_it() {
         // Given
-        let mut command_handler = ACommandHandler { has_been_called: false };
+        let mut command_handler = ACommandHandler { };
         let mut command_handlers = Vec::new() as Vec<&mut dyn CommandHandleInBus>;
         command_handlers.push(&mut command_handler);
 

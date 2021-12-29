@@ -4,7 +4,7 @@ use crate::dddk::event::event::{Event};
 
 
 pub trait CommandHandleInBus: Send {
-    fn handle_from_bus<'a>(&mut self, command: &'a dyn Command) -> Vec<Box<dyn Event>>;
+    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>>;
 
     fn get_associated_command_from_bus(&self) -> TypeId;
 
@@ -13,7 +13,7 @@ pub trait CommandHandleInBus: Send {
 }
 
 pub trait CommandHandler<C: Sized + Any + Command> {
-    fn handle_command<'a>(&mut self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
+    fn handle_command<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
         let mut events = Vec::new() as Vec<Box<dyn Event>>;
         let cast_command = command.as_any().downcast_ref::<C>();
         if cast_command.is_some() {
@@ -22,7 +22,7 @@ pub trait CommandHandler<C: Sized + Any + Command> {
         return events;
     }
 
-    fn handle(&mut self, command: &C) -> Vec<Box<dyn Event>>;
+    fn handle(&self, command: &C) -> Vec<Box<dyn Event>>;
 
     fn get_associated_command(&self) -> TypeId {
         return TypeId::of::<C>();

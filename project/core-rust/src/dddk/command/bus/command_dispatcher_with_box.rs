@@ -31,8 +31,8 @@ impl CommandDispatcher {
 }
 
 impl CommandBus for CommandDispatcher {
-    fn dispatch<'b>(&mut self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
-        if let Option::Some(command_handler) = self.command_handlers.get_mut(&command.as_any().type_id()) {
+    fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
+        if let Option::Some(command_handler) = self.command_handlers.get(&command.as_any().type_id()) {
             let events = command_handler.handle_from_bus(command);
             return events;
         }

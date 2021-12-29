@@ -6,6 +6,7 @@ mod tests {
     use crate::dddk::command::command_bus::CommandBus;
     use crate::dddk::command::command_handler::{CommandHandleInBus, CommandHandler};
     use crate::dddk::event::event::Event;
+    static mut HAS_BEEN_CALLED: bool = false;
 
     struct ACommand { }
     impl Command for ACommand {
@@ -15,28 +16,20 @@ mod tests {
     }
 
     struct ACommandHandler {
-        has_been_called: bool
     }
 
-    impl ACommandHandler {
-        fn called(&mut self) {
-            self.has_been_called = true;
-        }
-
-        fn has_been_called(&self) -> bool {
-            return self.has_been_called;
-        }
-    }
 
     impl CommandHandler<ACommand> for ACommandHandler {
-        fn handle<'a>(&mut self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
-            self.called();
+        fn handle<'a>(&self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
+            unsafe {
+                HAS_BEEN_CALLED = true;
+            }
             return Vec::new();
         }
     }
 
     impl CommandHandleInBus for ACommandHandler {
-        fn handle_from_bus<'a>(&mut self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
+        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
             return self.handle_command(command);
         }
 
@@ -52,10 +45,10 @@ mod tests {
     #[test]
     fn it_should_handle_correct_handler() {
         // Given
-        let command_handler = ACommandHandler { has_been_called: false };
+        let command_handler = ACommandHandler { };
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
         command_handlers.push(Box::new(command_handler));
-        let mut command_bus = CommandDispatcher::new(command_handlers);
+        let command_bus = CommandDispatcher::new(command_handlers);
         let a_command = ACommand { };
 
         // When
@@ -71,6 +64,8 @@ mod tests {
         if a_command_handler_borrow.is_none() {
             panic!("Test fails when try to downcast variable command_handler_borrow");
         }
-        assert_eq!(a_command_handler_borrow.unwrap().has_been_called(), true);
+        unsafe {
+            assert_eq!(HAS_BEEN_CALLED, true);
+        }
     }
 }

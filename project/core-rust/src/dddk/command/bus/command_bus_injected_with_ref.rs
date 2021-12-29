@@ -15,7 +15,7 @@ impl <'a>CommandBusParent<'a> {
 }
 
 impl <'a>CommandBus for CommandBusParent<'a> {
-    fn dispatch<'b>(&mut self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
+    fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
         return self.command_bus.dispatch(command);
     }
 }

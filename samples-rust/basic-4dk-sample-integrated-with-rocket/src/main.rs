@@ -30,14 +30,14 @@ impl Command for ACommand {
 struct ACommandHandler {}
 
 impl CommandHandler<ACommand> for ACommandHandler {
-    fn handle<'a>(&mut self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
+    fn handle<'a>(&self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
         println!("Has Been Called");
         return Vec::new();
     }
 }
 
 impl CommandHandleInBus for ACommandHandler {
-    fn handle_from_bus<'a>(&mut self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
+    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
         return self.handle_command(command);
     }
 
@@ -51,19 +51,20 @@ impl CommandHandleInBus for ACommandHandler {
 }
 
 #[get("/")]
-fn index(value: &State<ValueToInject>, command_bus: &mut State<CommandBusParent>) -> String {
+fn index(value: &State<ValueToInject>, command_bus: &State<CommandBusParent>) -> String {
     let command = ACommand {};
+    command_bus.dispatch(&command);
     let response = String::from("Hello, world! ") + &value.value.to_string();
     return response;
 }
 
 #[rocket::main]
 async fn main() {
-        let mut command_handler: ACommandHandler = ACommandHandler {};
+        let command_handler: ACommandHandler = ACommandHandler {};
         let mut command_handlers= Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
         command_handlers.push(Box::new(command_handler));
-        let  mut command_dispatcher = CommandDispatcher::new(command_handlers);
-        let mut command_bus = CommandBusParent::new(Box::new(command_dispatcher));
+        let command_dispatcher = CommandDispatcher::new(command_handlers);
+        let command_bus = CommandBusParent::new(Box::new(command_dispatcher));
 
 
         let value = ValueToInject { value: true };
