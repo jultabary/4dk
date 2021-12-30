@@ -1,7 +1,8 @@
 use std::env;
-use diesel::{Connection, PgConnection};
-use diesel::sql_types::Uuid;
+use diesel::{Connection, PgConnection, RunQueryDsl, sql_query};
 use dotenv::dotenv;
+use uuid::Uuid;
+use crate::domain::foo::{Foo, FooRepository};
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -11,9 +12,31 @@ pub fn establish_connection() -> PgConnection {
         .expect(&format!("Error connecting to {}", database_url))
 }
 
-#[table_name="organization"]
 #[derive(Queryable)]
-pub struct Foo {
+pub struct FooModel {
     pub id: Uuid,
     pub title: String
+}
+
+impl FooModel {
+    fn to_domain(&self) -> Foo {
+        Foo::new(
+        Uuid::from(self.id),
+            self.title.clone()
+        )
+    }
+}
+
+struct FooRepositoryAdapter<'a> {
+    pg_connection: &'a PgConnection
+}
+impl <'a>FooRepository for FooRepositoryAdapter<'a> {
+    fn get_all_foo(&self) -> Vec<Foo> {
+        let foo_vec: Vec<FooModel> = sql_query("SELECT * FROM foo")
+            .load(self.pg_connection)
+            .unwrap();
+        foo_vec.iter().map(|model| {
+            model.to_domain()
+        }).collect()
+    }
 }

@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate rocket;
 extern crate dddk_core;
+#[macro_use]
+extern crate diesel;
 
 use dddk_core::dddk::command::bus::command_bus_injected_with_box::CommandBusParent;
 use dddk_core::dddk::command::bus::command_dispatcher_with_box::CommandDispatcher;
