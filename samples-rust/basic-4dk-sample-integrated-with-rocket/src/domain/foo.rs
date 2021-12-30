@@ -12,6 +12,14 @@ impl Foo {
             title
         }
     }
+
+    pub fn get_id(&self) -> &Uuid {
+        &self.id
+    }
+
+    pub fn get_title(&self) -> &String {
+        &self.title
+    }
 }
 
 pub trait FooRepository {

@@ -1,8 +1,9 @@
 use std::env;
-use diesel::{Connection, PgConnection, RunQueryDsl, sql_query};
+use diesel::{Connection, PgConnection};
 use dotenv::dotenv;
 use uuid::Uuid;
 use crate::domain::foo::{Foo, FooRepository};
+use crate::diesel::RunQueryDsl;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -22,20 +23,30 @@ impl FooModel {
     fn to_domain(&self) -> Foo {
         Foo::new(
         Uuid::from(self.id),
-            self.title.clone()
+        self.title.clone()
         )
     }
 }
 
-struct FooRepositoryAdapter<'a> {
+pub struct FooRepositoryAdapter<'a> {
     pg_connection: &'a PgConnection
 }
+
+impl <'a>FooRepositoryAdapter<'a> {
+    pub fn new(pg_connection: &'a PgConnection) -> FooRepositoryAdapter {
+        FooRepositoryAdapter {
+            pg_connection
+        }
+    }
+}
+
 impl <'a>FooRepository for FooRepositoryAdapter<'a> {
     fn get_all_foo(&self) -> Vec<Foo> {
-        let foo_vec: Vec<FooModel> = sql_query("SELECT * FROM foo")
-            .load(self.pg_connection)
-            .unwrap();
-        foo_vec.iter().map(|model| {
+        use self::super::super::schema::foo::dsl::*;
+        let results = foo
+            .load::<FooModel>(self.pg_connection)
+            .expect("Error loading posts");
+        results.iter().map(|model| {
             model.to_domain()
         }).collect()
     }
