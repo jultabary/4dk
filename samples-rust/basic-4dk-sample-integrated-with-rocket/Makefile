@@ -20,7 +20,7 @@ start: ## start app ✓
 	cargo run
 
 .PHONY: build
-build: ## run test ✓
+build: ## build app ✓
 	cargo build
 
 .PHONY: clean
