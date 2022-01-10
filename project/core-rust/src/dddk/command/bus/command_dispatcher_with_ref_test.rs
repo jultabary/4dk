@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
     use std::any::{Any, TypeId};
+    use better_any::{Tid, TidAble};
     use crate::dddk::command::bus::command_dispatcher_with_ref::CommandDispatcher;
     use crate::dddk::command::command::Command;
     use crate::dddk::command::command_bus::CommandBus;
@@ -16,6 +17,7 @@ mod tests {
         }
     }
 
+    #[derive(Tid)]
     struct ACommandHandler {
     }
 
@@ -37,7 +39,7 @@ mod tests {
             return self.get_associated_command();
         }
 
-        fn as_any(&self) -> &dyn Any {
+        fn as_tid(&self) -> &dyn Tid {
             self
         }
     }

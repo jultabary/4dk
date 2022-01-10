@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use better_any::Tid;
 use crate::dddk::command::command::Command;
 use crate::dddk::event::event::{Event};
 
@@ -8,7 +9,7 @@ pub trait CommandHandleInBus: Send {
 
     fn get_associated_command_from_bus(&self) -> TypeId;
 
-    fn as_any(&self) -> &dyn Any;
+    fn as_tid(&self) -> &dyn Tid;
 
 }
 

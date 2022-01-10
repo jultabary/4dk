@@ -11,3 +11,4 @@ diesel = { version = "1.4.4", features = ["postgres", "uuid"] }
 uuid = { version = "0.6.5", features = ["v4"] }
 dddk_core = { path = "../../project/core-rust" }
 dotenv = "0.15.0"
+better_any = "0.1.1"

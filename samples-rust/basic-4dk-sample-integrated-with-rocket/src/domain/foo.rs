@@ -22,6 +22,6 @@ impl Foo {
     }
 }
 
-pub trait FooRepository {
+pub trait FooRepository: Sync + Send {
     fn get_all_foo(&self) -> Vec<Foo>;
 }

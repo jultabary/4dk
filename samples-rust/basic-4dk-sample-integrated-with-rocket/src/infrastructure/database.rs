@@ -32,15 +32,15 @@ pub struct FooRepositoryAdapter<'a> {
     pg_connection: &'a PgConnection
 }
 
-impl <'a>FooRepositoryAdapter<'a> {
-    pub fn new(pg_connection: &'a PgConnection) -> FooRepositoryAdapter {
+impl<'a> FooRepositoryAdapter<'a> {
+    pub fn new(pg_connection: &'a PgConnection) -> FooRepositoryAdapter<'a> {
         FooRepositoryAdapter {
             pg_connection
         }
     }
 }
 
-impl <'a>FooRepository for FooRepositoryAdapter<'a> {
+impl<'a> FooRepository for FooRepositoryAdapter<'a> {
     fn get_all_foo(&self) -> Vec<Foo> {
         use self::super::super::schema::foo::dsl::*;
         let results = foo
@@ -51,3 +51,6 @@ impl <'a>FooRepository for FooRepositoryAdapter<'a> {
         }).collect()
     }
 }
+
+unsafe impl<'a> Send for FooRepositoryAdapter<'a> { }
+unsafe impl<'a> Sync for FooRepositoryAdapter<'a> { }
