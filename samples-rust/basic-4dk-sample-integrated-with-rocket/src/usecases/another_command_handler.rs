@@ -3,41 +3,37 @@ use better_any::{Tid, TidAble};
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::{CommandHandleInBus, CommandHandler};
 use dddk_core::dddk::event::event::Event;
-use crate::domain::foo::{Foo, FooRepository};
+use crate::domain::foo::FooRepository;
 
-pub struct ACommand {}
+pub struct AnotherCommand {}
 
-impl Command for ACommand {
+impl Command for AnotherCommand {
     fn as_any(&self) -> &dyn Any {
         self
     }
 }
 
 #[derive(Tid)]
-pub struct ACommandHandler {
-    foo_repository: Box<dyn FooRepository>,
+pub struct AnotherCommandHandler {
+    foo_repository: Box<dyn FooRepository>
 }
 
-impl ACommandHandler {
-    pub fn new(foo_repository: Box<dyn FooRepository>) -> ACommandHandler {
-        ACommandHandler {
+impl AnotherCommandHandler {
+    pub fn new(foo_repository: Box<dyn FooRepository>) -> AnotherCommandHandler {
+        AnotherCommandHandler {
             foo_repository
         }
     }
 }
 
-impl CommandHandler<ACommand> for ACommandHandler {
-    fn handle(&self, _command: &ACommand) -> Vec<Box<dyn Event>> {
+impl CommandHandler<AnotherCommand> for AnotherCommandHandler {
+    fn handle(&self, _command: &AnotherCommand) -> Vec<Box<dyn Event>> {
         println!("Has Been Called");
-        let foos = self.foo_repository.get_all_foo();
-        for foo in foos {
-            println!("there is a foo uuid: {}, title: {}", foo.get_id(), foo.get_title());
-        }
         return Vec::new();
     }
 }
 
-impl CommandHandleInBus for ACommandHandler {
+impl CommandHandleInBus for AnotherCommandHandler {
     fn handle_from_bus(&self, command: &dyn Command) -> Vec<Box<dyn Event>> {
         return self.handle_command(command);
     }

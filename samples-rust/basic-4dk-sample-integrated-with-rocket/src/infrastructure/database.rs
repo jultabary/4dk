@@ -1,9 +1,11 @@
 use std::env;
+use better_any::{Tid, TidAble};
 use diesel::{Connection, PgConnection};
 use dotenv::dotenv;
 use uuid::Uuid;
 use crate::domain::foo::{Foo, FooRepository};
 use crate::diesel::RunQueryDsl;
+use crate::domain::repository::Repository;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -28,29 +30,34 @@ impl FooModel {
     }
 }
 
-pub struct FooRepositoryAdapter<'a> {
-    pg_connection: &'a PgConnection
+#[derive(Tid)]
+pub struct FooRepositoryAdapter {
+    pg_connection: PgConnection
 }
 
-impl<'a> FooRepositoryAdapter<'a> {
-    pub fn new(pg_connection: &'a PgConnection) -> FooRepositoryAdapter<'a> {
+impl FooRepositoryAdapter {
+    pub fn new(pg_connection: PgConnection) -> FooRepositoryAdapter {
         FooRepositoryAdapter {
             pg_connection
         }
     }
 }
 
-impl<'a> FooRepository for FooRepositoryAdapter<'a> {
+impl FooRepository for FooRepositoryAdapter {
     fn get_all_foo(&self) -> Vec<Foo> {
         use self::super::super::schema::foo::dsl::*;
         let results = foo
-            .load::<FooModel>(self.pg_connection)
+            .load::<FooModel>(&self.pg_connection)
             .expect("Error loading posts");
         results.iter().map(|model| {
             model.to_domain()
         }).collect()
     }
 }
-
-unsafe impl<'a> Send for FooRepositoryAdapter<'a> { }
-unsafe impl<'a> Sync for FooRepositoryAdapter<'a> { }
+impl Repository for FooRepositoryAdapter {
+    fn as_tid(&self) -> &dyn Tid {
+        self
+    }
+}
+unsafe impl Send for FooRepositoryAdapter { }
+unsafe impl Sync for FooRepositoryAdapter { }

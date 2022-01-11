@@ -10,61 +10,55 @@ use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_bus::CommandBus;
 use dddk_core::dddk::command::command_handler::CommandHandleInBus;
 use dddk_core::dddk::event::event::Event;
-use diesel::PgConnection;
 use crate::infrastructure::api::get_all_foo;
 use crate::infrastructure::database::{establish_connection, FooRepositoryAdapter};
 use crate::usecases::a_command_handler::ACommandHandler;
+use crate::usecases::another_command_handler::AnotherCommandHandler;
 
 pub mod infrastructure;
 pub mod domain;
 pub mod usecases;
 pub mod schema;
 
-struct App<'a> {
-    pg_connection: PgConnection,
-    foo_repository: Option<FooRepositoryAdapter<'a>>,
-    command_bus: Option<CommandBusParent>
+pub struct App {
+    command_bus: CommandBusParent
 }
 
-impl<'a> App<'a> {
-    fn new() -> App<'a> {
-        let pg_connection = establish_connection();
-        let mut app = App {
-            pg_connection,
-            foo_repository: None,
-            command_bus: None
+impl App {
+    fn new() -> App {
+        let foo_repository = FooRepositoryAdapter::new(establish_connection());
+        let a_command_handler = ACommandHandler::new(Box::new(foo_repository));
+
+        let foo_repository = FooRepositoryAdapter::new(establish_connection());
+        let another_command_handler = AnotherCommandHandler::new(Box::new(foo_repository));
+
+        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
+        command_handlers.push(Box::new(a_command_handler));
+        command_handlers.push(Box::new(another_command_handler));
+        let command_dispatcher = CommandDispatcher::new(command_handlers);
+        let app = App {
+            command_bus: CommandBusParent::new(Box::new(command_dispatcher))
         };
-        app.init();
         return app;
     }
 
-    fn init(&mut self) {
-        let foo_repository = FooRepositoryAdapter::new(&self.pg_connection);
-        self.foo_repository = Some(foo_repository);
-
-        // let command_handler = ACommandHandler::new(&foo_repository);
-        // let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
-        // command_handlers.push(Box::new(command_handler));
-        // let command_dispatcher = CommandDispatcher::new(command_handlers);
-        // self.command_bus = Option::Some(CommandBusParent::new(Box::new(command_dispatcher)));
-
-    }
 }
 
-impl<'a> CommandBus for App<'a> {
+impl CommandBus for App {
     fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
-        self.command_bus.as_ref().unwrap().dispatch(command)
+        self.command_bus.dispatch(command)
     }
 }
 
-unsafe impl<'a> Sync for App<'a> { }
-
-unsafe impl<'a> Send for App<'a> { }
+unsafe impl Sync for App { }
+unsafe impl Send for App { }
 
 #[rocket::main]
 async fn main() {
-    let app = App::new();
-    let _server = rocket::build()
-        .manage(app)
-        .mount("/", routes![get_all_foo]).launch().await;
+    {
+        let app = App::new();
+        let _server = rocket::build()
+            .manage(app)
+            .mount("/", routes![get_all_foo]).launch().await;
+    }
 }

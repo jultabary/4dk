@@ -2,6 +2,8 @@
 # @see http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .DEFAULT_GOAL := help
 SHELL := /bin/bash
+DIR:=$(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
+
 export DATABASE_URL := postgres://user:password@localhost:5432/rust-sample
 
 .PHONY: help
@@ -28,7 +30,7 @@ start-db: ## start the docker database
 		-e POSTGRES_USER=user \
 		-e POSTGRES_DB=rust-sample \
 		-p 5432:5432 \
-		-v $${current_dir}/resources/database:/docker-entrypoint-initdb.d \
+		-v $(DIR)/resources/database:/docker-entrypoint-initdb.d \
 		postgres:14.1
 
 .PHONY: stop-db
