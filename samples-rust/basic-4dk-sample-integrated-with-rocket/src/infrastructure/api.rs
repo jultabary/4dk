@@ -1,4 +1,3 @@
-use dddk_core::dddk::command::bus::command_bus_injected_with_box::CommandBusParent;
 use dddk_core::dddk::command::command_bus::CommandBus;
 use rocket::State;
 use crate::App;

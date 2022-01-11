@@ -5,11 +5,15 @@ mod tests {
     use crate::dddk::command::bus::command_dispatcher_with_ref::CommandDispatcher;
     use crate::dddk::command::command::Command;
     use crate::dddk::command::command_bus::CommandBus;
-    use crate::dddk::command::command_handler::{CommandHandleInBus, CommandHandler};
+    use crate::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
     use crate::dddk::event::event::Event;
 
     static mut HAS_BEEN_CALLED: bool = false;
-
+    fn init_test() {
+        unsafe {
+            HAS_BEEN_CALLED = false;
+        }
+    }
     struct ACommand { }
     impl Command for ACommand {
         fn as_any(&self) -> &dyn Any {
@@ -30,7 +34,7 @@ mod tests {
         }
     }
 
-    impl CommandHandleInBus for ACommandHandler {
+    impl CommandHandlerInBus for ACommandHandler {
         fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
             return self.handle_command(command);
         }
@@ -47,8 +51,9 @@ mod tests {
     #[test]
     fn it_should_handle_correct_handler() {
         // Given
+        init_test();
         let mut command_handler = ACommandHandler { };
-        let mut command_handlers = Vec::new() as Vec<&mut dyn CommandHandleInBus>;
+        let mut command_handlers = Vec::new() as Vec<&mut dyn CommandHandlerInBus>;
         command_handlers.push(&mut command_handler);
         let command_bus = CommandDispatcher::new(command_handlers);
         let a_command = ACommand { };
@@ -66,11 +71,10 @@ mod tests {
     fn it_should_create_command_bus_and_move_command_handler_in_it() {
         // Given
         let mut command_handler = ACommandHandler { };
-        let mut command_handlers = Vec::new() as Vec<&mut dyn CommandHandleInBus>;
+        let mut command_handlers = Vec::new() as Vec<&mut dyn CommandHandlerInBus>;
         command_handlers.push(&mut command_handler);
 
         // When
         CommandDispatcher::new(command_handlers);
-
     }
 }

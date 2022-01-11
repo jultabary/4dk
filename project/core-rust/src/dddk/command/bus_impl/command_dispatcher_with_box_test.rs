@@ -5,12 +5,18 @@ mod tests {
     use crate::dddk::command::bus::command_dispatcher_with_box::CommandDispatcher;
     use crate::dddk::command::command::Command;
     use crate::dddk::command::command_bus::CommandBus;
-    use crate::dddk::command::command_handler::{CommandHandleInBus, CommandHandler};
+    use crate::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
     use crate::dddk::event::event::Event;
 
     static mut HAS_BEEN_CALLED: bool = false;
+    fn init_test() {
+        unsafe {
+            HAS_BEEN_CALLED = false;
+        }
+    }
 
-    struct ACommand { }
+    struct ACommand {}
+
     impl Command for ACommand {
         fn as_any(&self) -> &dyn Any {
             self
@@ -18,8 +24,7 @@ mod tests {
     }
 
     #[derive(Tid)]
-    struct ACommandHandler {
-    }
+    struct ACommandHandler {}
 
 
     impl CommandHandler<ACommand> for ACommandHandler {
@@ -31,7 +36,7 @@ mod tests {
         }
     }
 
-    impl CommandHandleInBus for ACommandHandler {
+    impl CommandHandlerInBus for ACommandHandler {
         fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
             return self.handle_command(command);
         }
@@ -48,11 +53,12 @@ mod tests {
     #[test]
     fn it_should_handle_correct_handler() {
         // Given
-        let command_handler = ACommandHandler { };
-        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
+        init_test();
+        let command_handler = ACommandHandler {};
+        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
         command_handlers.push(Box::new(command_handler));
         let command_bus = CommandDispatcher::new(command_handlers);
-        let a_command = ACommand { };
+        let a_command = ACommand {};
 
         // When
         command_bus.dispatch(&a_command);

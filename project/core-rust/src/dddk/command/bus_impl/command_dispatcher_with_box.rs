@@ -4,15 +4,15 @@ use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
-use crate::dddk::command::command_handler::CommandHandleInBus;
+use crate::dddk::command::command_handler::CommandHandlerInBus;
 use crate::dddk::event::event::Event;
 
 pub struct CommandDispatcher {
-    command_handlers: HashMap<TypeId, Box<dyn CommandHandleInBus>>,
+    command_handlers: HashMap<TypeId, Box<dyn CommandHandlerInBus>>,
 }
 
 impl CommandDispatcher {
-    pub fn new(command_handler_values: Vec<Box<dyn CommandHandleInBus>>) -> CommandDispatcher {
+    pub fn new(command_handler_values: Vec<Box<dyn CommandHandlerInBus>>) -> CommandDispatcher {
         let mut map = HashMap::new();
         command_handler_values.into_iter().for_each(|item| {
             map.insert(item.get_associated_command_from_bus(), item);
@@ -22,7 +22,7 @@ impl CommandDispatcher {
         };
     }
 
-    pub fn get_command_handler_by_its_command(&self, type_id: TypeId) -> Option<&Box<dyn CommandHandleInBus>> {
+    pub fn get_command_handler_by_its_command(&self, type_id: TypeId) -> Option<&Box<dyn CommandHandlerInBus>> {
         if let Some(command_handler) = self.command_handlers.get(&type_id) {
             return Some(command_handler);
         }

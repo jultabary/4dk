@@ -1,7 +1,7 @@
 use std::any::{Any, TypeId};
 use better_any::{Tid, TidAble};
 use dddk_core::dddk::command::command::Command;
-use dddk_core::dddk::command::command_handler::{CommandHandleInBus, CommandHandler};
+use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
 use dddk_core::dddk::event::event::Event;
 use crate::domain::foo::FooRepository;
 
@@ -33,7 +33,7 @@ impl CommandHandler<AnotherCommand> for AnotherCommandHandler {
     }
 }
 
-impl CommandHandleInBus for AnotherCommandHandler {
+impl CommandHandlerInBus for AnotherCommandHandler {
     fn handle_from_bus(&self, command: &dyn Command) -> Vec<Box<dyn Event>> {
         return self.handle_command(command);
     }

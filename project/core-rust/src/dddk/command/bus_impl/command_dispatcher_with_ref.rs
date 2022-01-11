@@ -2,15 +2,15 @@ use std::any::{TypeId};
 use std::collections::HashMap;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
-use crate::dddk::command::command_handler::CommandHandleInBus;
+use crate::dddk::command::command_handler::CommandHandlerInBus;
 use crate::dddk::event::event::Event;
 
 pub struct CommandDispatcher<'a> {
-    command_handlers: HashMap<TypeId, &'a mut dyn CommandHandleInBus>
+    command_handlers: HashMap<TypeId, &'a mut dyn CommandHandlerInBus>
 }
 
 impl <'a>CommandDispatcher<'a> {
-    pub fn new(command_handlers_vec: Vec<&'a mut dyn CommandHandleInBus>) -> CommandDispatcher {
+    pub fn new(command_handlers_vec: Vec<&'a mut dyn CommandHandlerInBus>) -> CommandDispatcher {
         let mut map = HashMap::new();
         command_handlers_vec.into_iter().for_each(| item| {
             map.insert(item.get_associated_command_from_bus(), item);

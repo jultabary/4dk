@@ -4,11 +4,11 @@ extern crate dddk_core;
 #[macro_use]
 extern crate diesel;
 
-use dddk_core::dddk::command::bus::command_bus_injected_with_box::CommandBusParent;
-use dddk_core::dddk::command::bus::command_dispatcher_with_box::CommandDispatcher;
+use dddk_core::dddk::command::bus_impl::command_bus_shared_btw_threads_with_box::CommandBusParent;
+use dddk_core::dddk::command::bus_impl::command_dispatcher_with_box::CommandDispatcher;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_bus::CommandBus;
-use dddk_core::dddk::command::command_handler::CommandHandleInBus;
+use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
 use dddk_core::dddk::event::event::Event;
 use crate::infrastructure::api::get_all_foo;
 use crate::infrastructure::database::{establish_connection, FooRepositoryAdapter};
@@ -32,7 +32,7 @@ impl App {
         let foo_repository = FooRepositoryAdapter::new(establish_connection());
         let another_command_handler = AnotherCommandHandler::new(Box::new(foo_repository));
 
-        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandleInBus>>;
+        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
         command_handlers.push(Box::new(a_command_handler));
         command_handlers.push(Box::new(another_command_handler));
         let command_dispatcher = CommandDispatcher::new(command_handlers);
