@@ -6,7 +6,6 @@ pub mod command {
         }
         pub mod command_dispatcher;
         pub mod command_dispatcher_test;
-        pub mod command_bus_shared_btw_threads;
     }
     pub mod command;
     pub mod command_handler;
@@ -21,6 +20,10 @@ pub mod query {
     pub mod query_handler;
     pub mod query_bus;
     pub mod query_handler_test;
+    pub mod bus_impl {
+        pub mod query_dispatcher;
+        pub mod query_dispatcher_test;
+    }
 }
 pub mod test {
     pub mod some_command_for_test;

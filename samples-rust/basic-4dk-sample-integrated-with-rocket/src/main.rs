@@ -22,7 +22,7 @@ pub mod usecases;
 pub mod schema;
 
 pub struct Context {
-    command_bus: CommandBusSharedBetweenThreads
+    command_bus: CommandDispatcher
 }
 
 impl Context {
@@ -38,9 +38,8 @@ impl Context {
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
         command_handlers.push(Box::new(a_command_handler));
         command_handlers.push(Box::new(another_command_handler));
-        let command_dispatcher = CommandDispatcher::new(command_handlers);
         let context = Context {
-            command_bus: CommandBusSharedBetweenThreads::new(Box::new(command_dispatcher))
+            command_bus: CommandDispatcher::new(command_handlers)
         };
         return context;
     }
