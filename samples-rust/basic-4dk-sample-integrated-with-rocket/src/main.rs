@@ -21,12 +21,12 @@ pub mod domain;
 pub mod usecases;
 pub mod schema;
 
-pub struct App {
+pub struct Context {
     command_bus: CommandBusSharedBetweenThreads
 }
 
-impl App {
-    fn new() -> App {
+impl Context {
+    fn new() -> Context {
         // clone a Arc Object doesn't copy the value, it creates a new pointer. See Arc documentation for more detail
         let connection = Arc::new(establish_connection());
 
@@ -39,29 +39,29 @@ impl App {
         command_handlers.push(Box::new(a_command_handler));
         command_handlers.push(Box::new(another_command_handler));
         let command_dispatcher = CommandDispatcher::new(command_handlers);
-        let app = App {
+        let context = Context {
             command_bus: CommandBusSharedBetweenThreads::new(Box::new(command_dispatcher))
         };
-        return app;
+        return context;
     }
 
 }
 
-impl CommandBus for App {
+impl CommandBus for Context {
     fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
         self.command_bus.dispatch(command)
     }
 }
 
-unsafe impl Sync for App { }
-unsafe impl Send for App { }
+unsafe impl Sync for Context { }
+unsafe impl Send for Context { }
 
 #[rocket::main]
 async fn main() {
     {
-        let app = App::new();
+        let context = Context::new();
         let _server = rocket::build()
-            .manage(app)
+            .manage(context)
             .mount("/", routes![get_all_foo]).launch().await;
     }
 }

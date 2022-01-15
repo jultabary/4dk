@@ -1,5 +1,5 @@
-use better_any::Tid;
+use std::any::Any;
 
 pub trait Repository {
-    fn as_tid(&self) -> &dyn Tid;
+    fn as_any(&self) -> &dyn Any;
 }

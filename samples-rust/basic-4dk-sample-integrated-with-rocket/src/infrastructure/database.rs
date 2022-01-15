@@ -1,6 +1,6 @@
+use std::any::Any;
 use std::env;
 use std::sync::Arc;
-use better_any::{Tid, TidAble};
 use diesel::{Connection, PgConnection};
 use dotenv::dotenv;
 use uuid::Uuid;
@@ -31,7 +31,6 @@ impl FooModel {
     }
 }
 
-#[derive(Tid)]
 pub struct FooRepositoryAdapter {
     pg_connection: Arc<PgConnection>
 }
@@ -56,7 +55,7 @@ impl FooRepository for FooRepositoryAdapter {
     }
 }
 impl Repository for FooRepositoryAdapter {
-    fn as_tid(&self) -> &dyn Tid {
+    fn as_any(&self) -> &dyn Any {
         self
     }
 }
