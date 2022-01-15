@@ -27,10 +27,11 @@ pub struct App {
 
 impl App {
     fn new() -> App {
+        // clone a Arc Object doesn't copy the value, it creates a new pointer. See Arc documentation for more detail
         let connection = Arc::new(establish_connection());
 
-        // clone a Arc Object doesn't copy the value, it creates a new pointer. See Arc documentation for more detail
         let foo_repository = Arc::new(FooRepositoryAdapter::new(connection.clone()));
+
         let a_command_handler = ACommandHandler::new(foo_repository.clone());
         let another_command_handler = AnotherCommandHandler::new(foo_repository.clone());
 
