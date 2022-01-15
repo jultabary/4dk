@@ -34,7 +34,7 @@ impl CommandHandler<AnotherCommand> for AnotherCommandHandler {
 
 impl CommandHandlerInBus for AnotherCommandHandler {
     fn handle_from_bus(&self, command: &dyn Command) -> Vec<Box<dyn Event>> {
-        return self.handle_command(command);
+        return self.handle_generic_command(command);
     }
 
     fn get_associated_command_from_bus(&self) -> TypeId {
