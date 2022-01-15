@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use std::sync::Arc;
 use better_any::{Tid, TidAble};
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
@@ -15,11 +16,11 @@ impl Command for AnotherCommand {
 
 #[derive(Tid)]
 pub struct AnotherCommandHandler {
-    foo_repository: Box<dyn FooRepository>
+    foo_repository: Arc<dyn FooRepository>
 }
 
 impl AnotherCommandHandler {
-    pub fn new(foo_repository: Box<dyn FooRepository>) -> AnotherCommandHandler {
+    pub fn new(foo_repository: Arc<dyn FooRepository>) -> AnotherCommandHandler {
         AnotherCommandHandler {
             foo_repository
         }

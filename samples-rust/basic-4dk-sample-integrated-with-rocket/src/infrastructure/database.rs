@@ -1,4 +1,5 @@
 use std::env;
+use std::sync::Arc;
 use better_any::{Tid, TidAble};
 use diesel::{Connection, PgConnection};
 use dotenv::dotenv;
@@ -32,11 +33,11 @@ impl FooModel {
 
 #[derive(Tid)]
 pub struct FooRepositoryAdapter {
-    pg_connection: PgConnection
+    pg_connection: Arc<PgConnection>
 }
 
 impl FooRepositoryAdapter {
-    pub fn new(pg_connection: PgConnection) -> FooRepositoryAdapter {
+    pub fn new(pg_connection: Arc<PgConnection>) -> FooRepositoryAdapter {
         FooRepositoryAdapter {
             pg_connection
         }
@@ -47,7 +48,7 @@ impl FooRepository for FooRepositoryAdapter {
     fn get_all_foo(&self) -> Vec<Foo> {
         use self::super::super::schema::foo::dsl::*;
         let results = foo
-            .load::<FooModel>(&self.pg_connection)
+            .load::<FooModel>(self.pg_connection.as_ref())
             .expect("Error loading posts");
         results.iter().map(|model| {
             model.to_domain()

@@ -4,6 +4,7 @@ extern crate dddk_core;
 #[macro_use]
 extern crate diesel;
 
+use std::sync::Arc;
 use dddk_core::dddk::command::bus_impl::command_bus_shared_btw_threads_with_box::CommandBusParent;
 use dddk_core::dddk::command::bus_impl::command_dispatcher_with_box::CommandDispatcher;
 use dddk_core::dddk::command::command::Command;
@@ -26,11 +27,12 @@ pub struct App {
 
 impl App {
     fn new() -> App {
-        let foo_repository = FooRepositoryAdapter::new(establish_connection());
-        let a_command_handler = ACommandHandler::new(Box::new(foo_repository));
+        let connection = Arc::new(establish_connection());
 
-        let foo_repository = FooRepositoryAdapter::new(establish_connection());
-        let another_command_handler = AnotherCommandHandler::new(Box::new(foo_repository));
+        // clone a Arc Object doesn't copy the value, it creates a new pointer. See Arc documentation for more detail
+        let foo_repository = Arc::new(FooRepositoryAdapter::new(connection.clone()));
+        let a_command_handler = ACommandHandler::new(foo_repository.clone());
+        let another_command_handler = AnotherCommandHandler::new(foo_repository.clone());
 
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
         command_handlers.push(Box::new(a_command_handler));
