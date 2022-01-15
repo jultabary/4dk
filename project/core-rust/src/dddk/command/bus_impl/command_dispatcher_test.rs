@@ -1,78 +1,32 @@
 #[cfg(test)]
 mod tests {
-    use std::any::{Any, TypeId};
     use crate::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
-    use crate::dddk::command::command::Command;
     use crate::dddk::command::command_bus::CommandBus;
-    use crate::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
-    use crate::dddk::event::event::Event;
-
-    static mut HAS_BEEN_CALLED: bool = false;
-    fn init_test() {
-        unsafe {
-            HAS_BEEN_CALLED = false;
-        }
-    }
-
-    struct ACommand {}
-
-    impl Command for ACommand {
-        fn as_any(&self) -> &dyn Any {
-            self
-        }
-    }
-
-    struct ACommandHandler {}
-
-
-    impl CommandHandler<ACommand> for ACommandHandler {
-        fn handle<'a>(&self, _command: &'a ACommand) -> Vec<Box<dyn Event>> {
-            unsafe {
-                HAS_BEEN_CALLED = true;
-            }
-            return Vec::new();
-        }
-    }
-
-    impl CommandHandlerInBus for ACommandHandler {
-        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
-            return self.handle_command(command);
-        }
-
-        fn get_associated_command_from_bus(&self) -> TypeId {
-            return self.get_associated_command();
-        }
-
-        fn as_any(&self) -> &dyn Any {
-            self
-        }
-    }
+    use crate::dddk::command::command_handler::CommandHandlerInBus;
+    use crate::dddk::test::some_command_for_test::ACommand;
+    use crate::dddk::test::some_command_handler_for_test::{ACommandHandler, AnotherCommandHandler};
+    use crate::dddk::test::some_event_for_test::AnEvent;
 
     #[test]
-    fn it_should_handle_correct_handler() {
+    fn it_should_handle_correct_handler_when_dispatch_command() {
         // Given
-        init_test();
-        let command_handler = ACommandHandler {};
+        let a_command_handler = ACommandHandler::new();
+        let another_command_handler = AnotherCommandHandler::new();
+
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
-        command_handlers.push(Box::new(command_handler));
+        command_handlers.push(Box::new(a_command_handler));
+        command_handlers.push(Box::new(another_command_handler));
+
         let command_bus = CommandDispatcher::new(command_handlers);
         let a_command = ACommand {};
 
         // When
-        command_bus.dispatch(&a_command);
+        let events = command_bus.dispatch(&a_command);
 
         // Then
-        let type_of_a_command = TypeId::of::<ACommand>();
-        let command_handler_borrow = command_bus.get_command_handler_by_its_command(type_of_a_command);
-        if command_handler_borrow.is_none() {
-            panic!("Test fails because command_bus has not found the desired handler");
-        }
-        let a_command_handler_borrow = command_handler_borrow.unwrap().as_any().downcast_ref::<ACommandHandler>();
-        if a_command_handler_borrow.is_none() {
-            panic!("Test fails when try to downcast variable command_handler_borrow");
-        }
-        unsafe {
-            assert_eq!(HAS_BEEN_CALLED, true);
-        }
+        assert_eq!(1, events.len());
+        let event = events.get(0).unwrap();
+        let an_event = event.as_ref().as_any().downcast_ref::<AnEvent>();
+        assert_eq!(true, an_event.is_some());
     }
 }

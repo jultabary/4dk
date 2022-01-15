@@ -13,7 +13,7 @@ pub trait CommandHandlerInBus: Send {
 }
 
 pub trait CommandHandler<C: Sized + Any + Command> {
-    fn handle_command<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
+    fn handle_generic_command<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
         let mut events = Vec::new() as Vec<Box<dyn Event>>;
         let cast_command = command.as_any().downcast_ref::<C>();
         if cast_command.is_some() {
