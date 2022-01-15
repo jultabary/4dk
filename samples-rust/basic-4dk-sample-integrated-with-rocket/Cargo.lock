@@ -79,32 +79,11 @@ checksum = "a4521f3e3d031370679b3b140beb36dfe4801b09ac77e30c61941f97df3ef28b"
 name = "basic-4dk-sample-integrated-with-rocket"
 version = "0.1.0"
 dependencies = [
- "better_any",
  "dddk_core",
  "diesel",
  "dotenv",
  "rocket",
  "uuid",
-]
-
-[[package]]
-name = "better_any"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b359aebd937c17c725e19efcb661200883f04c49c53e7132224dac26da39d4a0"
-dependencies = [
- "better_typeid_derive",
-]
-
-[[package]]
-name = "better_typeid_derive"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3deeecb812ca5300b7d3f66f730cc2ebd3511c3d36c691dd79c165d5b19a26e3"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -175,9 +154,6 @@ dependencies = [
 [[package]]
 name = "dddk_core"
 version = "0.1.0"
-dependencies = [
- "better_any",
-]
 
 [[package]]
 name = "devise"
