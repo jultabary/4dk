@@ -1,5 +1,5 @@
-use std::any::Any;
+use dddk_core::dddk::query::response::Response;
 
-pub trait Repository {
-    fn as_any(&self) -> &dyn Any;
+pub trait FooRepository {
+    fn get_all_foo(&self) -> Vec<Box<dyn Response>>;
 }

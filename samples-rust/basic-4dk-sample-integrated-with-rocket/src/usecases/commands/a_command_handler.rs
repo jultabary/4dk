@@ -3,7 +3,7 @@ use std::sync::Arc;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
 use dddk_core::dddk::event::event::Event;
-use crate::domain::foo::FooRepository;
+use crate::domain::repository::FooRepository;
 
 pub struct ACommand {}
 
@@ -14,13 +14,13 @@ impl Command for ACommand {
 }
 
 pub struct ACommandHandler {
-    foo_repository: Arc<dyn FooRepository>,
+    _foo_repository: Arc<dyn FooRepository>,
 }
 
 impl ACommandHandler {
     pub fn new(foo_repository: Arc<dyn FooRepository>) -> ACommandHandler {
         ACommandHandler {
-            foo_repository
+            _foo_repository: foo_repository
         }
     }
 }
@@ -28,10 +28,6 @@ impl ACommandHandler {
 impl CommandHandler<ACommand> for ACommandHandler {
     fn handle(&self, _command: &ACommand) -> Vec<Box<dyn Event>> {
         println!("Has Been Called");
-        let foos = self.foo_repository.get_all_foo();
-        for foo in foos {
-            println!("there is a foo uuid: {}, title: {}", foo.get_id(), foo.get_title());
-        }
         return Vec::new();
     }
 }

@@ -5,16 +5,20 @@ extern crate dddk_core;
 extern crate diesel;
 
 use std::sync::Arc;
-use dddk_core::dddk::command::bus_impl::command_bus_shared_btw_threads::CommandBusSharedBetweenThreads;
 use dddk_core::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_bus::CommandBus;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
 use dddk_core::dddk::event::event::Event;
+use dddk_core::dddk::query::bus_impl::query_dispatcher::QueryDispatcher;
+use dddk_core::dddk::query::query::Query;
+use dddk_core::dddk::query::query_bus::QueryBus;
+use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
+use dddk_core::dddk::query::response::Response;
 use crate::infrastructure::api::get_all_foo;
 use crate::infrastructure::database::{establish_connection, FooRepositoryAdapter};
-use crate::usecases::a_command_handler::ACommandHandler;
-use crate::usecases::another_command_handler::AnotherCommandHandler;
+use crate::usecases::commands::a_command_handler::ACommandHandler;
+use crate::usecases::queries::a_query_handler::WhatAreAllTheFoosQueryHandler;
 
 pub mod infrastructure;
 pub mod domain;
@@ -22,7 +26,8 @@ pub mod usecases;
 pub mod schema;
 
 pub struct Context {
-    command_bus: CommandDispatcher
+    command_bus: CommandDispatcher,
+    query_bus: QueryDispatcher
 }
 
 impl Context {
@@ -33,13 +38,16 @@ impl Context {
         let foo_repository = Arc::new(FooRepositoryAdapter::new(connection.clone()));
 
         let a_command_handler = ACommandHandler::new(foo_repository.clone());
-        let another_command_handler = AnotherCommandHandler::new(foo_repository.clone());
-
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
         command_handlers.push(Box::new(a_command_handler));
-        command_handlers.push(Box::new(another_command_handler));
+
+        let a_query_handler = WhatAreAllTheFoosQueryHandler::new(foo_repository.clone());
+        let mut query_handlers = Vec::new() as Vec<Box<dyn QueryHandlerInBus>>;
+        query_handlers.push(Box::new(a_query_handler));
+
         let context = Context {
-            command_bus: CommandDispatcher::new(command_handlers)
+            command_bus: CommandDispatcher::new(command_handlers),
+            query_bus: QueryDispatcher::new(query_handlers)
         };
         return context;
     }
@@ -49,6 +57,11 @@ impl Context {
 impl CommandBus for Context {
     fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
         self.command_bus.dispatch(command)
+    }
+}
+impl QueryBus for Context {
+    fn dispatch<'b>(&self, query: &'b dyn Query) -> Vec<Box<dyn Response>> {
+        self.query_bus.dispatch(query)
     }
 }
 

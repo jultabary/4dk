@@ -25,7 +25,7 @@ pub mod query {
         pub mod query_dispatcher_test;
     }
 }
-pub mod test {
+mod test {
     pub mod some_command_for_test;
     pub mod some_command_handler_for_test;
     pub mod some_event_for_test;

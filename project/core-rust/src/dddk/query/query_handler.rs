@@ -2,7 +2,7 @@ use std::any::{Any, TypeId};
 use crate::dddk::query::query::Query;
 use crate::dddk::query::response::Response;
 
-pub trait QueryHandlerInBus: Send {
+pub trait QueryHandlerInBus {
     fn handle_from_bus<'a>(&self, query: &'a dyn Query) -> Vec<Box<dyn Response>>;
 
     fn get_associated_query_from_bus(&self) -> TypeId;

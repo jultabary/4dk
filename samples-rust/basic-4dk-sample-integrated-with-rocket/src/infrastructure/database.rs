@@ -1,12 +1,13 @@
-use std::any::Any;
 use std::env;
 use std::sync::Arc;
+use dddk_core::dddk::query::response::Response;
 use diesel::{Connection, PgConnection};
 use dotenv::dotenv;
 use uuid::Uuid;
-use crate::domain::foo::{Foo, FooRepository};
 use crate::diesel::RunQueryDsl;
-use crate::domain::repository::Repository;
+use crate::domain::foo::Foo;
+use crate::domain::repository::FooRepository;
+
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -44,20 +45,13 @@ impl FooRepositoryAdapter {
 }
 
 impl FooRepository for FooRepositoryAdapter {
-    fn get_all_foo(&self) -> Vec<Foo> {
+    fn get_all_foo(&self) -> Vec<Box<dyn Response>> {
         use self::super::super::schema::foo::dsl::*;
         let results = foo
             .load::<FooModel>(self.pg_connection.as_ref())
             .expect("Error loading posts");
         results.iter().map(|model| {
-            model.to_domain()
+            Box::new(model.to_domain()) as Box<dyn Response>
         }).collect()
     }
 }
-impl Repository for FooRepositoryAdapter {
-    fn as_any(&self) -> &dyn Any {
-        self
-    }
-}
-unsafe impl Send for FooRepositoryAdapter { }
-unsafe impl Sync for FooRepositoryAdapter { }
