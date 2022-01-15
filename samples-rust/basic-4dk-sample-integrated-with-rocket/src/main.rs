@@ -5,8 +5,8 @@ extern crate dddk_core;
 extern crate diesel;
 
 use std::sync::Arc;
-use dddk_core::dddk::command::bus_impl::command_bus_shared_btw_threads_with_box::CommandBusParent;
-use dddk_core::dddk::command::bus_impl::command_dispatcher_with_box::CommandDispatcher;
+use dddk_core::dddk::command::bus_impl::command_bus_shared_btw_threads::CommandBusSharedBetweenThreads;
+use dddk_core::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_bus::CommandBus;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
@@ -22,7 +22,7 @@ pub mod usecases;
 pub mod schema;
 
 pub struct App {
-    command_bus: CommandBusParent
+    command_bus: CommandBusSharedBetweenThreads
 }
 
 impl App {
@@ -39,7 +39,7 @@ impl App {
         command_handlers.push(Box::new(another_command_handler));
         let command_dispatcher = CommandDispatcher::new(command_handlers);
         let app = App {
-            command_bus: CommandBusParent::new(Box::new(command_dispatcher))
+            command_bus: CommandBusSharedBetweenThreads::new(Box::new(command_dispatcher))
         };
         return app;
     }

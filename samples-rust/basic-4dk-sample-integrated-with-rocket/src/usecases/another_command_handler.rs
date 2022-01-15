@@ -1,6 +1,5 @@
 use std::any::{Any, TypeId};
 use std::sync::Arc;
-use better_any::{Tid, TidAble};
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
 use dddk_core::dddk::event::event::Event;
@@ -14,7 +13,6 @@ impl Command for AnotherCommand {
     }
 }
 
-#[derive(Tid)]
 pub struct AnotherCommandHandler {
     foo_repository: Arc<dyn FooRepository>
 }
@@ -43,7 +41,7 @@ impl CommandHandlerInBus for AnotherCommandHandler {
         return self.get_associated_command();
     }
 
-    fn as_tid(&self) -> &dyn Tid {
+    fn as_any(&self) -> &dyn Any {
         self
     }
 }

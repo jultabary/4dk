@@ -1,8 +1,7 @@
 #[cfg(test)]
 mod tests {
     use std::any::{Any, TypeId};
-    use better_any::{Tid, TidExt, TidAble};
-    use crate::dddk::command::bus::command_dispatcher_with_box::CommandDispatcher;
+    use crate::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
     use crate::dddk::command::command::Command;
     use crate::dddk::command::command_bus::CommandBus;
     use crate::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
@@ -23,7 +22,6 @@ mod tests {
         }
     }
 
-    #[derive(Tid)]
     struct ACommandHandler {}
 
 
@@ -45,7 +43,7 @@ mod tests {
             return self.get_associated_command();
         }
 
-        fn as_tid(&self) -> &dyn Tid {
+        fn as_any(&self) -> &dyn Any {
             self
         }
     }
@@ -69,7 +67,7 @@ mod tests {
         if command_handler_borrow.is_none() {
             panic!("Test fails because command_bus has not found the desired handler");
         }
-        let a_command_handler_borrow = command_handler_borrow.unwrap().as_tid().downcast_ref::<ACommandHandler>();
+        let a_command_handler_borrow = command_handler_borrow.unwrap().as_any().downcast_ref::<ACommandHandler>();
         if a_command_handler_borrow.is_none() {
             panic!("Test fails when try to downcast variable command_handler_borrow");
         }
