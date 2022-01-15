@@ -8,7 +8,7 @@ mod tests {
     use crate::dddk::test::some_event_for_test::AnEvent;
 
     #[test]
-    fn it_should_handle_correct_handler_when_dispatch_command() {
+    fn it_should_be_handled_by_correct_handler_when_dispatch_command() {
         // Given
         let a_command_handler = ACommandHandler::new();
         let another_command_handler = AnotherCommandHandler::new();

@@ -1,7 +1,5 @@
 use std::any::{TypeId};
 use std::collections::HashMap;
-use std::error::Error;
-use std::fmt::{Debug, Display, Formatter};
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
 use crate::dddk::command::command_handler::CommandHandlerInBus;
@@ -39,14 +37,3 @@ impl CommandBus for CommandDispatcher {
         return Vec::new();
     }
 }
-
-#[derive(Debug)]
-pub struct CommandHandlerNotFound {}
-
-impl Display for CommandHandlerNotFound {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "CommandHandler Not Found")
-    }
-}
-
-impl Error for CommandHandlerNotFound {}
