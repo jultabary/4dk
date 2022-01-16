@@ -32,7 +32,7 @@ pub struct CreateFooCommandHandler {
 impl CreateFooCommandHandler {
     pub fn new(foo_repository: Arc<dyn FooRepository>) -> CreateFooCommandHandler {
         CreateFooCommandHandler {
-            foo_repository: foo_repository
+            foo_repository
         }
     }
 }
