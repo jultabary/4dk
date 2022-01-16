@@ -5,7 +5,7 @@
 This project proposes a framework to easily transpose an "Event Storming" into your code. <br/>
 This framework is based on famous concept such as CQRS, Hexagonal Architecture, CommandBus pattern. <br />
 If you have never heard about "Domain Driven Design" or "Event Storming", you have to discover it. It will change your vision of software development.<br/>
-This projects presents an implementation in <b>Java</a> and another in <b>Rust</b>
+This projects presents an implementation in <b>Java</b> and another in <b>Rust</b>
 
 ## Objectives
 
