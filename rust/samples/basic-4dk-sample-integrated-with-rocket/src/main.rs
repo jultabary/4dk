@@ -21,7 +21,7 @@ pub mod schema;
 
 pub struct Context {
     command_bus: CommandDispatcher,
-    query_bus: QueryDispatcher
+    query_bus: QueryDispatcher,
 }
 
 impl Context {
@@ -41,15 +41,15 @@ impl Context {
 
         let context = Context {
             command_bus: CommandDispatcher::new(command_handlers),
-            query_bus: QueryDispatcher::new(query_handlers)
+            query_bus: QueryDispatcher::new(query_handlers),
         };
         return context;
     }
-
 }
 
-unsafe impl Sync for Context { }
-unsafe impl Send for Context { }
+unsafe impl Sync for Context {}
+
+unsafe impl Send for Context {}
 
 #[rocket::main]
 async fn main() {

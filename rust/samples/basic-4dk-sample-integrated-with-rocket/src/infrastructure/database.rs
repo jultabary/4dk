@@ -22,27 +22,27 @@ pub fn establish_connection() -> PgConnection {
 #[table_name = "foo"]
 pub struct FooModel {
     pub id: Uuid,
-    pub title: String
+    pub title: String,
 }
 
 impl FooModel {
     fn to_domain(&self) -> Foo {
         Foo::new(
-        Uuid::from(self.id),
-        self.title.clone()
+            Uuid::from(self.id),
+            self.title.clone(),
         )
     }
 
     fn from_domain(a_foo: &Foo) -> FooModel {
         FooModel {
             id: a_foo.get_id().clone(),
-            title: a_foo.get_title().clone()
+            title: a_foo.get_title().clone(),
         }
     }
 }
 
 pub struct FooRepositoryAdapter {
-    pg_connection: Arc<PgConnection>
+    pg_connection: Arc<PgConnection>,
 }
 
 impl FooRepositoryAdapter {

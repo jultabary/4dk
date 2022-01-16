@@ -14,13 +14,14 @@ use crate::usecases::queries::what_are_all_foos_query_handler::WhatAreAllTheFoos
 #[derive(Serialize, Deserialize)]
 pub struct FooModelApi {
     id: String,
-    title: String
+    title: String,
 }
+
 impl FooModelApi {
     pub fn from_domain(foo: &Foo) -> FooModelApi {
         FooModelApi {
             id: foo.get_id().to_string(),
-            title: foo.get_title().clone()
+            title: foo.get_title().clone(),
         }
     }
 }
@@ -33,17 +34,17 @@ pub fn get_all_foo(context: &State<Context>) -> Json<Vec<FooModelApi>> {
     foos_as_response
         .iter()
         .for_each(|response: &Box<dyn Response>| {
-            let foo= response.as_any().downcast_ref::<Foo>().unwrap();
+            let foo = response.as_any().downcast_ref::<Foo>().unwrap();
             responses.push(FooModelApi::from_domain(foo))
         });
     Json(responses)
 }
 
-#[post("/foo", format = "json", data="<raw_foo>")]
+#[post("/foo", format = "json", data = "<raw_foo>")]
 pub fn post_foo(raw_foo: Json<FooModelApi>, context: &State<Context>) -> String {
     let command = CreateFooCommand::new(
         Uuid::from_str(&raw_foo.id).unwrap(),
-        raw_foo.title.clone()
+        raw_foo.title.clone(),
     );
     context.command_bus.dispatch(&command);
     String::from("OK")

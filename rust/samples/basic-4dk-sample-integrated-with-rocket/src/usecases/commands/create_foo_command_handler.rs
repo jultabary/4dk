@@ -9,16 +9,18 @@ use crate::domain::repository::FooRepository;
 
 pub struct CreateFooCommand {
     id: Uuid,
-    title: String
+    title: String,
 }
+
 impl CreateFooCommand {
     pub fn new(id: Uuid, title: String) -> CreateFooCommand {
         CreateFooCommand {
             id,
-            title
+            title,
         }
     }
 }
+
 impl Command for CreateFooCommand {
     fn as_any(&self) -> &dyn Any {
         self
