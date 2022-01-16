@@ -18,6 +18,14 @@ start: ## start only app ✓
 build: ## build app ✓
 	cargo build
 
+.PHONY: release
+release: ## release app ✓
+	cargo build --release
+
+.PHONY: start-release
+start-release: ## release app ✓
+	$(DIR)/target/release/basic-4dk-sample-integrated-with-rocket
+
 .PHONY: clean
 clean: ## clean compiled code ✓
 	cargo clean
