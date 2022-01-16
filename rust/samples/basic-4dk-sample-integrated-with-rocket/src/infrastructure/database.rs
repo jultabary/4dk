@@ -26,18 +26,20 @@ pub struct FooModel {
 }
 
 impl FooModel {
-    fn to_domain(&self) -> Foo {
-        Foo::new(
-            Uuid::from(self.id),
-            self.title.clone(),
-        )
-    }
-
     fn from_domain(a_foo: &Foo) -> FooModel {
         FooModel {
             id: a_foo.get_id().clone(),
             title: a_foo.get_title().clone(),
         }
+    }
+}
+
+impl Foo {
+    fn from_database(foo_model: &FooModel) -> Foo {
+        Foo::new(
+            Uuid::from(foo_model.id),
+            foo_model.title.clone(),
+        )
     }
 }
 
@@ -60,7 +62,7 @@ impl FooRepository for FooRepositoryAdapter {
             .expect("Error loading foos");
         let foos = results
             .iter()
-            .map(|model| { Box::new(model.to_domain()) as Box<dyn Response> })
+            .map(|model| { Box::new(Foo::from_database(model)) as Box<dyn Response> })
             .collect();
         return foos;
     }
