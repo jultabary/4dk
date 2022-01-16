@@ -27,6 +27,15 @@ mod tests {
         }
     }
 
+    fn assert_expected_responses(responses: Vec<Box<dyn Response>>) {
+        let foo = responses.get(0).unwrap().as_ref().as_any().downcast_ref::<Foo>().unwrap();
+        assert_eq!(&Uuid::from_str("ee2c4426-4cb9-4671-8ef1-0e18d57bb2cd").unwrap(), foo.get_id());
+    }
+
+    fn assert_repo_has_been_called(responses: &Vec<Box<dyn Response>>) {
+        assert_ne!(0, responses.len());
+    }
+
     #[test]
     fn it_should_return_all_foos_persisted_in_repository_when_query_is_handled() {
         // Given
@@ -40,14 +49,5 @@ mod tests {
         // Then
         assert_repo_has_been_called(&responses);
         assert_expected_responses(responses);
-    }
-
-    fn assert_expected_responses(responses: Vec<Box<dyn Response>>) {
-        let foo = responses.get(0).unwrap().as_ref().as_any().downcast_ref::<Foo>().unwrap();
-        assert_eq!(&Uuid::from_str("ee2c4426-4cb9-4671-8ef1-0e18d57bb2cd").unwrap(), foo.get_id());
-    }
-
-    fn assert_repo_has_been_called(responses: &Vec<Box<dyn Response>>) {
-        assert_ne!(0, responses.len());
     }
 }

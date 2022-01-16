@@ -10,9 +10,9 @@ export DATABASE_URL := postgres://user:password@localhost:5432/rust-sample
 help: ## provides cli help for this makefile (default) 📖
 	@grep -E '^[a-zA-Z_0-9-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: start
-start: ## start only app for dev✓
-	cargo run
+.PHONY: test
+test: ## run unit tests✓
+	cargo test
 
 .PHONY: build
 build: ## build app ✓

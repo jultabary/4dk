@@ -25,6 +25,12 @@ mod tests {
         }
     }
 
+    fn assert_save_method_has_been_called() {
+        unsafe {
+            assert_eq!(true, SAVE_HAS_BEEN_CALLED);
+        }
+    }
+
     #[test]
     fn it_should_call_repository_when_command_is_handled() {
         // Given
@@ -37,11 +43,5 @@ mod tests {
 
         // Then
         assert_save_method_has_been_called()
-    }
-
-    fn assert_save_method_has_been_called() {
-        unsafe {
-            assert_eq!(true, SAVE_HAS_BEEN_CALLED);
-        }
     }
 }
