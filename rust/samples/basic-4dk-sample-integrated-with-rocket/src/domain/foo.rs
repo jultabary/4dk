@@ -6,6 +6,7 @@ pub struct Foo {
     id: Uuid,
     title: String
 }
+
 impl Foo {
     pub fn new(id: Uuid, title: String) -> Foo {
         Foo {

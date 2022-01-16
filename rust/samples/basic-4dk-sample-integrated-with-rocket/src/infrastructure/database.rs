@@ -47,11 +47,13 @@ impl FooRepositoryAdapter {
 impl FooRepository for FooRepositoryAdapter {
     fn get_all_foo(&self) -> Vec<Box<dyn Response>> {
         use self::super::super::schema::foo::dsl::*;
-        let results = foo
+        let results: Vec<FooModel> = foo
             .load::<FooModel>(self.pg_connection.as_ref())
             .expect("Error loading posts");
-        results.iter().map(|model| {
-            Box::new(model.to_domain()) as Box<dyn Response>
-        }).collect()
+        let foos = results
+            .iter()
+            .map(|model| { Box::new(model.to_domain()) as Box<dyn Response> })
+            .collect();
+        return foos;
     }
 }

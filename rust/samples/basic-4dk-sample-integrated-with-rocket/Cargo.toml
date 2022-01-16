@@ -6,8 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rocket = "0.5.0-rc.1"
+rocket = { version = "0.5.0-rc.1", features = ["json", "uuid"] }
 diesel = { version = "1.4.4", features = ["postgres", "uuid"] }
 uuid = { version = "0.6.5", features = ["v4"] }
 dddk_core = { path = "../../project/core-rust" }
 dotenv = "0.15.0"
+serde = "1.0.130"

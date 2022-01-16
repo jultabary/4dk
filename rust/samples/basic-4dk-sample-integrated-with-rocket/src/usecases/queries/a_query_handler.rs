@@ -27,7 +27,6 @@ impl WhatAreAllTheFoosQueryHandler {
 
 impl QueryHandler<WhatAreAllTheFoosQuery> for WhatAreAllTheFoosQueryHandler {
     fn handle(&self, _query: &WhatAreAllTheFoosQuery) -> Vec<Box<dyn Response>> {
-        println!("Has Been Called");
         self.foo_repository.get_all_foo()
     }
 }
