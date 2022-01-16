@@ -12,7 +12,7 @@ A `Command` is dispatched to the correct handler trough a `CommandBus`.
 ### CommandBus
 A `CommandBus` valids the following trait `fn dispatch(command: &Command) -> Vec<Box<dyn Event>>`.<br/>
 This project proposes the following commandbus:
-* `CommandDispatcher`: its new factory takes in entry a list of `CommandHandler`. This bus dispatches `Command` to correct `CommandHandler`.
+* `CommandDispatcher`: its `new` factory takes in entry a vector `Vec<Arc<Box CommandHandlerInBus>>` of `CommandHandlerInBus`. This bus dispatches `Command` to correct `CommandHandler`.
 
 <br /><br />
 You can find in samples different bus composition.
@@ -22,9 +22,9 @@ An `Event` is an object returned by a `CommandHandler`. An `Event` is a result o
 An `Event` is dispatched to its associates handlers through an `EventBus`.
 
 ## Query
-A `Query` is an object which triggers a usecase of type `QueryHandler`. It is a question asked to the system. A `Response` is returned from a `QueryHandler.<br/>
+A `Query` is an object which triggers a usecase of type `QueryHandler`. It is a question asked to the system. A `Response` is returned from a `QueryHandler`.<br/>
 
 ### QueryBus
-An `EventBus` valids the following interface `fn dispatch(query: &Query) -> Vec<Box<dyn Response>>`.<br/>
+An `EventBus` valids the following trait `fn dispatch(query: &Query) -> Vec<Box<dyn Response>>`.<br/>
 This project proposes the following querybus:
-* `QueryDispatcher`: its new factory takes in entry a list of `QueryHandler`. This bus dispatches `Query` to its correct `QueryHandler`.
+* `QueryDispatcher`: its `new` factory takes in entry a vector `Vec<Arc<Box QueryHandlerInBus>>` of `QueryHandlerInBus`. This bus dispatches `Query` to its correct `QueryHandler`.
