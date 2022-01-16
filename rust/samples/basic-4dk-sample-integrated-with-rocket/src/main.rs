@@ -6,19 +6,13 @@ extern crate diesel;
 
 use std::sync::Arc;
 use dddk_core::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
-use dddk_core::dddk::command::command::Command;
-use dddk_core::dddk::command::command_bus::CommandBus;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
-use dddk_core::dddk::event::event::Event;
 use dddk_core::dddk::query::bus_impl::query_dispatcher::QueryDispatcher;
-use dddk_core::dddk::query::query::Query;
-use dddk_core::dddk::query::query_bus::QueryBus;
 use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
-use dddk_core::dddk::query::response::Response;
-use crate::infrastructure::api::get_all_foo;
+use crate::infrastructure::api::{get_all_foo, post_foo};
 use crate::infrastructure::database::{establish_connection, FooRepositoryAdapter};
-use crate::usecases::commands::a_command_handler::ACommandHandler;
-use crate::usecases::queries::a_query_handler::WhatAreAllTheFoosQueryHandler;
+use crate::usecases::commands::create_foo_command_handler::CreateFooCommandHandler;
+use crate::usecases::queries::what_are_all_foos_query_handler::WhatAreAllTheFoosQueryHandler;
 
 pub mod infrastructure;
 pub mod domain;
@@ -37,7 +31,7 @@ impl Context {
 
         let foo_repository = Arc::new(FooRepositoryAdapter::new(connection.clone()));
 
-        let a_command_handler = ACommandHandler::new(foo_repository.clone());
+        let a_command_handler = CreateFooCommandHandler::new(foo_repository.clone());
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
         command_handlers.push(Box::new(a_command_handler));
 
@@ -54,17 +48,6 @@ impl Context {
 
 }
 
-impl CommandBus for Context {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
-        self.command_bus.dispatch(command)
-    }
-}
-impl QueryBus for Context {
-    fn dispatch<'b>(&self, query: &'b dyn Query) -> Vec<Box<dyn Response>> {
-        self.query_bus.dispatch(query)
-    }
-}
-
 unsafe impl Sync for Context { }
 unsafe impl Send for Context { }
 
@@ -74,6 +57,6 @@ async fn main() {
         let context = Context::new();
         let _server = rocket::build()
             .manage(context)
-            .mount("/", routes![get_all_foo]).launch().await;
+            .mount("/", routes![get_all_foo, post_foo]).launch().await;
     }
 }

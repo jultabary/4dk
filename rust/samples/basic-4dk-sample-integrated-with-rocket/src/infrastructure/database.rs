@@ -7,6 +7,7 @@ use uuid::Uuid;
 use crate::diesel::RunQueryDsl;
 use crate::domain::foo::Foo;
 use crate::domain::repository::FooRepository;
+use self::super::super::schema::foo;
 
 
 pub fn establish_connection() -> PgConnection {
@@ -17,7 +18,8 @@ pub fn establish_connection() -> PgConnection {
         .expect(&format!("Error connecting to {}", database_url))
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, Insertable)]
+#[table_name = "foo"]
 pub struct FooModel {
     pub id: Uuid,
     pub title: String
@@ -29,6 +31,13 @@ impl FooModel {
         Uuid::from(self.id),
         self.title.clone()
         )
+    }
+
+    fn from_domain(a_foo: &Foo) -> FooModel {
+        FooModel {
+            id: a_foo.get_id().clone(),
+            title: a_foo.get_title().clone()
+        }
     }
 }
 
@@ -46,14 +55,21 @@ impl FooRepositoryAdapter {
 
 impl FooRepository for FooRepositoryAdapter {
     fn get_all_foo(&self) -> Vec<Box<dyn Response>> {
-        use self::super::super::schema::foo::dsl::*;
-        let results: Vec<FooModel> = foo
+        let results: Vec<FooModel> = foo::table
             .load::<FooModel>(self.pg_connection.as_ref())
-            .expect("Error loading posts");
+            .expect("Error loading foos");
         let foos = results
             .iter()
             .map(|model| { Box::new(model.to_domain()) as Box<dyn Response> })
             .collect();
         return foos;
+    }
+
+    fn save(&self, a_foo: Foo) {
+        let foo_model = FooModel::from_domain(&a_foo);
+        diesel::insert_into(foo::table)
+            .values(&foo_model)
+            .execute(self.pg_connection.as_ref())
+            .expect("Error when saving foo");
     }
 }

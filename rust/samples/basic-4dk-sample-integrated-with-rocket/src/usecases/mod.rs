@@ -1,6 +1,6 @@
 pub mod commands {
-    pub mod a_command_handler;
+    pub mod create_foo_command_handler;
 }
 pub mod queries {
-    pub mod a_query_handler;
+    pub mod what_are_all_foos_query_handler;
 }
