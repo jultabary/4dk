@@ -11,7 +11,7 @@ help: ## provides cli help for this makefile (default) 📖
 	@grep -E '^[a-zA-Z_0-9-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: start
-start: ## start only app ✓
+start: ## start only app for dev✓
 	cargo run
 
 .PHONY: build
@@ -23,7 +23,7 @@ release: ## release app ✓
 	cargo build --release
 
 .PHONY: start-release
-start-release: ## release app ✓
+start-release: ## start app for prod ✓
 	$(DIR)/target/release/basic-4dk-sample-integrated-with-rocket
 
 .PHONY: clean
