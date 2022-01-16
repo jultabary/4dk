@@ -61,4 +61,4 @@ More exactly, it will be the <a href="http://www.plainionist.net/Implementing-Cl
 ### Event
 | Features        | Description                                                     | Java | Rust |
 |-----------------|-----------------------------------------------------------------|------|------|
-| EventDispatcher | EventBus which dispatches event to its associated EventHandlers | X    |      |
+| EventDispatcher | EventBus which dispatches event to its associated EventHandlers | X    | X    |
