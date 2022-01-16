@@ -13,7 +13,7 @@ impl ACommandHandler {
 }
 impl CommandHandler<ACommand> for ACommandHandler {
     fn handle(&self, _command: &ACommand) -> Vec<Box<dyn Event>> {
-        vec![Box::new(AnEvent::new())]
+        vec![Box::new(AnEvent::new(1))]
     }
 }
 impl CommandHandlerInBus for ACommandHandler {
@@ -51,6 +51,6 @@ impl AnotherCommandHandler {
 }
 impl CommandHandler<AnotherCommand> for AnotherCommandHandler {
     fn handle(&self, _command: &AnotherCommand) -> Vec<Box<dyn Event>> {
-        vec![Box::new(AnotherEvent::new())]
+        vec![Box::new(AnotherEvent::new(2))]
     }
 }
