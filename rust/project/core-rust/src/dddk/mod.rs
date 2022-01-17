@@ -5,6 +5,7 @@ pub mod command {
             pub mod unknown_command_error;
         }
         pub mod command_dispatcher;
+        pub mod event_produced_by_command_bus_dispatcher;
         mod command_dispatcher_test;
     }
     pub mod command;
