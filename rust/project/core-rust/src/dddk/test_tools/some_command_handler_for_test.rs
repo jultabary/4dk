@@ -8,11 +8,16 @@ pub mod some_command_handler_for_test {
     use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::{ACommand, AnotherCommand};
     use crate::dddk::test_tools::some_event_for_test::some_event_for_test::{AnEvent, AnotherEvent};
 
-    pub struct ACommandHandler {}
+    pub struct ACommandHandler {
+        event_id_returned: i32,
+    }
 
     impl ACommandHandler {
         pub fn new() -> ACommandHandler {
-            ACommandHandler {}
+            ACommandHandler { event_id_returned: 1 }
+        }
+        pub fn get_event_id_returned(&self) -> i32 {
+            self.event_id_returned
         }
     }
 
