@@ -1,9 +1,10 @@
 #[cfg(test)]
 mod tests {
+    use std::any::TypeId;
     use crate::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
     use crate::dddk::command::command_bus::CommandBus;
     use crate::dddk::command::command_handler::CommandHandlerInBus;
-    use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::ACommand;
+    use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::{ACommand, AnotherCommand};
     use crate::dddk::test_tools::some_command_handler_for_test::some_command_handler_for_test::{ACommandHandler, AnotherCommandHandler};
     use crate::dddk::test_tools::some_event_for_test::some_event_for_test::AnEvent;
 
@@ -28,5 +29,27 @@ mod tests {
         let event = events.get(0).unwrap();
         let an_event = event.as_ref().as_any().downcast_ref::<AnEvent>();
         assert_eq!(true, an_event.is_some());
+    }
+
+    #[test]
+    fn it_should_return_command_handler_which_is_associated_to_the_given_command() {
+        // Given
+        let a_command_handler = ACommandHandler::new();
+        let another_command_handler = AnotherCommandHandler::new();
+
+        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
+        command_handlers.push(Box::new(a_command_handler));
+        command_handlers.push(Box::new(another_command_handler));
+
+        let command_bus = CommandDispatcher::new(command_handlers);
+
+        // When
+        let command_handler_opt = command_bus.get_command_handler_by_its_command(TypeId::of::<AnotherCommand>());
+
+        // Then
+        assert_eq!(true, command_handler_opt.is_some());
+        let another_command_handler = command_handler_opt.unwrap()
+            .as_any().downcast_ref::<AnotherCommandHandler>();
+        assert_eq!(true, another_command_handler.is_some());
     }
 }
