@@ -4,7 +4,7 @@ mod tests {
     use std::sync::Arc;
     use crate::dddk::event::event_handler::EventHandler;
     use crate::dddk::test::some_event_for_test::{AnEvent, AnotherEvent};
-    use crate::dddk::test::some_event_handler_for_test::{AnEventHandler, has_event_been_handled_by_handler, reset_event_handled};
+    use crate::dddk::test::some_event_handler_for_test::{AnEventHandler, EventHandlerForTest};
 
     #[test]
     fn it_should_handle_event_when_event_is_associated_to_this_handler() {
@@ -16,9 +16,7 @@ mod tests {
         an_event_handler.handle_generic_event(an_event.clone());
 
         // Then
-        unsafe {
-            assert_eq!(true, has_event_been_handled_by_handler(an_event, TypeId::of::<AnEventHandler>()));
-        }
+        assert_eq!(true, an_event_handler.has_event_been_handled(an_event.id));
     }
 
     #[test]
@@ -31,9 +29,6 @@ mod tests {
         an_event_handler.handle_generic_event(another_event.clone());
 
         // Then
-        unsafe {
-            assert_eq!(false, has_event_been_handled_by_handler(another_event, TypeId::of::<AnEventHandler>()));
-            reset_event_handled();
-        }
+        assert_eq!(false, an_event_handler.has_event_been_handled(another_event.id));
     }
 }

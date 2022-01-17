@@ -10,7 +10,7 @@ pub struct EventDispatcher {
 }
 
 impl EventDispatcher {
-    pub(crate) fn new(event_handlers: Vec<Box<dyn EventHandlerInBus>>) -> EventDispatcher {
+    pub fn new(event_handlers: Vec<Box<dyn EventHandlerInBus>>) -> EventDispatcher {
         let mut map = HashMap::new() as HashMap<TypeId, Vec<Box<dyn EventHandlerInBus>>>;
         event_handlers.into_iter().for_each(|item| {
             if let Some(a_vec) = map.get_mut(&item.get_associated_event_from_bus()) {
@@ -25,6 +25,13 @@ impl EventDispatcher {
         EventDispatcher {
             event_handlers: map
         }
+    }
+
+    pub fn get_event_handlers_by_its_events(&self, type_id: TypeId) -> Option<&Vec<Box<dyn EventHandlerInBus>>> {
+        if let Some(event_handlers) = self.event_handlers.get(&type_id) {
+            return Some(event_handlers);
+        }
+        None
     }
 }
 

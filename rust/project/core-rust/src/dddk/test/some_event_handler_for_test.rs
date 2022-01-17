@@ -2,58 +2,35 @@ use std::any::{Any, TypeId};
 use std::sync::Arc;
 use crate::dddk::event::event::Event;
 use crate::dddk::event::event_handler::{EventHandler, EventHandlerInBus};
-use crate::dddk::test::some_event_for_test::{AnEvent, AnotherEvent, EventForTest};
+use crate::dddk::test::some_event_for_test::{AnEvent, AnotherEvent};
 
-struct EventHandled {
-    type_id: TypeId,
-    event_id: i32,
-}
+pub trait EventHandlerForTest<E: Event + Any>: EventHandlerInBus + EventHandler<E> {
+    fn get_handled_events(&self) -> &Vec<i32>;
 
-impl EventHandled {
-    fn new(type_id: TypeId, event_id: i32) -> EventHandled {
-        EventHandled {
-            type_id,
-            event_id,
-        }
+    fn has_event_been_handled(&self, id: i32) -> bool {
+        self.get_handled_events().contains(&id)
     }
 }
 
-static mut EVENT_HANDLE_BY_AN_EVENT_HANDLER: Vec<EventHandled> = Vec::new();
-
-pub fn reset_event_handled() {
-    unsafe {
-        EVENT_HANDLE_BY_AN_EVENT_HANDLER = Vec::new();
-    }
+pub struct AnEventHandler {
+    handled_events: Vec<i32>,
 }
-
-pub unsafe fn has_event_been_handled_by_handler(event: Arc<dyn EventForTest>, event_handler_type_id: TypeId) -> bool {
-    let event_opt = EVENT_HANDLE_BY_AN_EVENT_HANDLER
-        .iter()
-        .find(|event_handled| {
-            event_handled.event_id == event.get_id() && event_handled.type_id == event_handler_type_id
-        });
-    let has_been_handled = event_opt.is_some();
-    return has_been_handled;
-}
-
-pub struct AnEventHandler {}
 
 impl AnEventHandler {
     pub fn new() -> AnEventHandler {
-        AnEventHandler {}
+        AnEventHandler { handled_events: Vec::new() }
+    }
+}
+
+impl EventHandlerForTest<AnEvent> for AnEventHandler {
+    fn get_handled_events(&self) -> &Vec<i32> {
+        &self.handled_events
     }
 }
 
 impl EventHandler<AnEvent> for AnEventHandler {
     fn handle(&mut self, event: &AnEvent) {
-        unsafe {
-            let an_event = event.as_any().downcast_ref::<AnEvent>().unwrap();
-            EVENT_HANDLE_BY_AN_EVENT_HANDLER.push(
-                EventHandled::new(
-                    TypeId::of::<AnEventHandler>(),
-                    an_event.get_id().clone())
-            );
-        }
+        self.handled_events.push(event.id);
     }
 }
 
@@ -71,19 +48,25 @@ impl EventHandlerInBus for AnEventHandler {
     }
 }
 
-pub struct AnotherEventHandler {}
+pub struct AnotherEventHandler {
+    handled_events: Vec<i32>,
+}
+
+impl AnotherEventHandler {
+    pub fn new() -> AnotherEventHandler {
+        AnotherEventHandler { handled_events: Vec::new() }
+    }
+}
+
+impl EventHandlerForTest<AnotherEvent> for AnotherEventHandler {
+    fn get_handled_events(&self) -> &Vec<i32> {
+        &self.handled_events
+    }
+}
 
 impl EventHandler<AnotherEvent> for AnotherEventHandler {
     fn handle(&mut self, event: &AnotherEvent) {
-        unsafe {
-            let another_event = event.as_any().downcast_ref::<AnotherEvent>().unwrap();
-
-            EVENT_HANDLE_BY_AN_EVENT_HANDLER.push(
-                EventHandled::new(
-                    TypeId::of::<AnotherEventHandler>(),
-                    another_event.get_id().clone())
-            );
-        }
+        self.handled_events.push(event.id);
     }
 }
 
@@ -101,26 +84,26 @@ impl EventHandlerInBus for AnotherEventHandler {
     }
 }
 
-impl AnotherEventHandler {
-    pub fn new() -> AnotherEventHandler {
-        AnotherEventHandler {}
+
+pub struct AThirdEventHandler {
+    handled_events: Vec<i32>,
+}
+
+impl EventHandlerForTest<AnEvent> for AThirdEventHandler {
+    fn get_handled_events(&self) -> &Vec<i32> {
+        &self.handled_events
     }
 }
 
-
-pub struct AThirdEventHandler {}
-
 impl EventHandler<AnEvent> for AThirdEventHandler {
     fn handle(&mut self, event: &AnEvent) {
-        unsafe {
-            let an_event = event.as_any().downcast_ref::<AnEvent>().unwrap();
+        self.handled_events.push(event.id);
+    }
+}
 
-            EVENT_HANDLE_BY_AN_EVENT_HANDLER.push(
-                EventHandled::new(
-                    TypeId::of::<AThirdEventHandler>(),
-                    an_event.get_id().clone())
-            );
-        }
+impl AThirdEventHandler {
+    pub fn new() -> AThirdEventHandler {
+        AThirdEventHandler { handled_events: Vec::new() }
     }
 }
 
@@ -135,11 +118,5 @@ impl EventHandlerInBus for AThirdEventHandler {
 
     fn as_any(&self) -> &dyn Any {
         self
-    }
-}
-
-impl AThirdEventHandler {
-    pub fn new() -> AThirdEventHandler {
-        AThirdEventHandler {}
     }
 }
