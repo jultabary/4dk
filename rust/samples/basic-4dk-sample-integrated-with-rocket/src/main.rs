@@ -4,6 +4,7 @@ extern crate dddk_core;
 #[macro_use]
 extern crate diesel;
 
+use std::rc::Rc;
 use std::sync::Arc;
 use dddk_core::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
 use dddk_core::dddk::command::bus_impl::event_produced_by_command_bus_dispatcher::EventsProducedByCommandBusDispatcher;
@@ -30,10 +31,10 @@ pub struct Context {
 
 impl Context {
     fn new() -> Context {
-        // clone a Arc Object doesn't copy the value, it creates a new pointer. See Arc documentation for more detail
-        let connection = Arc::new(establish_connection());
+        // clone a Rc smart pointer doesn't copy the value, it creates a new pointer. See Rc and Arc documentation for more detail
+        let connection = Rc::new(establish_connection());
 
-        let foo_repository = Arc::new(FooRepositoryAdapter::new(connection.clone()));
+        let foo_repository = Rc::new(FooRepositoryAdapter::new(connection.clone()));
 
         let a_command_handler = CreateFooCommandHandler::new(foo_repository.clone());
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;

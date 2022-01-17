@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use std::rc::Rc;
 use std::sync::Arc;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
@@ -29,11 +30,11 @@ impl Command for CreateFooCommand {
 }
 
 pub struct CreateFooCommandHandler {
-    foo_repository: Arc<dyn FooRepository>,
+    foo_repository: Rc<dyn FooRepository>,
 }
 
 impl CreateFooCommandHandler {
-    pub fn new(foo_repository: Arc<dyn FooRepository>) -> CreateFooCommandHandler {
+    pub fn new(foo_repository: Rc<dyn FooRepository>) -> CreateFooCommandHandler {
         CreateFooCommandHandler {
             foo_repository
         }

@@ -1,5 +1,5 @@
 use std::any::{Any, TypeId};
-use std::sync::Arc;
+use std::rc::Rc;
 use dddk_core::dddk::query::query::Query;
 use dddk_core::dddk::query::query_handler::{QueryHandler, QueryHandlerInBus};
 use dddk_core::dddk::query::response::Response;
@@ -14,11 +14,11 @@ impl Query for WhatAreAllTheFoosQuery {
 }
 
 pub struct WhatAreAllTheFoosQueryHandler {
-    foo_repository: Arc<dyn FooRepository>,
+    foo_repository: Rc<dyn FooRepository>,
 }
 
 impl WhatAreAllTheFoosQueryHandler {
-    pub fn new(foo_repository: Arc<dyn FooRepository>) -> WhatAreAllTheFoosQueryHandler {
+    pub fn new(foo_repository: Rc<dyn FooRepository>) -> WhatAreAllTheFoosQueryHandler {
         WhatAreAllTheFoosQueryHandler {
             foo_repository
         }

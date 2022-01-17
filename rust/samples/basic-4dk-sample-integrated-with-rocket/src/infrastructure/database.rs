@@ -1,5 +1,5 @@
 use std::env;
-use std::sync::Arc;
+use std::rc::Rc;
 use dddk_core::dddk::query::response::Response;
 use diesel::{Connection, PgConnection};
 use dotenv::dotenv;
@@ -44,11 +44,11 @@ impl Foo {
 }
 
 pub struct FooRepositoryAdapter {
-    pg_connection: Arc<PgConnection>,
+    pg_connection: Rc<PgConnection>,
 }
 
 impl FooRepositoryAdapter {
-    pub fn new(pg_connection: Arc<PgConnection>) -> FooRepositoryAdapter {
+    pub fn new(pg_connection: Rc<PgConnection>) -> FooRepositoryAdapter {
         FooRepositoryAdapter {
             pg_connection
         }
