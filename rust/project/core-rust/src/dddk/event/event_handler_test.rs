@@ -8,7 +8,7 @@ mod tests {
     #[test]
     fn it_should_handle_event_when_event_is_associated_to_this_handler() {
         // Given
-        let mut an_event_handler = AnEventHandler::new();
+        let an_event_handler = AnEventHandler::new();
         let an_event = Arc::new(AnEvent::new(1));
 
         // When
@@ -21,7 +21,7 @@ mod tests {
     #[test]
     fn it_should_not_handle_event_when_event_is_not_associated_to_this_handler() {
         // Given
-        let mut an_event_handler = AnEventHandler::new();
+        let an_event_handler = AnEventHandler::new();
         let another_event = Arc::new(AnotherEvent::new(2));
 
         // When

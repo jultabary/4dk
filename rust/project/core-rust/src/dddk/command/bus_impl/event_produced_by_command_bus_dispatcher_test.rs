@@ -1,0 +1,55 @@
+#[cfg(test)]
+mod tests {
+    use std::any::TypeId;
+    use std::sync::{Arc, Mutex};
+    use crate::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
+    use crate::dddk::command::bus_impl::event_produced_by_command_bus_dispatcher::EventsProducedByCommandBusDispatcher;
+    use crate::dddk::command::command_bus::CommandBus;
+    use crate::dddk::command::command_handler::CommandHandlerInBus;
+    use crate::dddk::event::bus_impl::event_dispatcher::EventDispatcher;
+    use crate::dddk::event::event_handler::EventHandlerInBus;
+    use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::ACommand;
+    use crate::dddk::test_tools::some_command_handler_for_test::some_command_handler_for_test::ACommandHandler;
+    use crate::dddk::test_tools::some_event_for_test::some_event_for_test::AnEvent;
+    use crate::dddk::test_tools::some_event_handler_for_test::some_event_handler_for_test::{AnEventHandler, AThirdEventHandler};
+
+    #[test]
+    fn it_should_return_expected_events_from_bus_when_command_is_dispatched() {
+        // Given
+        let a_command_handler = ACommandHandler::new();
+        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
+        command_handlers.push(Box::new(a_command_handler));
+        let command_dispatcher = CommandDispatcher::new(command_handlers);
+
+        let an_event_handler = AnEventHandler::new();
+        let a_third_event_handler = AThirdEventHandler::new();
+        let mut event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
+        event_handlers.push(Box::new(an_event_handler));
+        event_handlers.push(Box::new(a_third_event_handler));
+        let event_bus = Arc::new(Mutex::new(EventDispatcher::new(event_handlers)));
+
+        let command_bus = EventsProducedByCommandBusDispatcher::new(
+            Box::new(command_dispatcher),
+            event_bus.clone()
+        );
+
+        let a_command = ACommand { };
+
+        // When
+        let events = command_bus.dispatch(&a_command);
+
+        // Then
+        assert_eq!(1, events.len());
+        assert_eq!(true, events.get(0).unwrap().as_any().downcast_ref::<AnEvent>().is_some());
+        let event_bus = event_bus.lock().unwrap();
+        let event_handlers_opt = event_bus.get_event_handlers_by_its_events(TypeId::of::<AnEvent>());
+        event_handlers_opt.unwrap().iter()
+            .for_each(|event_handler| {
+                let is_it_an_associated_handler =
+                    event_handler.as_any().downcast_ref::<AnEventHandler>().is_some() ||
+                        event_handler.as_any().downcast_ref::<AThirdEventHandler>().is_some();
+                assert_eq!(true, is_it_an_associated_handler);
+            });
+
+    }
+}

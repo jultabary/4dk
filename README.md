@@ -48,7 +48,7 @@ More exactly, it will be the <a href="http://www.plainionist.net/Implementing-Cl
 | CommandDispatcher                               | CommandBus which dispatches command to its associated CommandHandler                        | X    | X    |
 | CommandLoggingMiddleware                        | CommandBus which logs all command handled and events resulted by the transactionwhich       | X    |      |
 | EventsProducedByCommandBusPersistenceMiddleware | CommandBus which saves all events resulted by the transaction in an event store             | X    |      |
-| EventsProducedByCommandBusDispatcher            | CommandBus which dispatches resulted events to an EventBus                                  | X    |      |
+| EventsProducedByCommandBusDispatcher            | CommandBus which dispatches resulted events to an EventBus                                  | X    | X    |
 | SecuredCommandDispatcher                        | CommandDispatcher which dispatches SecuredCommands only if they have correct authorization  | X    |      |
 
 ### Query

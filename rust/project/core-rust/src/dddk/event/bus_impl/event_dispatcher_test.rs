@@ -21,7 +21,7 @@ mod tests {
         event_handlers.push(Box::new(another_event_handler));
         event_handlers.push(Box::new(a_third_event_handler));
 
-        let mut event_bus = EventDispatcher::new(event_handlers);
+        let event_bus = EventDispatcher::new(event_handlers);
         let event_id = 1;
         let an_event = Arc::new(AnEvent::new(event_id));
 
@@ -48,5 +48,34 @@ mod tests {
             .downcast_ref::<AnotherEventHandler>()
             .unwrap();
         assert_eq!(false, another_event_handler.has_event_been_handled(event_id));
+    }
+
+    #[test]
+    fn it_should_return_event_handlers_which_are_associated_to_the_given_event() {
+        // Given
+        let an_event_handler = AnEventHandler::new();
+        let another_event_handler = AnotherEventHandler::new();
+        let a_third_event_handler = AThirdEventHandler::new();
+
+        let mut event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
+
+        event_handlers.push(Box::new(an_event_handler));
+        event_handlers.push(Box::new(another_event_handler));
+        event_handlers.push(Box::new(a_third_event_handler));
+
+        let event_bus = EventDispatcher::new(event_handlers);
+
+        // When
+        let event_handlers_opt = event_bus.get_event_handlers_by_its_events(TypeId::of::<AnEvent>());
+
+        // Then
+        assert_eq!(true, event_handlers_opt.is_some());
+        event_handlers_opt.unwrap().iter()
+            .for_each(|event_handler| {
+                let is_it_an_associated_handler =
+                    event_handler.as_any().downcast_ref::<AnEventHandler>().is_some() ||
+                        event_handler.as_any().downcast_ref::<AThirdEventHandler>().is_some();
+                assert_eq!(true, is_it_an_associated_handler);
+            });
     }
 }

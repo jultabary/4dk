@@ -36,10 +36,13 @@ impl EventDispatcher {
 }
 
 impl EventBus for EventDispatcher {
-    fn dispatch(&mut self, event: Arc<dyn Event>) {
-        if let Some(event_handlers) = self.event_handlers.get_mut(&event.as_any().type_id()) {
-            event_handlers.iter_mut()
+    fn dispatch(&self, event: Arc<dyn Event>) {
+        if let Some(event_handlers) = self.event_handlers.get(&event.as_any().type_id()) {
+            event_handlers.iter()
                 .for_each(|event_handler| { event_handler.handle_from_bus(event.clone()); });
         }
     }
 }
+
+unsafe impl Send for EventDispatcher { }
+unsafe impl Sync for EventDispatcher { }
