@@ -40,7 +40,7 @@ impl CreateFooCommandHandler {
 }
 
 impl CommandHandler<CreateFooCommand> for CreateFooCommandHandler {
-    fn handle(&self, command: &CreateFooCommand) -> Vec<Box<dyn Event>> {
+    fn handle(&self, command: &CreateFooCommand) -> Vec<Arc<dyn Event>> {
         let foo = Foo::new(command.id.clone(), command.title.clone());
         self.foo_repository.save(foo);
         return Vec::new();
@@ -48,7 +48,7 @@ impl CommandHandler<CreateFooCommand> for CreateFooCommandHandler {
 }
 
 impl CommandHandlerInBus for CreateFooCommandHandler {
-    fn handle_from_bus(&self, command: &dyn Command) -> Vec<Box<dyn Event>> {
+    fn handle_from_bus(&self, command: &dyn Command) -> Vec<Arc<dyn Event>> {
         return self.handle_generic_command(command);
     }
 

@@ -33,6 +33,8 @@ impl EventForTest for AnEvent {
     }
 }
 
+unsafe impl Send for AnEvent {}
+
 pub struct AnotherEvent {
     pub id: i32,
 }
@@ -58,3 +60,5 @@ impl EventForTest for AnotherEvent {
         TypeId::of::<AnotherEvent>()
     }
 }
+
+unsafe impl Send for AnotherEvent {}

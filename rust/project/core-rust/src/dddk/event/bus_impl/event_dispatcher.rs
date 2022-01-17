@@ -1,5 +1,6 @@
-use std::any::{Any, TypeId};
+use std::any::TypeId;
 use std::collections::HashMap;
+use std::sync::Arc;
 use crate::dddk::event::event::Event;
 use crate::dddk::event::event_bus::EventBus;
 use crate::dddk::event::event_handler::EventHandlerInBus;
@@ -28,10 +29,10 @@ impl EventDispatcher {
 }
 
 impl EventBus for EventDispatcher {
-    fn dispatch<'b>(&self, event: &'b dyn Event) {
-        if let Some(event_handlers) = self.event_handlers.get(&event.as_any().type_id()) {
-            event_handlers.iter()
-                .for_each(|event_handler| { event_handler.handle_from_bus(event); });
+    fn dispatch(&mut self, event: Arc<dyn Event>) {
+        if let Some(event_handlers) = self.event_handlers.get_mut(&event.as_any().type_id()) {
+            event_handlers.iter_mut()
+                .for_each(|event_handler| { event_handler.handle_from_bus(event.clone()); });
         }
     }
 }

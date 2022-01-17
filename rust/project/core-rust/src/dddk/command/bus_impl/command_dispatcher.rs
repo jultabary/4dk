@@ -1,5 +1,6 @@
 use std::any::{TypeId};
 use std::collections::HashMap;
+use std::sync::Arc;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
 use crate::dddk::command::command_handler::CommandHandlerInBus;
@@ -29,7 +30,7 @@ impl CommandDispatcher {
 }
 
 impl CommandBus for CommandDispatcher {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Box<dyn Event>> {
+    fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Arc<dyn Event>> {
         if let Option::Some(command_handler) = self.command_handlers.get(&command.as_any().type_id()) {
             let events = command_handler.handle_from_bus(command);
             return events;

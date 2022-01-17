@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use std::sync::Arc;
 use crate::dddk::event::event::Event;
 use crate::dddk::event::event_handler::{EventHandler, EventHandlerInBus};
 use crate::dddk::test::some_event_for_test::{AnEvent, AnotherEvent, EventForTest};
@@ -25,7 +26,7 @@ pub fn reset_event_handled() {
     }
 }
 
-pub unsafe fn has_event_been_handled_by_handler(event: &dyn EventForTest, event_handler_type_id: TypeId) -> bool {
+pub unsafe fn has_event_been_handled_by_handler(event: Arc<dyn EventForTest>, event_handler_type_id: TypeId) -> bool {
     let event_opt = EVENT_HANDLE_BY_AN_EVENT_HANDLER
         .iter()
         .find(|event_handled| {
@@ -44,7 +45,7 @@ impl AnEventHandler {
 }
 
 impl EventHandler<AnEvent> for AnEventHandler {
-    fn handle(&self, event: &AnEvent) {
+    fn handle(&mut self, event: &AnEvent) {
         unsafe {
             let an_event = event.as_any().downcast_ref::<AnEvent>().unwrap();
             EVENT_HANDLE_BY_AN_EVENT_HANDLER.push(
@@ -57,7 +58,7 @@ impl EventHandler<AnEvent> for AnEventHandler {
 }
 
 impl EventHandlerInBus for AnEventHandler {
-    fn handle_from_bus<'a>(&self, event: &'a dyn Event) {
+    fn handle_from_bus(&mut self, event: Arc<dyn Event>) {
         self.handle_generic_event(event);
     }
 
@@ -73,7 +74,7 @@ impl EventHandlerInBus for AnEventHandler {
 pub struct AnotherEventHandler {}
 
 impl EventHandler<AnotherEvent> for AnotherEventHandler {
-    fn handle(&self, event: &AnotherEvent) {
+    fn handle(&mut self, event: &AnotherEvent) {
         unsafe {
             let another_event = event.as_any().downcast_ref::<AnotherEvent>().unwrap();
 
@@ -87,7 +88,7 @@ impl EventHandler<AnotherEvent> for AnotherEventHandler {
 }
 
 impl EventHandlerInBus for AnotherEventHandler {
-    fn handle_from_bus<'a>(&self, event: &'a dyn Event) {
+    fn handle_from_bus(&mut self, event: Arc<dyn Event>) {
         self.handle_generic_event(event);
     }
 
@@ -110,7 +111,7 @@ impl AnotherEventHandler {
 pub struct AThirdEventHandler {}
 
 impl EventHandler<AnEvent> for AThirdEventHandler {
-    fn handle(&self, event: &AnEvent) {
+    fn handle(&mut self, event: &AnEvent) {
         unsafe {
             let an_event = event.as_any().downcast_ref::<AnEvent>().unwrap();
 
@@ -124,7 +125,7 @@ impl EventHandler<AnEvent> for AThirdEventHandler {
 }
 
 impl EventHandlerInBus for AThirdEventHandler {
-    fn handle_from_bus<'a>(&self, event: &'a dyn Event) {
+    fn handle_from_bus(&mut self, event: Arc<dyn Event>) {
         self.handle_generic_event(event);
     }
 

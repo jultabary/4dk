@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use std::sync::Arc;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_handler::{CommandHandler, CommandHandlerInBus};
 use crate::dddk::event::event::Event;
@@ -12,12 +13,12 @@ impl ACommandHandler {
     }
 }
 impl CommandHandler<ACommand> for ACommandHandler {
-    fn handle(&self, _command: &ACommand) -> Vec<Box<dyn Event>> {
-        vec![Box::new(AnEvent::new(1))]
+    fn handle(&self, _command: &ACommand) -> Vec<Arc<dyn Event>> {
+        vec![Arc::new(AnEvent::new(1))]
     }
 }
 impl CommandHandlerInBus for ACommandHandler {
-    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
+    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Arc<dyn Event>> {
         self.handle_generic_command(command)
     }
 
@@ -32,7 +33,7 @@ impl CommandHandlerInBus for ACommandHandler {
 
 pub struct AnotherCommandHandler { }
 impl CommandHandlerInBus for AnotherCommandHandler {
-    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Box<dyn Event>> {
+    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Arc<dyn Event>> {
         self.handle_generic_command(command)
     }
 
@@ -50,7 +51,7 @@ impl AnotherCommandHandler {
     }
 }
 impl CommandHandler<AnotherCommand> for AnotherCommandHandler {
-    fn handle(&self, _command: &AnotherCommand) -> Vec<Box<dyn Event>> {
-        vec![Box::new(AnotherEvent::new(2))]
+    fn handle(&self, _command: &AnotherCommand) -> Vec<Arc<dyn Event>> {
+        vec![Arc::new(AnotherEvent::new(2))]
     }
 }

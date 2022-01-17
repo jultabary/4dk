@@ -1,5 +1,6 @@
+use std::sync::Arc;
 use crate::dddk::event::event::Event;
 
 pub trait EventBus {
-    fn dispatch<'b>(&self, event: &'b dyn Event);
+    fn dispatch(&mut self, event: Arc<dyn Event>);
 }
