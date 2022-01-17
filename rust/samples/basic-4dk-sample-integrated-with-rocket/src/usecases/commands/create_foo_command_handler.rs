@@ -6,6 +6,7 @@ use dddk_core::dddk::event::event::Event;
 use uuid::Uuid;
 use crate::domain::foo::Foo;
 use crate::domain::repository::FooRepository;
+use crate::usecases::events::foo_created_event::FooCreatedEvent;
 
 pub struct CreateFooCommand {
     id: Uuid,
@@ -42,8 +43,13 @@ impl CreateFooCommandHandler {
 impl CommandHandler<CreateFooCommand> for CreateFooCommandHandler {
     fn handle(&self, command: &CreateFooCommand) -> Vec<Arc<dyn Event>> {
         let foo = Foo::new(command.id.clone(), command.title.clone());
+        let foo_created_event = FooCreatedEvent::new(
+            foo.get_id().clone(), foo.get_title().clone()
+        );
         self.foo_repository.save(foo);
-        return Vec::new();
+        let mut events = Vec::new() as Vec<Arc<dyn Event>>;
+        events.push(Arc::new(foo_created_event));
+        return events;
     }
 }
 

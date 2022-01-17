@@ -9,6 +9,7 @@ use uuid::Uuid;
 use crate::Context;
 use crate::domain::foo::Foo;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommand;
+use crate::usecases::events::foo_created_event::FooCreatedEvent;
 use crate::usecases::queries::what_are_all_foos_query_handler::WhatAreAllTheFoosQuery;
 
 #[derive(Serialize, Deserialize)]
@@ -46,6 +47,9 @@ pub fn post_foo(raw_foo: Json<FooModelApi>, context: &State<Context>) -> String 
         Uuid::from_str(&raw_foo.id).unwrap(),
         raw_foo.title.clone(),
     );
-    context.command_bus.dispatch(&command);
-    String::from("OK")
+    let events = context.command_bus.dispatch(&command);
+    events.get(0)
+        .unwrap().as_any().downcast_ref::<FooCreatedEvent>()
+        .unwrap()
+        .id.to_string()
 }
