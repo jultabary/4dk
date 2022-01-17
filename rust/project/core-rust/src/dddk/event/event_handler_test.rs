@@ -1,10 +1,9 @@
 #[cfg(test)]
 mod tests {
-    use std::any::TypeId;
     use std::sync::Arc;
     use crate::dddk::event::event_handler::EventHandler;
-    use crate::dddk::test::some_event_for_test::{AnEvent, AnotherEvent};
-    use crate::dddk::test::some_event_handler_for_test::{AnEventHandler, EventHandlerForTest};
+    use crate::dddk::test_tools::some_event_for_test::some_event_for_test::{AnEvent, AnotherEvent};
+    use crate::dddk::test_tools::some_event_handler_for_test::some_event_handler_for_test::{AnEventHandler, EventHandlerForTest};
 
     #[test]
     fn it_should_handle_event_when_event_is_associated_to_this_handler() {

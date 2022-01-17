@@ -1,12 +1,12 @@
 #[cfg(test)]
 mod tests {
     use crate::dddk::command::command_handler::CommandHandler;
-    use crate::dddk::test::some_command_for_test::{ACommand, AnotherCommand};
-    use crate::dddk::test::some_command_handler_for_test::ACommandHandler;
-    use crate::dddk::test::some_event_for_test::AnEvent;
+    use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::{ACommand, AnotherCommand};
+    use crate::dddk::test_tools::some_command_handler_for_test::some_command_handler_for_test::ACommandHandler;
+    use crate::dddk::test_tools::some_event_for_test::some_event_for_test::AnEvent;
 
     #[test]
-    fn it_should_handle_command_when_command_is_associated_to_this_handler() {
+    pub fn it_should_handle_command_when_command_is_associated_to_this_handler() {
         // Given
         let a_command_handler = ACommandHandler::new();
         let a_command = ACommand { };

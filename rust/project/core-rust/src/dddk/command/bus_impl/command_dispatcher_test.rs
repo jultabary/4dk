@@ -3,9 +3,9 @@ mod tests {
     use crate::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
     use crate::dddk::command::command_bus::CommandBus;
     use crate::dddk::command::command_handler::CommandHandlerInBus;
-    use crate::dddk::test::some_command_for_test::ACommand;
-    use crate::dddk::test::some_command_handler_for_test::{ACommandHandler, AnotherCommandHandler};
-    use crate::dddk::test::some_event_for_test::AnEvent;
+    use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::ACommand;
+    use crate::dddk::test_tools::some_command_handler_for_test::some_command_handler_for_test::{ACommandHandler, AnotherCommandHandler};
+    use crate::dddk::test_tools::some_event_for_test::some_event_for_test::AnEvent;
 
     #[test]
     fn it_should_be_handled_by_correct_handler_when_dispatch_command() {

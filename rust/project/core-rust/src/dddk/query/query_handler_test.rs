@@ -1,9 +1,9 @@
 #[cfg(test)]
 mod tests {
     use crate::dddk::query::query_handler::QueryHandler;
-    use crate::dddk::test::some_query_for_test::{AnotherQuery, AQuery};
-    use crate::dddk::test::some_query_handler_for_test::AQueryHandler;
-    use crate::dddk::test::some_response_for_test::AResponse;
+    use crate::dddk::test_tools::some_query_for_test::some_query_for_test::{AnotherQuery, AQuery};
+    use crate::dddk::test_tools::some_query_handler_for_test::some_query_handler_for_test::AQueryHandler;
+    use crate::dddk::test_tools::some_response_for_test::some_response_for_test::AResponse;
 
     #[test]
     fn it_should_handle_query_when_query_is_associated_to_this_handler() {

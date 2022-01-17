@@ -5,8 +5,8 @@ mod tests {
     use crate::dddk::event::bus_impl::event_dispatcher::EventDispatcher;
     use crate::dddk::event::event_bus::EventBus;
     use crate::dddk::event::event_handler::EventHandlerInBus;
-    use crate::dddk::test::some_event_for_test::{AnEvent, AnotherEvent};
-    use crate::dddk::test::some_event_handler_for_test::{AnEventHandler, AnotherEventHandler, AThirdEventHandler, EventHandlerForTest};
+    use crate::dddk::test_tools::some_event_for_test::some_event_for_test::{AnEvent, AnotherEvent};
+    use crate::dddk::test_tools::some_event_handler_for_test::some_event_handler_for_test::{AnEventHandler, AnotherEventHandler, AThirdEventHandler, EventHandlerForTest};
 
     #[test]
     fn it_should_dispatch_event_to_its_correct_handlers() {

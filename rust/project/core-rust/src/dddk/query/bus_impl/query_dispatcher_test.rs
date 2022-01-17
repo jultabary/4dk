@@ -3,9 +3,9 @@ mod tests {
     use crate::dddk::query::bus_impl::query_dispatcher::QueryDispatcher;
     use crate::dddk::query::query_bus::QueryBus;
     use crate::dddk::query::query_handler::QueryHandlerInBus;
-    use crate::dddk::test::some_query_for_test::AQuery;
-    use crate::dddk::test::some_query_handler_for_test::{AnotherQueryHandler, AQueryHandler};
-    use crate::dddk::test::some_response_for_test::AResponse;
+    use crate::dddk::test_tools::some_query_for_test::some_query_for_test::AQuery;
+    use crate::dddk::test_tools::some_query_handler_for_test::some_query_handler_for_test::{AnotherQueryHandler, AQueryHandler};
+    use crate::dddk::test_tools::some_response_for_test::some_response_for_test::AResponse;
 
     #[test]
     fn it_should_be_handled_by_correct_handler_when_dispatch_query() {
