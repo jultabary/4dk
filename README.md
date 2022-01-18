@@ -9,18 +9,18 @@ This projects presents an implementation in <b>Java</b> and another in <b>Rust</
 
 ## Objectives
 
-Event storming is a tool to help you to identify your tool. One of the event storming is to help you to design your domains.<br/>
+Event storming is a tool to help you to identify your core business. One of the event storming goal is to help you to design your domains.<br/>
 At the end of your "event storming", the result will look such as something like this: </br>
 
 <img src="https://i2.wp.com/cleandojo.com/wp-content/uploads/2019/06/Bounded-Context-1050x383.png?ssl=1" style="float: left; margin-right: 10px;" />
 
-The next step is from this to develop your software.<br/>
+The next step is to transpose it into your code.<br/>
 
 Event Storming design the behaviours of your domains with commands and events. <br/>
 
 These framework implements with bus all the successions rules between event storming "post it" :<br/>
 
-To see "how to switch from events storming into the code" please follow java samples.
+To see "how to switch from events storming into the code" please follow java samples. You will see how an "events storming" could be your software design.
 
 ### Command (Blue post-it): 
 `org.tby.fourdk.core.command.Command` class matches this post it. <br />
