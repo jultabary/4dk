@@ -8,6 +8,24 @@ mod tests {
     use crate::dddk::test_tools::some_response_for_test::some_response_for_test::AResponse;
 
     #[test]
+    #[should_panic]
+    fn it_should_panic_when_register_two_command_handler_for_a_same_command() {
+        // Given
+        let a_query_handler_1 = AQueryHandler::new();
+        let a_query_handler_2 = AQueryHandler::new();
+
+        let mut query_handlers = Vec::new() as Vec<Box<dyn QueryHandlerInBus>>;
+        query_handlers.push(Box::new(a_query_handler_1));
+        query_handlers.push(Box::new(a_query_handler_2));
+
+        // When
+        QueryDispatcher::new(query_handlers);
+
+        // Then
+        // should panic
+    }
+
+    #[test]
     fn it_should_be_handled_by_correct_handler_when_dispatch_query() {
         // Given
         let a_query_handler = AQueryHandler::new();

@@ -13,6 +13,9 @@ impl QueryDispatcher {
     pub fn new(query_handler_values: Vec<Box<dyn QueryHandlerInBus>>) -> QueryDispatcher {
         let mut map = HashMap::new();
         query_handler_values.into_iter().for_each(|item| {
+            if let Some(_) = map.get(&item.get_associated_query_from_bus()) {
+                panic!("A QueryHandler has already been registered for this query");
+            }
             map.insert(item.get_associated_query_from_bus(), item);
         });
         return QueryDispatcher {
