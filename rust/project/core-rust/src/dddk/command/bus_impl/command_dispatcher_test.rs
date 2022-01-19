@@ -8,6 +8,25 @@ mod tests {
     use crate::dddk::test_tools::some_command_handler_for_test::some_command_handler_for_test::{ACommandHandler, AnotherCommandHandler};
     use crate::dddk::test_tools::some_event_for_test::some_event_for_test::AnEvent;
 
+
+    #[test]
+    #[should_panic]
+    fn it_should_panic_when_register_two_command_handler_for_a_same_command() {
+        // Given
+        let a_command_handler_1 = ACommandHandler::new();
+        let a_command_handler_2 = ACommandHandler::new();
+
+        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
+        command_handlers.push(Box::new(a_command_handler_1));
+        command_handlers.push(Box::new(a_command_handler_2));
+
+        // When
+        CommandDispatcher::new(command_handlers);
+
+        // Then
+        // should panic
+    }
+
     #[test]
     fn it_should_be_handled_by_correct_handler_when_dispatch_command() {
         // Given

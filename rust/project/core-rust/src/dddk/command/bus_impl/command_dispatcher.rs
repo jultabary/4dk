@@ -14,6 +14,9 @@ impl CommandDispatcher {
     pub fn new(command_handler_values: Vec<Box<dyn CommandHandlerInBus>>) -> CommandDispatcher {
         let mut map = HashMap::new();
         command_handler_values.into_iter().for_each(|item| {
+            if let Some(_) = map.get(&item.get_associated_command_from_bus()) {
+                panic!("A CommandHandler has already been registered for this command");
+            }
             map.insert(item.get_associated_command_from_bus(), item);
         });
         return CommandDispatcher {
