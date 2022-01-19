@@ -17,7 +17,7 @@ impl NoSecurityStrategy {
 }
 
 impl AuthorizedStrategy for NoSecurityStrategy{
-    fn is_authorized(&self, _expected_permission: Permission, _given_roles: Vec<String>) -> Authorization {
+    fn is_authorized(&self, _expected_permission: Permission, _given_roles: &Vec<String>) -> Authorization {
         let permissions = self.role_read_repository.find_all_permissions();
         Authorization::new(true, permissions)
     }

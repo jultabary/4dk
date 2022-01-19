@@ -10,5 +10,17 @@ pub mod authorized_strategy_impl {
     pub mod role_read_repository;
 }
 mod test_tools {
-    pub mod fake_role_role_repository;
+    pub mod fake_role_repository;
+    pub mod some_secured_command_for_test;
+    pub mod some_secured_command_handler_for_test;
+    pub mod some_event_for_test;
+    pub mod some_role_and_permission_for_test;
+}
+pub mod command {
+    pub mod secured_command;
+    mod secured_command_test;
+    pub mod secured_command_handler;
+    mod secured_command_handler_test;
+    pub mod secured_command_dispatcher;
+    pub mod secured_command_dispatcher_test;
 }

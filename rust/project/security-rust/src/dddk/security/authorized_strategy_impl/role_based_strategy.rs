@@ -18,7 +18,7 @@ impl RoleBasedStrategy {
 }
 
 impl AuthorizedStrategy for RoleBasedStrategy {
-    fn is_authorized(&self, expected_permission: Permission, given_roles: Vec<String>) -> Authorization {
+    fn is_authorized(&self, expected_permission: Permission, given_roles: &Vec<String>) -> Authorization {
         let mut user_permissions = HashSet::new();
         given_roles.iter().for_each(|role| {
             if let Some(role) = self.role_repository.find_role_by_name(role.clone()) {

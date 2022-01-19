@@ -2,9 +2,11 @@
 pub mod fake_role_repository {
     use std::cell::RefCell;
     use std::collections::HashSet;
+    use std::rc::Rc;
     use crate::dddk::security::authorized_strategy_impl::role_read_repository::RoleReadRepository;
     use crate::dddk::security::permission::Permission;
     use crate::dddk::security::role::Role;
+    use crate::dddk::security::test_tools::some_role_and_permission_for_test::some_role_and_permission_for_test::{get_a_role, get_another_role};
 
     pub struct FakeRoleReadRepository {
         store: RefCell<Vec<Role>>,
@@ -85,4 +87,7 @@ pub mod fake_role_repository {
         assert_eq!(true, fake_repo.find_role_by_name(String::from("a_role")).is_some());
     }
 
+    pub fn get_fake_repository_with_filled_with_roles() -> Rc<FakeRoleReadRepository> {
+        Rc::new(FakeRoleReadRepository::new(vec![get_a_role(), get_another_role()]))
+    }
 }
