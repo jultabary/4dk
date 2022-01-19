@@ -1,38 +1,33 @@
 #[cfg(test)]
 pub mod test {
+    use std::rc::Rc;
+    use crate::dddk::security::authorized_strategy::AuthorizedStrategy;
+    use crate::dddk::security::authorized_strategy_impl::no_security_strategy::NoSecurityStrategy;
     use crate::dddk::security::authorized_strategy_impl::role_read_repository::RoleReadRepository;
     use crate::dddk::security::permission::Permission;
     use crate::dddk::security::role::Role;
     use crate::dddk::security::test_tools::fake_role_role_repository::fake_role_repository::FakeRoleReadRepository;
 
     #[test]
-    fn it_should_find_all_permissions_stored() {
+    fn it_should_authorized_and_return_all_permissions_whatever_is_informed() {
         // Given
         let permission_1 = Permission::new(String::from("1"));
         let permission_2 = Permission::new(String::from("2"));
         let permission_3 = Permission::new(String::from("3"));
         let a_role = Role::new(String::from("a_role"), vec![permission_1, permission_2]);
         let another_role = Role::new(String::from("a_role"), vec![permission_3]);
-        let fake_repo = FakeRoleReadRepository::new(vec![a_role, another_role]);
+        let fake_repo = Rc::new(FakeRoleReadRepository::new(vec![a_role, another_role]));
+        let no_strategy = NoSecurityStrategy::new(fake_repo.clone());
 
         // When
-        let permissions = fake_repo.find_all_permissions();
+        let authorization = no_strategy
+            .is_authorized(&Permission::new(String::from("0")),
+                           &Vec::new());
 
         // Then
-        assert_eq!(3, permissions.len());
-    }
-
-    #[test]
-    fn it_should_persist_role_into_store() {
-        // Given
-        let permission_1 = Permission::new(String::from("1"));
-        let a_role = Role::new(String::from("a_role"), vec![permission_1]);
-        let fake_repo = FakeRoleReadRepository::new(Vec::new());
-
-        // When
-        fake_repo.save(a_role.clone());
-
-        // Then
-        assert_eq!(true, fake_repo.find_role_by_name(String::from("a_role")).is_some());
+        assert_eq!(true, authorization.is_authorized());
+        assert_eq!(true, authorization.get_permissions().contains(&Permission::new(String::from("1"))));
+        assert_eq!(true, authorization.get_permissions().contains(&Permission::new(String::from("2"))));
+        assert_eq!(true, authorization.get_permissions().contains(&Permission::new(String::from("3"))));
     }
 }
