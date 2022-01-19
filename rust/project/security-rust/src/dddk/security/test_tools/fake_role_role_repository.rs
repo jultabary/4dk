@@ -34,9 +34,7 @@ pub mod fake_role_repository {
                     role.get_associated_permissions().iter()
                         .for_each(|permission| { permissions.insert(permission.clone()); })
                 });
-            let mut roles_vec = Vec::new();
-            permissions.into_iter().for_each(|role| { roles_vec.push(role.clone()) });
-            roles_vec
+            Vec::from_iter(permissions)
         }
 
         fn find_role_by_name(&self, name: String) -> Option<Role> {

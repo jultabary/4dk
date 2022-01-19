@@ -3,7 +3,6 @@ pub mod test {
     use std::rc::Rc;
     use crate::dddk::security::authorized_strategy::AuthorizedStrategy;
     use crate::dddk::security::authorized_strategy_impl::no_security_strategy::NoSecurityStrategy;
-    use crate::dddk::security::authorized_strategy_impl::role_read_repository::RoleReadRepository;
     use crate::dddk::security::permission::Permission;
     use crate::dddk::security::role::Role;
     use crate::dddk::security::test_tools::fake_role_role_repository::fake_role_repository::FakeRoleReadRepository;
@@ -21,8 +20,8 @@ pub mod test {
 
         // When
         let authorization = no_strategy
-            .is_authorized(&Permission::new(String::from("0")),
-                           &Vec::new());
+            .is_authorized(Permission::new(String::from("0")),
+                           Vec::new());
 
         // Then
         assert_eq!(true, authorization.is_authorized());
