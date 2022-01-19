@@ -1,11 +1,11 @@
 use std::any::{Any, TypeId};
-use std::sync::Arc;
+use crate::dddk::aliases::Events;
 use crate::dddk::command::command::Command;
-use crate::dddk::event::event::{Event};
+use crate::dddk::errors::CommandIsNotAssociatedWithHandler;
 
 
 pub trait CommandHandlerInBus {
-    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Arc<dyn Event>>;
+    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Events;
 
     fn get_associated_command_from_bus(&self) -> TypeId;
 
@@ -14,16 +14,15 @@ pub trait CommandHandlerInBus {
 }
 
 pub trait CommandHandler<C: Sized + Any + Command> {
-    fn handle_generic_command<'a>(&self, command: &'a dyn Command) -> Vec<Arc<dyn Event>> {
-        let mut events = Vec::new() as Vec<Arc<dyn Event>>;
+    fn handle_generic_command<'a>(&self, command: &'a dyn Command) -> Events {
         let cast_command = command.as_any().downcast_ref::<C>();
         if cast_command.is_some() {
-            events = self.handle(cast_command.unwrap());
+            return self.handle(cast_command.unwrap());
         }
-        return events;
+        return Err(Box::new(CommandIsNotAssociatedWithHandler {}));
     }
 
-    fn handle(&self, command: &C) -> Vec<Arc<dyn Event>>;
+    fn handle(&self, command: &C) -> Events;
 
     fn get_associated_command(&self) -> TypeId {
         return TypeId::of::<C>();

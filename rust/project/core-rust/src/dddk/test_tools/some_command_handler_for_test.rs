@@ -2,9 +2,9 @@
 pub mod some_command_handler_for_test {
     use std::any::{Any, TypeId};
     use std::sync::Arc;
+    use crate::dddk::aliases::Events;
     use crate::dddk::command::command::Command;
     use crate::dddk::command::command_handler::{CommandHandler, CommandHandlerInBus};
-    use crate::dddk::event::event::Event;
     use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::{ACommand, AnotherCommand};
     use crate::dddk::test_tools::some_event_for_test::some_event_for_test::{AnEvent, AnotherEvent};
 
@@ -22,13 +22,13 @@ pub mod some_command_handler_for_test {
     }
 
     impl CommandHandler<ACommand> for ACommandHandler {
-        fn handle(&self, _command: &ACommand) -> Vec<Arc<dyn Event>> {
-            vec![Arc::new(AnEvent::new(1))]
+        fn handle(&self, _command: &ACommand) -> Events {
+            Ok(vec![Arc::new(AnEvent::new(1))])
         }
     }
 
     impl CommandHandlerInBus for ACommandHandler {
-        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Arc<dyn Event>> {
+        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Events {
             self.handle_generic_command(command)
         }
 
@@ -44,7 +44,7 @@ pub mod some_command_handler_for_test {
     pub struct AnotherCommandHandler {}
 
     impl CommandHandlerInBus for AnotherCommandHandler {
-        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Arc<dyn Event>> {
+        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Events {
             self.handle_generic_command(command)
         }
 
@@ -64,8 +64,8 @@ pub mod some_command_handler_for_test {
     }
 
     impl CommandHandler<AnotherCommand> for AnotherCommandHandler {
-        fn handle(&self, _command: &AnotherCommand) -> Vec<Arc<dyn Event>> {
-            vec![Arc::new(AnotherEvent::new(2))]
+        fn handle(&self, _command: &AnotherCommand) -> Events {
+            Ok(vec![Arc::new(AnotherEvent::new(2))])
         }
     }
 }

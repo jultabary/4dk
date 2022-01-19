@@ -1,9 +1,10 @@
 use std::any::TypeId;
 use std::collections::HashMap;
+use crate::dddk::aliases::Responses;
+use crate::dddk::errors::NoQueryHandlerRegisterForGivenQuery;
 use crate::dddk::query::query::Query;
 use crate::dddk::query::query_bus::QueryBus;
 use crate::dddk::query::query_handler::QueryHandlerInBus;
-use crate::dddk::query::response::Response;
 
 pub struct QueryDispatcher {
     query_handlers: HashMap<TypeId, Box<dyn QueryHandlerInBus>>,
@@ -32,11 +33,11 @@ impl QueryDispatcher {
 }
 
 impl QueryBus for QueryDispatcher {
-    fn dispatch<'b>(&self, query: &'b dyn Query) -> Vec<Box<dyn Response>> {
+    fn dispatch<'b>(&self, query: &'b dyn Query) -> Responses {
         if let Option::Some(query_handler) = self.query_handlers.get(&query.as_any().type_id()) {
             let responses = query_handler.handle_from_bus(query);
             return responses;
         }
-        return Vec::new();
+        Err(Box::new(NoQueryHandlerRegisterForGivenQuery {}))
     }
 }

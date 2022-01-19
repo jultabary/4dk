@@ -4,9 +4,10 @@ use crate::dddk::event::event::Event;
 
 pub trait EventHandler<E: Sized + Any + Event> {
     fn handle_generic_event(&self, event: Arc<dyn Event>) {
-        let cast_event = event.as_any().downcast_ref::<E>();
-        if cast_event.is_some() {
-            self.handle(cast_event.unwrap().clone());
+        if let Some(event_ref) = event.as_any().downcast_ref::<E>() {
+            self.handle(event_ref.clone());
+        } else {
+            panic!("Given event is not associated with the handler !");
         }
     }
 

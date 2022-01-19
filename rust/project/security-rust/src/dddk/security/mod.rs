@@ -2,6 +2,7 @@ pub mod permission;
 pub mod authorization;
 pub mod authorized_strategy;
 pub mod role;
+pub mod errors;
 pub mod authorized_strategy_impl {
     pub mod no_security_strategy;
     mod no_security_strategy_test;

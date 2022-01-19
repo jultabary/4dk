@@ -1,6 +1,7 @@
 use std::any::{Any, TypeId};
 use std::rc::Rc;
 use std::sync::Arc;
+use dddk_core::dddk::aliases::Events;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
 use dddk_core::dddk::event::event::Event;
@@ -42,7 +43,7 @@ impl CreateFooCommandHandler {
 }
 
 impl CommandHandler<CreateFooCommand> for CreateFooCommandHandler {
-    fn handle(&self, command: &CreateFooCommand) -> Vec<Arc<dyn Event>> {
+    fn handle(&self, command: &CreateFooCommand) -> Events {
         let foo = Foo::new(command.id.clone(), command.title.clone());
         let foo_created_event = FooCreatedEvent::new(
             foo.get_id().clone(), foo.get_title().clone()
@@ -50,12 +51,12 @@ impl CommandHandler<CreateFooCommand> for CreateFooCommandHandler {
         self.foo_repository.save(foo);
         let mut events = Vec::new() as Vec<Arc<dyn Event>>;
         events.push(Arc::new(foo_created_event));
-        return events;
+        Ok(events)
     }
 }
 
 impl CommandHandlerInBus for CreateFooCommandHandler {
-    fn handle_from_bus(&self, command: &dyn Command) -> Vec<Arc<dyn Event>> {
+    fn handle_from_bus(&self, command: &dyn Command) -> Events {
         return self.handle_generic_command(command);
     }
 

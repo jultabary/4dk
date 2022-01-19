@@ -1,10 +1,10 @@
-use std::any::{TypeId};
+use std::any::TypeId;
 use std::collections::HashMap;
-use std::sync::Arc;
+use crate::dddk::aliases::Events;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
 use crate::dddk::command::command_handler::CommandHandlerInBus;
-use crate::dddk::event::event::Event;
+use crate::dddk::errors::NoCommandHandlerRegisterForGivenCommand;
 
 pub struct CommandDispatcher {
     command_handlers: HashMap<TypeId, Box<dyn CommandHandlerInBus>>,
@@ -33,11 +33,11 @@ impl CommandDispatcher {
 }
 
 impl CommandBus for CommandDispatcher {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Arc<dyn Event>> {
+    fn dispatch<'b>(&self, command: &'b dyn Command) -> Events {
         if let Option::Some(command_handler) = self.command_handlers.get(&command.as_any().type_id()) {
             let events = command_handler.handle_from_bus(command);
             return events;
         }
-        return Vec::new();
+        Err(Box::new(NoCommandHandlerRegisterForGivenCommand {}))
     }
 }

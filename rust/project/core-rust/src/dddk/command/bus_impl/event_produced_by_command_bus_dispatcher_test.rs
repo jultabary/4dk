@@ -41,6 +41,8 @@ mod tests {
         let events = command_bus.dispatch(&a_command);
 
         // Then
+        assert_eq!(true, events.is_ok());
+        let events = events.unwrap();
         assert_eq!(1, events.len());
         assert_eq!(true, events.get(0).unwrap().as_any().downcast_ref::<AnEvent>().is_some());
         let event_handlers_opt = event_bus.get_event_handlers_by_its_events(TypeId::of::<AnEvent>());

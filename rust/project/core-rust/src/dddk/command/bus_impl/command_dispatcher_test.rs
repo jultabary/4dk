@@ -4,6 +4,7 @@ mod tests {
     use crate::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
     use crate::dddk::command::command_bus::CommandBus;
     use crate::dddk::command::command_handler::CommandHandlerInBus;
+    use crate::dddk::errors::NoCommandHandlerRegisterForGivenCommand;
     use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::{ACommand, AnotherCommand};
     use crate::dddk::test_tools::some_command_handler_for_test::some_command_handler_for_test::{ACommandHandler, AnotherCommandHandler};
     use crate::dddk::test_tools::some_event_for_test::some_event_for_test::AnEvent;
@@ -44,10 +45,31 @@ mod tests {
         let events = command_bus.dispatch(&a_command);
 
         // Then
+        assert_eq!(true, events.is_ok());
+        let events = events.unwrap();
         assert_eq!(1, events.len());
         let event = events.get(0).unwrap();
         let an_event = event.as_ref().as_any().downcast_ref::<AnEvent>();
         assert_eq!(true, an_event.is_some());
+    }
+
+    #[test]
+    fn it_should_return_an_error_when_dispatch_a_command_with_no_register_handler() {
+        // Given
+        let a_command_handler = ACommandHandler::new();
+
+        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
+        command_handlers.push(Box::new(a_command_handler));
+
+        let command_bus = CommandDispatcher::new(command_handlers);
+        let another_command = AnotherCommand {};
+
+        // When
+        let responses = command_bus.dispatch(&another_command);
+
+        // Then
+        assert_eq!(true, responses.is_err());
+        assert_eq!(true, responses.err().unwrap().downcast_ref::<NoCommandHandlerRegisterForGivenCommand>().is_some());
     }
 
     #[test]

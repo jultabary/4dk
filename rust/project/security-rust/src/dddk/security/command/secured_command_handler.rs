@@ -1,8 +1,7 @@
 use std::any::{Any, TypeId};
-use std::sync::Arc;
+use dddk_core::dddk::aliases::Events;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
-use dddk_core::dddk::event::event::Event;
 use crate::dddk::security::permission::Permission;
 
 pub struct SecuredCommandHandler {
@@ -28,7 +27,7 @@ impl SecuredCommandHandler {
 }
 
 impl CommandHandlerInBus for SecuredCommandHandler {
-    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Vec<Arc<dyn Event>> {
+    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Events {
         self.command_handler.handle_from_bus(command)
     }
 

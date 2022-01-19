@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
+    use std::rc::Rc;
     use std::str::FromStr;
-    use std::sync::Arc;
     use dddk_core::dddk::query::query_handler::QueryHandler;
     use dddk_core::dddk::query::response::Response;
     use uuid::Uuid;
@@ -39,7 +39,7 @@ mod tests {
     #[test]
     fn it_should_return_all_foos_persisted_in_repository_when_query_is_handled() {
         // Given
-        let fake_repository = Arc::new(FooRepositoryFake {});
+        let fake_repository = Rc::new(FooRepositoryFake {});
         let query_handler = WhatAreAllTheFoosQueryHandler::new(fake_repository);
         let query = WhatAreAllTheFoosQuery { };
 
@@ -47,6 +47,8 @@ mod tests {
         let responses = query_handler.handle_generic_query(&query);
 
         // Then
+        assert_eq!(true, responses.is_ok());
+        let responses = responses.unwrap();
         assert_repo_has_been_called(&responses);
         assert_expected_responses(responses);
     }

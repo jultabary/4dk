@@ -19,6 +19,7 @@ mod tests {
     }
 
     #[test]
+    #[should_panic]
     fn it_should_not_handle_event_when_event_is_not_associated_to_this_handler() {
         // Given
         let an_event_handler = AnEventHandler::new();
@@ -28,6 +29,6 @@ mod tests {
         an_event_handler.handle_generic_event(another_event.clone());
 
         // Then
-        assert_eq!(false, an_event_handler.has_event_been_handled(another_event.id));
+        // should panic
     }
 }

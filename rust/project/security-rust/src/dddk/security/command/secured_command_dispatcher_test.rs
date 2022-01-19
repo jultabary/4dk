@@ -8,6 +8,7 @@ pub mod test {
     use crate::dddk::security::command::secured_command::SecuredCommand;
     use crate::dddk::security::command::secured_command_dispatcher::SecuredCommandDispatcher;
     use crate::dddk::security::command::secured_command_handler::SecuredCommandHandler;
+    use crate::dddk::security::errors::{CommandDoesNotHaveTheRightPermission, TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand};
     use crate::dddk::security::test_tools::fake_role_repository::fake_role_repository::get_fake_repository_with_filled_with_roles;
     use crate::dddk::security::test_tools::some_event_for_test::some_event_for_test::{AnEvent, AnotherEvent};
     use crate::dddk::security::test_tools::some_role_and_permission_for_test::some_role_and_permission_for_test::{get_a_role, get_another_role};
@@ -101,7 +102,10 @@ pub mod test {
         let events = secured_command_dispatcher.dispatch(&unsecured_command);
 
         // Then
-        assert_eq!(0, events.len());
+        assert_eq!(true, events.is_err());
+        let error = events.err().unwrap();
+        let error_opt = error.downcast_ref::<TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand>();
+        assert_eq!(true, error_opt.is_some());
     }
 
     #[test]
@@ -121,6 +125,7 @@ pub mod test {
         let events = secured_command_dispatcher.dispatch(&secured_command);
 
         // Then
+        let events = events.unwrap();
         assert_eq!(1, events.len());
         assert_eq!(true, events.get(0).unwrap().as_any().downcast_ref::<AnEvent>().is_some());
     }
@@ -142,6 +147,7 @@ pub mod test {
         let events = secured_command_dispatcher.dispatch(&command);
 
         // Then
+        let events = events.unwrap();
         assert_eq!(1, events.len());
         assert_eq!(true, events.get(0).unwrap().as_any().downcast_ref::<AnotherEvent>().is_some());
     }
@@ -167,7 +173,10 @@ pub mod test {
         let events = secured_command_dispatcher.dispatch(&command);
 
         // Then
-        assert_eq!(0, events.len());
+        assert_eq!(true, events.is_err());
+        let error = events.err().unwrap();
+        let error_opt = error.downcast_ref::<CommandDoesNotHaveTheRightPermission>();
+        assert_eq!(true, error_opt.is_some());
     }
 
     #[test]
@@ -191,6 +200,7 @@ pub mod test {
         let events = secured_command_dispatcher.dispatch(&command);
 
         // Then
+        let events = events.unwrap();
         assert_eq!(1, events.len());
     }
 }

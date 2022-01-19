@@ -1,8 +1,8 @@
 use std::sync::Arc;
 use std::thread;
+use crate::dddk::aliases::Events;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
-use crate::dddk::event::event::Event;
 use crate::dddk::event::event_bus::EventBus;
 
 pub struct EventsProducedByCommandBusDispatcher {
@@ -22,9 +22,12 @@ impl EventsProducedByCommandBusDispatcher {
 }
 
 impl CommandBus for EventsProducedByCommandBusDispatcher {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Arc<dyn Event>> {
+    fn dispatch<'b>(&self, command: &'b dyn Command) -> Events {
         let events = self.command_bus.dispatch(command);
-
+        if events.is_err() {
+            return events;
+        }
+        let events = events.unwrap();
         let mut events_clone = Vec::new();
         events.iter().for_each(|event| { events_clone.push(event.clone()) });
 
@@ -38,6 +41,6 @@ impl CommandBus for EventsProducedByCommandBusDispatcher {
         if !self.async_dispatching {
             thread_execution.join().unwrap();
         }
-        return events;
+        return Ok(events);
     }
 }

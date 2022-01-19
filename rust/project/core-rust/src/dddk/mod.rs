@@ -1,3 +1,5 @@
+pub mod aliases;
+pub mod errors;
 pub mod command {
     pub mod command_bus;
     pub mod bus_impl {

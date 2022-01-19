@@ -1,13 +1,14 @@
 use std::any::TypeId;
 use std::collections::HashMap;
-use std::sync::Arc;
+use dddk_core::dddk::aliases::Events;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_bus::CommandBus;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
-use dddk_core::dddk::event::event::Event;
+use dddk_core::dddk::errors::NoCommandHandlerRegisterForGivenCommand;
 use crate::dddk::security::authorized_strategy::AuthorizedStrategy;
 use crate::dddk::security::command::secured_command::SecuredCommand;
 use crate::dddk::security::command::secured_command_handler::SecuredCommandHandler;
+use crate::dddk::security::errors::{CommandDoesNotHaveTheRightPermission, TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand};
 use crate::dddk::security::permission::Permission;
 
 pub struct SecuredCommandDispatcher {
@@ -47,16 +48,16 @@ impl SecuredCommandDispatcher {
         self.command_handlers.get(&command_type_id)
     }
 
-    fn get_command_handler_from_secured_command(&self, secured_command: &SecuredCommand) -> &dyn CommandHandlerInBus {
+    fn get_command_handler_from_secured_command(&self, secured_command: &SecuredCommand) -> Result<&dyn CommandHandlerInBus, NoCommandHandlerRegisterForGivenCommand> {
         self.get_command_handler_from_command(secured_command.get_command())
     }
 
-    fn get_command_handler_from_command(&self, command: &dyn Command) -> &dyn CommandHandlerInBus {
+    fn get_command_handler_from_command(&self, command: &dyn Command) -> Result<&dyn CommandHandlerInBus, NoCommandHandlerRegisterForGivenCommand> {
         let command_type_id = command.as_any().type_id();
         if let Some(command_handler) = self.command_handlers.get(&command_type_id) {
-            return command_handler.as_ref();
+            return Ok(command_handler.as_ref());
         }
-        panic!("No Handler found");
+        Err(NoCommandHandlerRegisterForGivenCommand {})
     }
 
     fn get_handler_expected_permission(&self, secured_command: &SecuredCommand) -> Permission {
@@ -66,9 +67,13 @@ impl SecuredCommandDispatcher {
 }
 
 impl CommandBus for SecuredCommandDispatcher {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Vec<Arc<dyn Event>> {
+    fn dispatch<'b>(&self, command: &'b dyn Command) -> Events {
         return if let Some(secured_command) = command.as_any().downcast_ref::<SecuredCommand>() {
-            let command_handler = self.get_command_handler_from_secured_command(secured_command);
+            let command_handler_result = self.get_command_handler_from_secured_command(secured_command);
+            if command_handler_result.is_err() {
+                return Err(Box::new(command_handler_result.err().unwrap()));
+            }
+            let command_handler = command_handler_result.unwrap();
             let permission = self.get_handler_expected_permission(secured_command);
             let authorization = self.authorized_strategy.is_authorized(
                 permission,
@@ -77,11 +82,15 @@ impl CommandBus for SecuredCommandDispatcher {
             if authorization.is_authorized() {
                 return command_handler.handle_from_bus(secured_command.get_command());
             }
-            return Vec::new();
+            return Err(Box::new(CommandDoesNotHaveTheRightPermission {}));
         } else {
-            let command_handler = self.get_command_handler_from_command(command);
+            let command_handler_result = self.get_command_handler_from_command(command);
+            if command_handler_result.is_err() {
+                return Err(Box::new(command_handler_result.err().unwrap()));
+            }
+            let command_handler = command_handler_result.unwrap();
             if let Some(_) = command_handler.as_any().downcast_ref::<SecuredCommandHandler>() {
-                return Vec::new();
+                return Err(Box::new(TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand {}));
             }
             command_handler.handle_from_bus(command)
         };

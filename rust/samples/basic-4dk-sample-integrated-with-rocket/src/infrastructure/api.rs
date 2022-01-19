@@ -30,7 +30,7 @@ impl FooModelApi {
 #[get("/foo")]
 pub fn get_all_foo(context: &State<Context>) -> Json<Vec<FooModelApi>> {
     let what_are_all_the_foos = WhatAreAllTheFoosQuery {};
-    let foos_as_response = context.query_bus.dispatch(&what_are_all_the_foos);
+    let foos_as_response = context.query_bus.dispatch(&what_are_all_the_foos).unwrap();
     let mut responses = Vec::new();
     foos_as_response
         .iter()
@@ -47,7 +47,7 @@ pub fn post_foo(raw_foo: Json<FooModelApi>, context: &State<Context>) -> String 
         Uuid::from_str(&raw_foo.id).unwrap(),
         raw_foo.title.clone(),
     );
-    let events = context.command_bus.dispatch(&command);
+    let events = context.command_bus.dispatch(&command).unwrap();
     events.get(0)
         .unwrap().as_any().downcast_ref::<FooCreatedEvent>()
         .unwrap()

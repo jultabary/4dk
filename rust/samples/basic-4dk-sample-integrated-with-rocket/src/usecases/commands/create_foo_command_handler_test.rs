@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use std::sync::Arc;
+    use std::rc::Rc;
     use dddk_core::dddk::command::command_handler::CommandHandler;
     use dddk_core::dddk::query::response::Response;
     use uuid::Uuid;
@@ -34,14 +34,15 @@ mod tests {
     #[test]
     fn it_should_call_repository_when_command_is_handled() {
         // Given
-        let fake_repository = Arc::new(FooRepositoryFake {});
+        let fake_repository = Rc::new(FooRepositoryFake {});
         let command_handler = CreateFooCommandHandler::new(fake_repository);
         let command = CreateFooCommand::new(Uuid::new_v4(), String::from("Hello World !!"));
 
         // When
-        command_handler.handle_generic_command(&command);
+        let events = command_handler.handle_generic_command(&command);
 
         // Then
+        assert_eq!(true, events.is_ok());
         assert_save_method_has_been_called()
     }
 }

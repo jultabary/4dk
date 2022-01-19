@@ -1,8 +1,8 @@
 use std::any::{Any, TypeId};
 use std::rc::Rc;
+use dddk_core::dddk::aliases::Responses;
 use dddk_core::dddk::query::query::Query;
 use dddk_core::dddk::query::query_handler::{QueryHandler, QueryHandlerInBus};
-use dddk_core::dddk::query::response::Response;
 use crate::domain::repository::FooRepository;
 
 pub struct WhatAreAllTheFoosQuery {}
@@ -26,13 +26,13 @@ impl WhatAreAllTheFoosQueryHandler {
 }
 
 impl QueryHandler<WhatAreAllTheFoosQuery> for WhatAreAllTheFoosQueryHandler {
-    fn handle(&self, _query: &WhatAreAllTheFoosQuery) -> Vec<Box<dyn Response>> {
-        self.foo_repository.get_all_foo()
+    fn handle(&self, _query: &WhatAreAllTheFoosQuery) -> Responses {
+        Ok(self.foo_repository.get_all_foo())
     }
 }
 
 impl QueryHandlerInBus for WhatAreAllTheFoosQueryHandler {
-    fn handle_from_bus<'a>(&self, query: &'a dyn Query) -> Vec<Box<dyn Response>> {
+    fn handle_from_bus<'a>(&self, query: &'a dyn Query) -> Responses {
         self.handle_generic_query(query)
     }
 
