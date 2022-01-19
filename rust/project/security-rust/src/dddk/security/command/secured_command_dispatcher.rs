@@ -21,15 +21,16 @@ impl SecuredCommandDispatcher {
         let mut secured_handler_expected_permission = HashMap::new();
         let mut command_handlers = HashMap::new() as HashMap<TypeId, Box<dyn CommandHandlerInBus>>;
         given_command_handlers.into_iter().for_each(|command_handler| {
+            let mut associated_command_type_id = command_handler.get_associated_command_from_bus();
             if let Some(secured_command_handler) = command_handler.as_any().downcast_ref::<SecuredCommandHandler>() {
-                let associated_command_type_id = secured_command_handler.get_associated_command_from_bus();
+                associated_command_type_id = secured_command_handler.get_associated_command_from_bus();
                 let associated_permission = secured_command_handler.get_associated_permission();
                 secured_handler_expected_permission.insert(associated_command_type_id.clone(), associated_permission);
-                command_handlers.insert(associated_command_type_id, command_handler);
-            } else {
-                let associated_command_type_id = command_handler.get_associated_command_from_bus();
-                command_handlers.insert(associated_command_type_id, command_handler);
             }
+            if let Some(_) = command_handlers.get(&associated_command_type_id) {
+                panic!("A CommandHandler has already been registered for this command");
+            }
+            command_handlers.insert(associated_command_type_id, command_handler);
         });
         SecuredCommandDispatcher {
             secured_handler_expected_permission,
@@ -71,7 +72,7 @@ impl CommandBus for SecuredCommandDispatcher {
             let permission = self.get_handler_expected_permission(secured_command);
             let authorization = self.authorized_strategy.is_authorized(
                 permission,
-                secured_command.get_roles_names()
+                secured_command.get_roles_names(),
             );
             if authorization.is_authorized() {
                 return command_handler.handle_from_bus(secured_command.get_command());

@@ -12,7 +12,28 @@ pub mod test {
     use crate::dddk::security::test_tools::some_event_for_test::some_event_for_test::{AnEvent, AnotherEvent};
     use crate::dddk::security::test_tools::some_role_and_permission_for_test::some_role_and_permission_for_test::{get_a_role, get_another_role};
     use crate::dddk::security::test_tools::some_secured_command_for_test::some_secured_command_for_test::{ACommand, AnotherCommand, get_a_command_secured};
-    use crate::dddk::security::test_tools::some_secured_command_handler_for_test::some_secured_command_handler_for_test::{AnotherCommandHandler, get_a_command_handler_secured};
+    use crate::dddk::security::test_tools::some_secured_command_handler_for_test::some_secured_command_handler_for_test::{ACommandHandler, AnotherCommandHandler, get_a_command_handler_secured};
+
+    #[test]
+    #[should_panic]
+    fn it_should_panic_when_register_two_command_handler_for_a_same_command() {
+        // Given
+        let a_command_handler_1 = ACommandHandler::new();
+        let a_command_handler_2 = ACommandHandler::new();
+
+        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
+        command_handlers.push(Box::new(a_command_handler_1));
+        command_handlers.push(Box::new(a_command_handler_2));
+
+        // When
+        SecuredCommandDispatcher::new(
+            command_handlers,
+            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+        );
+
+        // Then
+        // should panic
+    }
 
     #[test]
     fn it_should_return_is_restricted_when_asking_if_a_secured_command_handler_is_restricted() {
@@ -172,5 +193,4 @@ pub mod test {
         // Then
         assert_eq!(1, events.len());
     }
-
 }
