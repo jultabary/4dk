@@ -21,10 +21,10 @@ public class RoleBasedStrategy implements AuthorizedStrategy {
         return new Authorization(permissions.contains(expectedPermission), permissions);
     }
 
-    private Set<Permission> findPermissionsForGivenRoles(List<Role> informedRoles) {
+    private Set<Permission> findPermissionsForGivenRoles(List<Role> givenRoles) {
         Set<Permission> permissions = new LinkedHashSet<>();
-        for (Role informedRole : informedRoles) {
-            var associatedPermissions = this.roleRepository.findPermissionsForGivenRoles(informedRole);
+        for (Role givenRole : givenRoles) {
+            var associatedPermissions = this.roleRepository.findPermissionsForGivenRoles(givenRole);
             if (associatedPermissions != null) {
                 permissions.addAll(associatedPermissions);
             }

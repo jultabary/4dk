@@ -29,8 +29,8 @@ public class RoleTest {
         // Given
         var roleName = "ROLE";
         var existingPermissions = Arrays.asList(PARKING_READ);
-        var informedPermissions = Arrays.asList(PARKING_CONTROL);
-        Role role = new Role(roleName, informedPermissions);
+        var givenPermissions = Arrays.asList(PARKING_CONTROL);
+        Role role = new Role(roleName, givenPermissions);
 
         // When
         var result = role.isThereSomeUnknownPermissions(existingPermissions);

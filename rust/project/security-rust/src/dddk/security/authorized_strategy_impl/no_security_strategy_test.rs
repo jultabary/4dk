@@ -9,7 +9,7 @@ pub mod test {
     use crate::dddk::security::test_tools::fake_role_role_repository::fake_role_repository::FakeRoleReadRepository;
 
     #[test]
-    fn it_should_authorized_and_return_all_permissions_whatever_is_informed() {
+    fn it_should_authorized_and_return_all_permissions_whatever_param_given() {
         // Given
         let permission_1 = Permission::new(String::from("1"));
         let permission_2 = Permission::new(String::from("2"));
