@@ -22,3 +22,14 @@ impl Display for TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand {
 }
 
 impl Error for TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand {}
+
+#[derive(Debug)]
+pub struct TryToExecuteASecuredQueryHandlerWithAnUnSecuredQuery {}
+
+impl Display for TryToExecuteASecuredQueryHandlerWithAnUnSecuredQuery {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Try to execute a secured query handler with an unsecured query !")
+    }
+}
+
+impl Error for TryToExecuteASecuredQueryHandlerWithAnUnSecuredQuery {}
