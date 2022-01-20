@@ -8,7 +8,7 @@ use dddk_core::dddk::errors::NoCommandHandlerRegisterForGivenCommand;
 use crate::dddk::security::authorized_strategy::AuthorizedStrategy;
 use crate::dddk::security::command::secured_command::SecuredCommand;
 use crate::dddk::security::command::secured_command_handler::SecuredCommandHandler;
-use crate::dddk::security::errors::{CommandDoesNotHaveTheRightPermission, TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand};
+use crate::dddk::security::errors::{Forbidden, TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand};
 use crate::dddk::security::permission::Permission;
 
 pub struct SecuredCommandDispatcher {
@@ -82,7 +82,7 @@ impl CommandBus for SecuredCommandDispatcher {
             if authorization.is_authorized() {
                 return command_handler.handle_from_bus(secured_command.get_command());
             }
-            return Err(Box::new(CommandDoesNotHaveTheRightPermission {}));
+            return Err(Box::new(Forbidden {}));
         } else {
             let command_handler_result = self.get_command_handler_from_command(command);
             if command_handler_result.is_err() {

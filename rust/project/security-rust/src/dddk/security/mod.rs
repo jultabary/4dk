@@ -25,3 +25,7 @@ pub mod command {
     pub mod secured_command_dispatcher;
     pub mod secured_command_dispatcher_test;
 }
+pub mod userinfo {
+    pub mod user;
+    pub mod user_authorization_accessor;
+}

@@ -2,15 +2,15 @@ use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 
 #[derive(Debug)]
-pub struct CommandDoesNotHaveTheRightPermission {}
+pub struct Forbidden {}
 
-impl Display for CommandDoesNotHaveTheRightPermission {
+impl Display for Forbidden {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "Command does not have the right permission to execute handler !")
     }
 }
 
-impl Error for CommandDoesNotHaveTheRightPermission {}
+impl Error for Forbidden {}
 
 #[derive(Debug)]
 pub struct TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand {}
