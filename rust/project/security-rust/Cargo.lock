@@ -7,7 +7,7 @@ name = "dddk_core"
 version = "0.1.0"
 
 [[package]]
-name = "security-rust"
+name = "dddk_security"
 version = "0.1.0"
 dependencies = [
  "dddk_core",
