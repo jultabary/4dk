@@ -13,8 +13,11 @@ pub mod authorized_strategy_impl {
 mod test_tools {
     pub mod fake_role_repository;
     pub mod some_secured_command_for_test;
+    pub mod some_secured_query_for_test;
     pub mod some_secured_command_handler_for_test;
+    pub mod some_secured_query_handler_for_test;
     pub mod some_event_for_test;
+    pub mod some_response_for_test;
     pub mod some_role_and_permission_for_test;
 }
 pub mod command {
@@ -24,6 +27,14 @@ pub mod command {
     mod secured_command_handler_test;
     pub mod secured_command_dispatcher;
     pub mod secured_command_dispatcher_test;
+}
+pub mod query {
+    pub mod secured_query;
+    pub mod secured_query_dispatcher;
+    pub mod secured_query_handler;
+    mod secured_query_test;
+    mod secured_query_handler_test;
+    mod secured_query_dispatcher_test;
 }
 pub mod userinfo {
     pub mod user;

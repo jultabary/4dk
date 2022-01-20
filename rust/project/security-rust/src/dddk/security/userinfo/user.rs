@@ -12,11 +12,11 @@ impl User {
     }
 
     pub fn get_login(&self) -> &String {
-        &self.login;
+        &self.login
     }
 
     pub fn get_email(&self) -> &Option<String> {
-        &self.email;
+        &self.email
     }
 }
 
@@ -31,5 +31,13 @@ impl UserAuthorization {
             user,
             roles,
         }
+    }
+
+    pub fn get_user(&self) -> &User {
+        &self.user
+    }
+
+    pub fn get_roles(&self) -> &Vec<String> {
+        &self.roles
     }
 }
