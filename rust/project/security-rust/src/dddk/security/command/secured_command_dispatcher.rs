@@ -1,5 +1,6 @@
 use std::any::TypeId;
 use std::collections::HashMap;
+use std::rc::Rc;
 use dddk_core::dddk::aliases::Events;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_bus::CommandBus;
@@ -14,11 +15,11 @@ use crate::dddk::security::permission::Permission;
 pub struct SecuredCommandDispatcher {
     secured_handler_expected_permission: HashMap<TypeId, Permission>,
     command_handlers: HashMap<TypeId, Box<dyn CommandHandlerInBus>>,
-    authorized_strategy: Box<dyn AuthorizedStrategy>,
+    authorized_strategy: Rc<dyn AuthorizedStrategy>,
 }
 
 impl SecuredCommandDispatcher {
-    pub fn new(given_command_handlers: Vec<Box<dyn CommandHandlerInBus>>, authorized_strategy: Box<dyn AuthorizedStrategy>) -> SecuredCommandDispatcher {
+    pub fn new(given_command_handlers: Vec<Box<dyn CommandHandlerInBus>>, authorized_strategy: Rc<dyn AuthorizedStrategy>) -> SecuredCommandDispatcher {
         let mut secured_handler_expected_permission = HashMap::new();
         let mut command_handlers = HashMap::new() as HashMap<TypeId, Box<dyn CommandHandlerInBus>>;
         given_command_handlers.into_iter().for_each(|command_handler| {

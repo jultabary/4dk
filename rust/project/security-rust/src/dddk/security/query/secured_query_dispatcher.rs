@@ -1,5 +1,6 @@
 use std::any::TypeId;
 use std::collections::HashMap;
+use std::rc::Rc;
 use dddk_core::dddk::aliases::Responses;
 use dddk_core::dddk::errors::NoQueryHandlerRegisterForGivenQuery;
 use dddk_core::dddk::query::query::Query;
@@ -14,11 +15,11 @@ use crate::dddk::security::query::secured_query_handler::SecuredQueryHandler;
 pub struct SecuredQueryDispatcher {
     secured_handler_expected_permission: HashMap<TypeId, Permission>,
     query_handlers: HashMap<TypeId, Box<dyn QueryHandlerInBus>>,
-    authorized_strategy: Box<dyn AuthorizedStrategy>,
+    authorized_strategy: Rc<dyn AuthorizedStrategy>,
 }
 
 impl SecuredQueryDispatcher {
-    pub fn new(given_query_handlers: Vec<Box<dyn QueryHandlerInBus>>, authorized_strategy: Box<dyn AuthorizedStrategy>) -> SecuredQueryDispatcher {
+    pub fn new(given_query_handlers: Vec<Box<dyn QueryHandlerInBus>>, authorized_strategy: Rc<dyn AuthorizedStrategy>) -> SecuredQueryDispatcher {
         let mut secured_handler_expected_permission = HashMap::new();
         let mut query_handlers = HashMap::new() as HashMap<TypeId, Box<dyn QueryHandlerInBus>>;
         given_query_handlers.into_iter().for_each(|query_handler| {
