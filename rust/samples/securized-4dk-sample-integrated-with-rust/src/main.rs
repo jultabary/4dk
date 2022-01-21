@@ -11,7 +11,6 @@ use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
 use dddk_core::dddk::event::bus_impl::event_dispatcher::EventDispatcher;
 use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
-use crate::infrastructure::api::{get_all_foo, post_foo};
 use dddk_security::dddk::security::authorized_strategy_impl::role_based_strategy::RoleBasedStrategy;
 use dddk_security::dddk::security::command::secured_command_dispatcher::SecuredCommandDispatcher;
 use dddk_security::dddk::security::command::secured_command_handler::SecuredCommandHandler;
@@ -19,9 +18,10 @@ use dddk_security::dddk::security::permission::Permission;
 use dddk_security::dddk::security::query::secured_query_dispatcher::SecuredQueryDispatcher;
 use dddk_security::dddk::security::query::secured_query_handler::SecuredQueryHandler;
 use dddk_security::dddk::security::role::Role;
-use crate::infrastructure::database::{establish_connection, FooRepositoryAdapter};
-use crate::infrastructure::role_repository::RoleRepository;
-use crate::infrastructure::user_authorization_accessor::FakeUserAuthorizationAccessor;
+use crate::infrastructure::database::foo_database::{establish_connection, FooRepositoryAdapter};
+use crate::infrastructure::http::api::{get_all_foo, post_foo};
+use crate::infrastructure::http::error::{forbidden};
+use crate::infrastructure::rbac::role_fake_database::RoleRepository;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommandHandler;
 use crate::usecases::events::foo_created_event::PrintThatFooHasBeenCreatedEventHandler;
 use crate::usecases::queries::what_are_all_foos_query_handler::WhatAreAllTheFoosQueryHandler;
@@ -100,9 +100,9 @@ unsafe impl Send for Context {}
 #[rocket::main]
 async fn main() {
     let context = Context::new();
-    let user_authorization_accessor = FakeUserAuthorizationAccessor {};
     let _server = rocket::build()
         .manage(context)
-        .manage(user_authorization_accessor)
-        .mount("/", routes![get_all_foo, post_foo]).launch().await;
+        .mount("/", routes![get_all_foo, post_foo])
+        .register("/", catchers![forbidden])
+        .launch().await;
 }

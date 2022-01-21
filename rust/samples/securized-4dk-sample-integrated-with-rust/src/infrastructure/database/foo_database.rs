@@ -7,7 +7,7 @@ use uuid::Uuid;
 use crate::diesel::RunQueryDsl;
 use crate::domain::foo::Foo;
 use crate::domain::repository::FooRepository;
-use self::super::super::schema::foo;
+use crate::schema::foo;
 
 
 pub fn establish_connection() -> PgConnection {
