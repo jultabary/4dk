@@ -19,8 +19,8 @@ use dddk_security::dddk::security::query::secured_query_dispatcher::SecuredQuery
 use dddk_security::dddk::security::query::secured_query_handler::SecuredQueryHandler;
 use dddk_security::dddk::security::role::Role;
 use crate::infrastructure::database::foo_database::{establish_connection, FooRepositoryAdapter};
-use crate::infrastructure::http::api::{get_all_foo, post_foo};
-use crate::infrastructure::http::error::{forbidden, un_authorized};
+use crate::infrastructure::http::routes::{get_all_foo, post_foo};
+use crate::infrastructure::http::error_handling::{forbidden, un_authorized};
 use crate::infrastructure::rbac::role_fake_database::RoleRepository;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommandHandler;
 use crate::usecases::events::foo_created_event::PrintThatFooHasBeenCreatedEventHandler;

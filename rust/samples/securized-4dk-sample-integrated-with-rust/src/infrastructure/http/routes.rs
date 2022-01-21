@@ -10,7 +10,7 @@ use rocket::State;
 use uuid::Uuid;
 use crate::Context;
 use crate::domain::foo::Foo;
-use crate::infrastructure::http::error::catch_error_from_bus;
+use crate::infrastructure::http::error_handling::catch_error_from_bus;
 use crate::infrastructure::http::guard::Token;
 use crate::infrastructure::http::model::FooModelApi;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommand;

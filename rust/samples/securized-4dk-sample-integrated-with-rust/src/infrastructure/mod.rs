@@ -1,8 +1,8 @@
 pub mod http {
-    pub mod api;
+    pub mod routes;
     pub mod model;
     pub mod guard;
-    pub mod error;
+    pub mod error_handling;
 }
 pub mod database {
     pub mod foo_database;
