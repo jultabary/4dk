@@ -17,6 +17,7 @@ use dddk_security::dddk::security::command::secured_command_dispatcher::SecuredC
 use dddk_security::dddk::security::command::secured_command_handler::SecuredCommandHandler;
 use dddk_security::dddk::security::permission::Permission;
 use dddk_security::dddk::security::query::secured_query_dispatcher::SecuredQueryDispatcher;
+use dddk_security::dddk::security::query::secured_query_handler::SecuredQueryHandler;
 use dddk_security::dddk::security::role::Role;
 use crate::infrastructure::database::{establish_connection, FooRepositoryAdapter};
 use crate::infrastructure::role_repository::RoleRepository;
@@ -64,7 +65,7 @@ impl Context {
             role_based_strategy.clone(),
         );
 
-        let a_query_handler = SecuredCommandHandler::new(
+        let a_query_handler = SecuredQueryHandler::new(
             Box::new(WhatAreAllTheFoosQueryHandler::new(foo_repository.clone())),
             Permission::new(String::from("permission")),
         );

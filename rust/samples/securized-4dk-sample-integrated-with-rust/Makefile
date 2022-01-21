@@ -24,7 +24,7 @@ release: ## release app ✓
 
 .PHONY: start-release
 start-release: ## start app for prod ✓
-	$(DIR)/target/release/basic-4dk-sample-integrated-with-rocket
+	$(DIR)/target/release/securized-4dk-sample-integrated-with-rust
 
 .PHONY: clean
 clean: ## clean compiled code ✓
