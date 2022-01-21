@@ -49,14 +49,14 @@ More exactly, it will be the <a href="http://www.plainionist.net/Implementing-Cl
 | CommandLoggingMiddleware                        | CommandBus which logs all command handled and events resulted by the transactionwhich       | X    |      |
 | EventsProducedByCommandBusPersistenceMiddleware | CommandBus which saves all events resulted by the transaction in an event store             | X    |      |
 | EventsProducedByCommandBusDispatcher            | CommandBus which dispatches resulted events to an EventBus                                  | X    | X    |
-| SecuredCommandDispatcher                        | CommandDispatcher which dispatches SecuredCommands only if they have correct authorization  | X    | ...  |
+| SecuredCommandDispatcher                        | CommandDispatcher which dispatches SecuredCommands only if they have correct authorization  | X    | X    |
 
 ### Query
 | Features               | Description                                                                            | Java | Rust |
 |------------------------|----------------------------------------------------------------------------------------|------|------|
 | QueryDispatcher        | QueryBus which dispatches query to its associated QueryHandler                         | X    | X    |
 | QueryLoggingMiddleware | QueryBus which logs all query handled and responses resulted                           | X    |      |
-| SecuredQueryDispatcher | QueryDispatcher which dispatches SecuredQuery only if they have correct authorization  | X    | ...  |
+| SecuredQueryDispatcher | QueryDispatcher which dispatches SecuredQuery only if they have correct authorization  | X    | X    |
 
 ### Event
 | Features        | Description                                                     | Java | Rust |
