@@ -11,6 +11,11 @@ pub fn catch_error_from_bus(error: GenericError) -> Status {
     }
 }
 
+#[catch(401)]
+pub fn un_authorized(_req: &Request) -> String {
+    "User must be authenticated".to_string()
+}
+
 #[catch(403)]
 pub fn forbidden(_req: &Request) -> String {
     "User has not enough privileges for this request".to_string()

@@ -28,14 +28,7 @@ pub fn get_all_foo(token: Token, context: &State<Context>) -> Result<Json<Vec<Fo
     if foos_as_response.is_err() {
         return Err(catch_error_from_bus(foos_as_response.err().unwrap()));
     }
-    let foos_as_response = foos_as_response.unwrap();
-    let mut responses = Vec::new();
-    foos_as_response
-        .iter()
-        .for_each(|response: &Box<dyn Response>| {
-            let foo = response.as_any().downcast_ref::<Foo>().unwrap();
-            responses.push(FooModelApi::from_domain(foo))
-        });
+    let responses = convert_response_to_foo_model_api(foos_as_response.unwrap());
     Ok(Json(responses))
 }
 
@@ -50,4 +43,15 @@ pub fn post_foo(token: Token, raw_foo: Json<FooModelApi>, context: &State<Contex
         .unwrap().as_any().downcast_ref::<FooCreatedEvent>()
         .unwrap()
         .id.to_string()
+}
+
+fn convert_response_to_foo_model_api(foos_as_response: Vec<Box<dyn Response>>) -> Vec<FooModelApi> {
+    let mut responses = Vec::new();
+    foos_as_response
+        .iter()
+        .for_each(|response: &Box<dyn Response>| {
+            let foo = response.as_any().downcast_ref::<Foo>().unwrap();
+            responses.push(FooModelApi::from_domain(foo))
+        });
+    responses
 }

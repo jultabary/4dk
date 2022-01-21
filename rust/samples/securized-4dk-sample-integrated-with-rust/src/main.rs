@@ -20,7 +20,7 @@ use dddk_security::dddk::security::query::secured_query_handler::SecuredQueryHan
 use dddk_security::dddk::security::role::Role;
 use crate::infrastructure::database::foo_database::{establish_connection, FooRepositoryAdapter};
 use crate::infrastructure::http::api::{get_all_foo, post_foo};
-use crate::infrastructure::http::error::{forbidden};
+use crate::infrastructure::http::error::{forbidden, un_authorized};
 use crate::infrastructure::rbac::role_fake_database::RoleRepository;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommandHandler;
 use crate::usecases::events::foo_created_event::PrintThatFooHasBeenCreatedEventHandler;
@@ -103,6 +103,6 @@ async fn main() {
     let _server = rocket::build()
         .manage(context)
         .mount("/", routes![get_all_foo, post_foo])
-        .register("/", catchers![forbidden])
+        .register("/", catchers![forbidden, un_authorized])
         .launch().await;
 }
