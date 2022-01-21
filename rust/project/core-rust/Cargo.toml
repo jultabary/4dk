@@ -10,7 +10,6 @@ homepage = "https://github.com/jultabary/4dk-core"
 license = "Apache-2.0"
 keywords = ["ddd", "hexagonal-architecture", "ddd-cqrs-framework"]
 categories = ["rust-patterns", "web-programming"]
-build = "Makefile"
 publish = false
 
 [dependencies]

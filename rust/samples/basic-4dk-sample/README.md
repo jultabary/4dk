@@ -1,15 +1,14 @@
 # Sample
 For this sample, we will use the following fictive event storming. <br/>
-![](./docs/parking_event_storming.png)
+![](../../../docs/parking_event_storming.png)
 
 
 ## basic-4dk-sample
 Basic implementation. <br />
 
-`Application` class is the commandBus. (so the entry point of command)
-The commandbus is made of 3 middlewares:
+`Context` in `context.rs` struct is the commandBus. (so the entry point of command)
+The `command_bus` is made of 2 middlewares:
 * `CommandDispatcher` : dispatch the command to the correct commandhandler
-* `CommandLoggingMiddleware`: Log the command before and after has been handled. It does not need to have any logger else in the code.
 * `EventsProducedByCommandBusDispatcher`: Dispatch the events produced to the eventBus
 
 The eventBus is only made with the `EventDispatcher` which is injected in the `EventsProducedByCommandBusDispatcher` middleware. 
@@ -18,7 +17,8 @@ The eventBus is only made with the `EventDispatcher` which is injected in the `E
 
 ### Aggregate (yellow post it)
 
-`Parking`: matches with the parking aggregate. `Parking` class has all the business decisions regarding the aggregate. The decision to know if the car can be parked is implemented in this class.<br />
+`Parking`: matches with the parking aggregate. <br /> 
+`Parking` struct has all the business decisions regarding the aggregate. The decision to know if the car can be parked is implemented in this class.<br />
 
 ### External System (pink post it)
 
@@ -27,7 +27,8 @@ The eventBus is only made with the `EventDispatcher` which is injected in the `E
 
 ### Command (blue post it)
 
-* `ParkACarCommand`: matches with the event storming command. The `ParkACarCommandHandler` is triggered by the command and makes the glue between persistence infrastructure and the decision rule. The aggregate is instanciated in the handler and the events produced by the aggregate are returned in this handler to.<br/>
+* `ParkACarCommand`: matches with the event storming command. The `ParkACarCommandHandler` is triggered by the command and makes the glue between persistence infrastructure and the decision rule. 
+* The aggregate is instanciated in the handler and the events produced by the aggregate are returned in this handler to.<br/>
 It is the commandbus which dispatch the command to this handler.
 
 ### Domain Event (Orange post it)
