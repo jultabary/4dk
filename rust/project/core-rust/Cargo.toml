@@ -2,7 +2,15 @@
 name = "dddk_core"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Julien TABARY <julien@tabary.net>"]
+description = "Tactical DDD framework based on command_bus, event_bus and query_bus. It offers annex feature such as authorization, logging ..."
+documentation = "https://github.com/jultabary/4dk-core/tree/main/rust/project/core-rust"
+readme = "README.md"
+homepage = "https://github.com/jultabary/4dk-core"
+license = "Apache-2.0"
+keywords = ["ddd", "hexagonal-architecture", "ddd-cqrs-framework"]
+categories = ["rust-patterns", "web-programming"]
+build = "Makefile"
+publish = false
 
 [dependencies]
