@@ -1,6 +1,6 @@
 # Sample
 For this sample, we will use the following fictive event storming. <br/>
-![](../../../docs/parking_event_storming.png)
+![](./docs/parking_event_storming.png)
 
 
 ## basic-4dk-sample
