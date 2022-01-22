@@ -12,7 +12,8 @@ Extends `Command` by decoration. SecuredCommand has to be constructed with user 
 Extends `CommandHandler` by decoration. SecuredHandler is defined with a permission.
 
 ### SecuredCommandDispatcher
-Replace the `CommandDispatcher` implementation from `core-rust`.
+Replace the `CommandDispatcher` implementation from `core-rust`.<br/>
+When a command is dispatch to the `CommandBus`, it will replaces (with `RoleReadRepository` impl) user roles by its permissions. Then it will check if user command has the permission to call the handler.
 
 ## Query
 
@@ -24,7 +25,8 @@ Extends `QueryHandler` by decoration. SecuredHandler is defined with a permissio
 
 
 ### SecuredQueryDispatcher
-Replace the `QueryDispatcher` implementation from `core-rust`.
+Replace the `QueryDispatcher` implementation from `core-rust`.<br/>
+When a query is dispatch to the `QueryBus`, it will replaces (with `RoleReadRepository` impl) user roles by its permissions. Then it will check if user query has the permission to call the handler.
 
 <br /><br />
 You can find in samples different bus composition.
