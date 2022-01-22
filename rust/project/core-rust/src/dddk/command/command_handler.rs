@@ -11,6 +11,7 @@ pub trait CommandHandlerInBus {
 
     fn as_any(&self) -> &dyn Any;
 
+    fn get_command_handler_name(&self) -> String;
 }
 
 pub trait CommandHandler<C: Sized + Any + Command> {

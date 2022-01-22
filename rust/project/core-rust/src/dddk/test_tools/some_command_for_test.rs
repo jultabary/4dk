@@ -9,6 +9,10 @@ pub mod some_command_for_tests {
         fn as_any(&self) -> &dyn Any {
             self
         }
+
+        fn get_command_name(&self) -> String {
+            "ACommand".to_string()
+        }
     }
 
     pub struct AnotherCommand {}
@@ -16,6 +20,10 @@ pub mod some_command_for_tests {
     impl Command for AnotherCommand {
         fn as_any(&self) -> &dyn Any {
             self
+        }
+
+        fn get_command_name(&self) -> String {
+            "AnotherCommand".to_string()
         }
     }
 }

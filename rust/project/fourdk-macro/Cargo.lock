@@ -3,18 +3,6 @@
 version = 3
 
 [[package]]
-name = "basic-4dk-sample"
-version = "0.1.0"
-dependencies = [
- "dddk_core",
- "dddk_macro",
-]
-
-[[package]]
-name = "dddk_core"
-version = "0.1.0"
-
-[[package]]
 name = "dddk_macro"
 version = "0.1.0"
 dependencies = [

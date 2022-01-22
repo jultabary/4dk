@@ -39,6 +39,10 @@ pub mod some_command_handler_for_test {
         fn as_any(&self) -> &dyn Any {
             self
         }
+
+        fn get_command_handler_name(&self) -> String {
+            "ACommandHandler".to_string()
+        }
     }
 
     pub struct AnotherCommandHandler {}
@@ -54,6 +58,10 @@ pub mod some_command_handler_for_test {
 
         fn as_any(&self) -> &dyn Any {
             self
+        }
+
+        fn get_command_handler_name(&self) -> String {
+            "AnotherCommandHandler".to_string()
         }
     }
 
