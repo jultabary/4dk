@@ -31,10 +31,13 @@ It contains all code relative to the database <br />
 Please enter the following commands:
 - `make install-diesel-cli` : install diesel cli (optional) 
 - `make start-db` : start the postgres database 
+- `make init-db` : run diesel migration
 - `make start` : start the server 
 
 ### start for prod
 Please enter the following commands:
+- `make install-diesel-cli` : install diesel cli (optional) 
+- `make init-db` : run diesel migration
 - `make start-db` : start the postgres database
 - `make release` : build for prod the app
 - `make start-release` : start the server
