@@ -41,3 +41,15 @@ pub fn impl_query(ast: &DeriveInput) -> TokenStream {
     };
     gen.into()
 }
+
+pub fn impl_response(ast: &DeriveInput) -> TokenStream {
+    let name = &ast.ident;
+    let gen = quote! {
+        impl Response for #name {
+            fn as_any(&self) -> &dyn Any {
+                self
+            }
+        }
+    };
+    gen.into()
+}
