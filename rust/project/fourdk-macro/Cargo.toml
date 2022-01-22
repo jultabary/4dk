@@ -2,6 +2,15 @@
 name = "dddk_macro"
 version = "0.1.0"
 edition = "2021"
+authors = ["Julien TABARY <julien@tabary.net>"]
+description = "Derive macro lib for dddk_core"
+documentation = "https://github.com/jultabary/4dk-core/tree/main/rust/project/core-rust"
+readme = "README.md"
+homepage = "https://github.com/jultabary/4dk-core"
+license = "Apache-2.0"
+keywords = ["ddd", "hexagonal-architecture", "ddd-cqrs-framework"]
+categories = ["rust-patterns", "web-programming"]
+publish = false
 
 [lib]
 proc-macro = true
