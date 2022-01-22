@@ -5,11 +5,14 @@ use dddk_core::dddk::aliases::Events;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
 use dddk_core::dddk::event::event::Event;
+use dddk_macro::Command;
+use dddk_macro::CommandHandlerInBus;
 use uuid::Uuid;
 use crate::domain::foo::Foo;
 use crate::domain::repository::FooRepository;
 use crate::usecases::events::foo_created_event::FooCreatedEvent;
 
+#[derive(Command)]
 pub struct CreateFooCommand {
     id: Uuid,
     title: String,
@@ -24,12 +27,7 @@ impl CreateFooCommand {
     }
 }
 
-impl Command for CreateFooCommand {
-    fn as_any(&self) -> &dyn Any {
-        self
-    }
-}
-
+#[derive(CommandHandlerInBus)]
 pub struct CreateFooCommandHandler {
     foo_repository: Rc<dyn FooRepository>,
 }
@@ -52,19 +50,5 @@ impl CommandHandler<CreateFooCommand> for CreateFooCommandHandler {
         let mut events = Vec::new() as Vec<Arc<dyn Event>>;
         events.push(Arc::new(foo_created_event));
         Ok(events)
-    }
-}
-
-impl CommandHandlerInBus for CreateFooCommandHandler {
-    fn handle_from_bus(&self, command: &dyn Command) -> Events {
-        return self.handle_generic_command(command);
-    }
-
-    fn get_associated_command_from_bus(&self) -> TypeId {
-        return self.get_associated_command();
-    }
-
-    fn as_any(&self) -> &dyn Any {
-        self
     }
 }
