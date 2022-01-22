@@ -53,6 +53,10 @@ pub mod some_event_handler_for_test {
         fn as_any(&self) -> &dyn Any {
             self
         }
+
+        fn get_event_handler_name(&self) -> String {
+            "AnEventHandler".to_string()
+        }
     }
 
     pub struct AnotherEventHandler {
@@ -88,6 +92,10 @@ pub mod some_event_handler_for_test {
 
         fn as_any(&self) -> &dyn Any {
             self
+        }
+
+        fn get_event_handler_name(&self) -> String {
+            "AnotherEventHandler".to_string()
         }
     }
 
@@ -125,6 +133,10 @@ pub mod some_event_handler_for_test {
 
         fn as_any(&self) -> &dyn Any {
             self
+        }
+
+        fn get_event_handler_name(&self) -> String {
+            "AThirdEventHandler".to_string()
         }
     }
 }

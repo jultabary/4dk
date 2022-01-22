@@ -8,6 +8,8 @@ pub trait QueryHandlerInBus {
 
     fn get_associated_query_from_bus(&self) -> TypeId;
 
+    fn get_query_handler_name(&self) -> String;
+
     fn as_any(&self) -> &dyn Any;
 }
 

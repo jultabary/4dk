@@ -17,6 +17,10 @@ pub mod some_event_for_test {
         fn as_any(&self) -> &dyn Any {
             self
         }
+
+        fn get_event_name(&self) -> String {
+            "AnEvent".to_string()
+        }
     }
 
     unsafe impl Send for AnEvent {}
@@ -34,6 +38,10 @@ pub mod some_event_for_test {
     impl Event for AnotherEvent {
         fn as_any(&self) -> &dyn Any {
             self
+        }
+
+        fn get_event_name(&self) -> String {
+            "AnotherEvent".to_string()
         }
     }
 

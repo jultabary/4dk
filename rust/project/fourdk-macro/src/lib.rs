@@ -1,9 +1,13 @@
 extern crate proc_macro;
 
-use proc_macro::TokenStream;
-use quote::quote;
-use syn::DeriveInput;
+mod impl_command_macro_function;
+mod impl_query_macro_function;
+mod impl_event_macro_function;
 
+use proc_macro::TokenStream;
+use crate::impl_command_macro_function::{impl_command, impl_command_handler_in_bus};
+use crate::impl_event_macro_function::{impl_event, impl_event_handler_in_bus};
+use crate::impl_query_macro_function::{impl_query_handler_in_bus, impl_query};
 
 #[proc_macro_derive(CommandHandlerInBus)]
 pub fn command_handler_in_bus_derive(input: TokenStream) -> TokenStream {
@@ -13,30 +17,6 @@ pub fn command_handler_in_bus_derive(input: TokenStream) -> TokenStream {
 
     // Build the trait implementation
     impl_command_handler_in_bus(&ast)
-}
-
-fn impl_command_handler_in_bus(ast: &DeriveInput) -> TokenStream {
-    let name = &ast.ident;
-    let gen = quote! {
-        impl CommandHandlerInBus for #name {
-            fn handle_from_bus(&self, command: &dyn Command) -> Events {
-                self.handle_generic_command(command)
-            }
-
-            fn get_associated_command_from_bus(&self) -> TypeId {
-                self.get_associated_command()
-            }
-
-            fn as_any(&self) -> &dyn Any {
-                self
-            }
-
-            fn get_command_handler_name(&self) -> String {
-                stringify!(#name).to_string()
-            }
-        }
-    };
-    gen.into()
 }
 
 #[proc_macro_derive(Command)]
@@ -49,18 +29,42 @@ pub fn command_derive(input: TokenStream) -> TokenStream {
     impl_command(&ast)
 }
 
-fn impl_command(ast: &DeriveInput) -> TokenStream {
-    let name = &ast.ident;
-    let gen = quote! {
-        impl Command for #name {
-            fn as_any(&self) -> &dyn Any {
-                self
-            }
+#[proc_macro_derive(QueryHandlerInBus)]
+pub fn query_handler_in_bus_derive(input: TokenStream) -> TokenStream {
+    // Construct a representation of Rust code as a syntax tree
+    // that we can manipulate
+    let ast = syn::parse(input).unwrap();
 
-            fn get_command_name(&self) -> String {
-                stringify!(#name).to_string()
-            }
-        }
-    };
-    gen.into()
+    // Build the trait implementation
+    impl_query_handler_in_bus(&ast)
+}
+
+#[proc_macro_derive(Query)]
+pub fn query_derive(input: TokenStream) -> TokenStream {
+    // Construct a representation of Rust code as a syntax tree
+    // that we can manipulate
+    let ast = syn::parse(input).unwrap();
+
+    // Build the trait implementation
+    impl_query(&ast)
+}
+
+#[proc_macro_derive(EventHandlerInBus)]
+pub fn event_handler_in_bus_derive(input: TokenStream) -> TokenStream {
+    // Construct a representation of Rust code as a syntax tree
+    // that we can manipulate
+    let ast = syn::parse(input).unwrap();
+
+    // Build the trait implementation
+    impl_event_handler_in_bus(&ast)
+}
+
+#[proc_macro_derive(Event)]
+pub fn event_derive(input: TokenStream) -> TokenStream {
+    // Construct a representation of Rust code as a syntax tree
+    // that we can manipulate
+    let ast = syn::parse(input).unwrap();
+
+    // Build the trait implementation
+    impl_event(&ast)
 }

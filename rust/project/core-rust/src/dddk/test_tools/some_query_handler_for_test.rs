@@ -31,6 +31,10 @@ pub mod some_query_handler_for_test {
             self.get_associated_query()
         }
 
+        fn get_query_handler_name(&self) -> String {
+            "AQueryHandler".to_string()
+        }
+
         fn as_any(&self) -> &dyn Any {
             self
         }
@@ -51,6 +55,10 @@ pub mod some_query_handler_for_test {
 
         fn get_associated_query_from_bus(&self) -> TypeId {
             self.get_associated_query()
+        }
+
+        fn get_query_handler_name(&self) -> String {
+            "AnotherQueryHandler".to_string()
         }
 
         fn as_any(&self) -> &dyn Any {

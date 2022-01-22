@@ -24,4 +24,6 @@ pub trait EventHandlerInBus {
     fn get_associated_event_from_bus(&self) -> TypeId;
 
     fn as_any(&self) -> &dyn Any;
+
+    fn get_event_handler_name(&self) -> String;
 }

@@ -9,6 +9,10 @@ pub mod some_query_for_test {
         fn as_any(&self) -> &dyn Any {
             self
         }
+
+        fn get_query_name(&self) -> String {
+            "AQuery".to_string()
+        }
     }
 
     pub struct AnotherQuery {}
@@ -16,6 +20,10 @@ pub mod some_query_for_test {
     impl Query for AnotherQuery {
         fn as_any(&self) -> &dyn Any {
             self
+        }
+
+        fn get_query_name(&self) -> String {
+            "AnotherQuery".to_string()
         }
     }
 }
