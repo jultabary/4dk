@@ -13,6 +13,7 @@ categories = ["rust-patterns", "web-programming"]
 publish = ["crates-io"]
 
 [dependencies]
+log = "0.4"
 
 [dev-dependencies]
 dddk_macro = { path = "../../project/fourdk-macro" }
