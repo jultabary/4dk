@@ -38,4 +38,8 @@ impl CommandHandlerInBus for SecuredCommandHandler {
     fn as_any(&self) -> &dyn Any {
         self
     }
+
+    fn get_command_handler_name(&self) -> String {
+        self.command_handler.get_command_handler_name()
+    }
 }

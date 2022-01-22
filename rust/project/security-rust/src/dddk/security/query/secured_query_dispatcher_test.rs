@@ -1,6 +1,7 @@
 #[cfg(test)]
 pub mod test {
     use std::any::TypeId;
+    use std::rc::Rc;
     use dddk_core::dddk::query::query_bus::QueryBus;
     use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
     use crate::dddk::security::authorized_strategy_impl::no_security_strategy::NoSecurityStrategy;
@@ -29,7 +30,7 @@ pub mod test {
         // When
         SecuredQueryDispatcher::new(
             query_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
 
         // Then
@@ -48,7 +49,7 @@ pub mod test {
         // When
         let secured_query_dispatcher = SecuredQueryDispatcher::new(
             query_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
 
         // Then
@@ -67,7 +68,7 @@ pub mod test {
 
         let secured_query_dispatcher = SecuredQueryDispatcher::new(
             query_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
         // When
         let a_query_handler_opt = secured_query_dispatcher
@@ -94,7 +95,7 @@ pub mod test {
 
         let secured_query_dispatcher = SecuredQueryDispatcher::new(
             query_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
         let unsecured_query = AQuery::new();
 
@@ -117,7 +118,7 @@ pub mod test {
 
         let secured_query_dispatcher = SecuredQueryDispatcher::new(
             query_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
         let secured_query = get_a_query_secured(vec![String::from("a_role")]);
 
@@ -139,7 +140,7 @@ pub mod test {
 
         let secured_query_dispatcher = SecuredQueryDispatcher::new(
             query_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
         let query = AnotherQuery::new();
 
@@ -165,7 +166,7 @@ pub mod test {
 
         let secured_query_dispatcher = SecuredQueryDispatcher::new(
             query_handlers,
-            Box::new(RoleBasedStrategy::new(repository)),
+            Rc::new(RoleBasedStrategy::new(repository)),
         );
         let query = SecuredQuery::new(Box::new(AQuery::new()), vec![not_enough_privilege_role]);
 
@@ -192,7 +193,7 @@ pub mod test {
 
         let secured_query_dispatcher = SecuredQueryDispatcher::new(
             query_handlers,
-            Box::new(RoleBasedStrategy::new(repository)),
+            Rc::new(RoleBasedStrategy::new(repository)),
         );
         let query = SecuredQuery::new(Box::new(AQuery::new()), vec![user_role]);
 

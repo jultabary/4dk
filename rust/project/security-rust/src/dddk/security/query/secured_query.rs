@@ -27,4 +27,8 @@ impl Query for SecuredQuery {
     fn as_any(&self) -> &dyn Any {
         self
     }
+
+    fn get_query_name(&self) -> String {
+        self.query.get_query_name()
+    }
 }

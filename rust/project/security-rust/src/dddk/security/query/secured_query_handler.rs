@@ -35,6 +35,10 @@ impl QueryHandlerInBus for SecuredQueryHandler {
         self.query_handler.get_associated_query_from_bus()
     }
 
+    fn get_query_handler_name(&self) -> String {
+        self.query_handler.get_query_handler_name()
+    }
+
     fn as_any(&self) -> &dyn Any {
         self
     }

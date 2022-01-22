@@ -1,6 +1,7 @@
 #[cfg(test)]
 pub mod test {
     use std::any::TypeId;
+    use std::rc::Rc;
     use dddk_core::dddk::command::command_bus::CommandBus;
     use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
     use crate::dddk::security::authorized_strategy_impl::no_security_strategy::NoSecurityStrategy;
@@ -29,7 +30,7 @@ pub mod test {
         // When
         SecuredCommandDispatcher::new(
             command_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
 
         // Then
@@ -48,7 +49,7 @@ pub mod test {
         // When
         let secured_command_dispatcher = SecuredCommandDispatcher::new(
             command_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
 
         // Then
@@ -67,7 +68,7 @@ pub mod test {
 
         let secured_command_dispatcher = SecuredCommandDispatcher::new(
             command_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
         // When
         let a_command_handler_opt = secured_command_dispatcher
@@ -94,7 +95,7 @@ pub mod test {
 
         let secured_command_dispatcher = SecuredCommandDispatcher::new(
             command_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
         let unsecured_command = ACommand::new();
 
@@ -117,7 +118,7 @@ pub mod test {
 
         let secured_command_dispatcher = SecuredCommandDispatcher::new(
             command_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
         let secured_command = get_a_command_secured(vec![String::from("a_role")]);
 
@@ -139,7 +140,7 @@ pub mod test {
 
         let secured_command_dispatcher = SecuredCommandDispatcher::new(
             command_handlers,
-            Box::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
+            Rc::new(NoSecurityStrategy::new(get_fake_repository_with_filled_with_roles())),
         );
         let command = AnotherCommand::new();
 
@@ -165,7 +166,7 @@ pub mod test {
 
         let secured_command_dispatcher = SecuredCommandDispatcher::new(
             command_handlers,
-            Box::new(RoleBasedStrategy::new(repository)),
+            Rc::new(RoleBasedStrategy::new(repository)),
         );
         let command = SecuredCommand::new(Box::new(ACommand::new()), vec![not_enough_privilege_role]);
 
@@ -192,7 +193,7 @@ pub mod test {
 
         let secured_command_dispatcher = SecuredCommandDispatcher::new(
             command_handlers,
-            Box::new(RoleBasedStrategy::new(repository)),
+            Rc::new(RoleBasedStrategy::new(repository)),
         );
         let command = SecuredCommand::new(Box::new(ACommand::new()), vec![user_role]);
 

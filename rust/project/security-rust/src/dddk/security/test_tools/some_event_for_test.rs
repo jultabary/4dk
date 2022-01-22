@@ -2,7 +2,9 @@
 pub mod some_event_for_test {
     use std::any::Any;
     use dddk_core::dddk::event::event::Event;
+    use dddk_macro::Event;
 
+    #[derive(Event)]
     pub struct AnEvent {}
 
     impl AnEvent {
@@ -11,23 +13,12 @@ pub mod some_event_for_test {
         }
     }
 
-    impl Event for AnEvent {
-        fn as_any(&self) -> &dyn Any {
-            self
-        }
-    }
-
+    #[derive(Event)]
     pub struct AnotherEvent {}
 
     impl AnotherEvent {
         pub fn new() -> AnotherEvent {
             AnotherEvent {}
-        }
-    }
-
-    impl Event for AnotherEvent {
-        fn as_any(&self) -> &dyn Any {
-            self
         }
     }
 }

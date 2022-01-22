@@ -14,3 +14,6 @@ publish = false
 
 [dependencies]
 dddk_core = { path = "../core-rust" }
+
+[dev-dependencies]
+dddk_macro = { path = "../../project/fourdk-macro" }

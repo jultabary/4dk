@@ -27,4 +27,8 @@ impl Command for SecuredCommand {
     fn as_any(&self) -> &dyn Any {
         self
     }
+
+    fn get_command_name(&self) -> String {
+        self.command.get_command_name()
+    }
 }
