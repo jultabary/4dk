@@ -8,12 +8,12 @@ documentation = "https://github.com/jultabary/4dk-core/tree/main/rust/project/co
 readme = "README.md"
 homepage = "https://github.com/jultabary/4dk-core"
 license = "Apache-2.0"
-keywords = ["ddd", "hexagonal-architecture", "ddd-cqrs-framework"]
+keywords = ["ddd", "hexagonal-arch", "ddd-cqrs-framework"]
 categories = ["rust-patterns", "web-programming"]
-publish = false
+publish = ["crates-io"]
 
 [dependencies]
-dddk_core = { path = "../core-rust" }
+dddk_core = "0.1.0"
 
 [dev-dependencies]
 dddk_macro = { path = "../../project/fourdk-macro" }
