@@ -145,6 +145,14 @@ name = "dddk_core"
 version = "0.1.0"
 
 [[package]]
+name = "dddk_macro"
+version = "0.1.0"
+dependencies = [
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "dddk_security"
 version = "0.1.0"
 dependencies = [
@@ -1032,6 +1040,7 @@ name = "securized-4dk-sample-integrated-with-rust"
 version = "0.1.0"
 dependencies = [
  "dddk_core",
+ "dddk_macro",
  "dddk_security",
  "diesel",
  "dotenv",
