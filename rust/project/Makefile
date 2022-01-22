@@ -29,3 +29,14 @@ release: ## release app ✓
 	cd -
 	cd $(SECURITY_RUST_DIR)
 	cargo build --release
+
+.PHONY: package
+package: ## package app ✓
+	cd $(MACRO_RUST_DIR)
+	cargo package
+	cd -
+	cd $(CORE_RUST_DIR)
+	cargo package
+	cd -
+	cd $(SECURITY_RUST_DIR)
+	cargo package
