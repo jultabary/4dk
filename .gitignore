@@ -24,3 +24,8 @@ hs_err_pid*
 
 **/target/**
 **/.idea/**
+
+# mac OS
+.DS_Store
+**/.DS_Store
+

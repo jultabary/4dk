@@ -3,10 +3,17 @@
 version = 3
 
 [[package]]
+name = "cfg-if"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
+
+[[package]]
 name = "dddk_core"
 version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d30134a83951a3673866e10f979974b81abe6e260480a7dfc6ec39b766c5ab0d"
+dependencies = [
+ "log",
+]
 
 [[package]]
 name = "dddk_macro"
@@ -22,6 +29,15 @@ version = "0.1.1"
 dependencies = [
  "dddk_core",
  "dddk_macro",
+]
+
+[[package]]
+name = "log"
+version = "0.4.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "51b9bbe6c47d51fc3e1a9b945965946b4c44142ab8792c50835a980d362c2710"
+dependencies = [
+ "cfg-if",
 ]
 
 [[package]]

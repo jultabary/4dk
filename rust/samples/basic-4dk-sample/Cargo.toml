@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 dddk_core = { path = "../../project/core-rust" }
 dddk_macro = { path = "../../project/fourdk-macro" }
+log = "0.4"

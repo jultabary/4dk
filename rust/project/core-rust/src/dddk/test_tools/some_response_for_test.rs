@@ -9,6 +9,10 @@ pub mod some_response_for_test {
         fn as_any(&self) -> &dyn Any {
             self
         }
+
+        fn get_response_name(&self) -> String {
+            "AResponse".to_string()
+        }
     }
 
     pub struct AnotherResponse {}
@@ -16,6 +20,10 @@ pub mod some_response_for_test {
     impl Response for AnotherResponse {
         fn as_any(&self) -> &dyn Any {
             self
+        }
+
+        fn get_response_name(&self) -> String {
+            "AnotherResponse".to_string()
         }
     }
 }

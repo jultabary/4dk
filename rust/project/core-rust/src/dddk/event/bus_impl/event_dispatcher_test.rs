@@ -70,7 +70,9 @@ mod tests {
 
         // Then
         assert_eq!(true, event_handlers_opt.is_some());
-        event_handlers_opt.unwrap().iter()
+        let event_handlers = event_handlers_opt.unwrap();
+        assert_eq!(2, event_handlers.len());
+        event_handlers.iter()
             .for_each(|event_handler| {
                 let is_it_an_associated_handler =
                     event_handler.as_any().downcast_ref::<AnEventHandler>().is_some() ||

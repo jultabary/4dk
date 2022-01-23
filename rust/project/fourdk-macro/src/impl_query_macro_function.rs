@@ -49,6 +49,10 @@ pub fn impl_response(ast: &DeriveInput) -> TokenStream {
             fn as_any(&self) -> &dyn Any {
                 self
             }
+
+            fn get_response_name(&self) -> String {
+                stringify!(#name).to_string()
+            }
         }
     };
     gen.into()

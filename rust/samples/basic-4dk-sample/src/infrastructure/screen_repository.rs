@@ -1,3 +1,5 @@
+use log::info;
+
 pub struct ScreenRepository {}
 
 impl ScreenRepository {
@@ -6,6 +8,6 @@ impl ScreenRepository {
     }
 
     pub fn refresh_screen(&self) {
-        println!("Refresh screen of available Spots !!")
+        info!("FAKE EXTERNAL SYSTEM: Refresh screen of available Spots !!")
     }
 }
