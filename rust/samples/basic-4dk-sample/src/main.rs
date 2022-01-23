@@ -1,11 +1,8 @@
 use std::rc::Rc;
-use std::sync::Arc;
-use dddk_core::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
-use dddk_core::dddk::command::bus_impl::command_logging_middleware::CommandLoggingMiddleware;
-use dddk_core::dddk::command::bus_impl::event_produced_by_command_bus_dispatcher::EventsProducedByCommandBusDispatcher;
-use dddk_core::dddk::command::command_bus::CommandBus;
+use std::thread;
+use std::time::Duration;
+use dddk_core::Bus;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
-use dddk_core::dddk::event::bus_impl::event_dispatcher::EventDispatcher;
 use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 use log::LevelFilter;
 use crate::domain::car::CarId;
@@ -44,16 +41,11 @@ fn main() {
     event_handlers.push(Box::new(open_gate_policy));
     event_handlers.push(Box::new(refresh_screen_policy));
 
-    let command_dispatcher = CommandDispatcher::new(command_handlers);
-    let event_dispatcher = EventDispatcher::new(event_handlers);
-
-    let command_logging_middleware = Box::new(CommandLoggingMiddleware::new(Box::new(command_dispatcher))) as Box<dyn CommandBus>;
-    let events_produced_by_command_bus_dispatcher = EventsProducedByCommandBusDispatcher::new(
-        command_logging_middleware,
-        Arc::new(event_dispatcher),
-        false,
-    );
+    let bus = Bus::new(command_handlers, event_handlers, Vec::new());
 
     let command = ParkCarCommand::new(CarId::new(1), 1);
-    let _events = events_produced_by_command_bus_dispatcher.dispatch(&command);
+    let _events = bus.dispatch_command(&command);
+
+    // Wait for all event_handlers handle theirs events
+    thread::sleep(Duration::from_secs(2));
 }

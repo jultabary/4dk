@@ -1,3 +1,5 @@
+use log::info;
+
 pub struct GateRepository {}
 
 impl GateRepository {
@@ -6,6 +8,6 @@ impl GateRepository {
     }
 
     pub fn open_gate(&self) {
-        println!("Open Entry Gate !!")
+        info!("FAKE EXTERNAL SYSTEM: Open Entry Gate !!")
     }
 }
