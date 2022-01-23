@@ -1,5 +1,5 @@
 #[cfg(test)]
-pub mod test {
+pub mod query_logging_middleware_test {
     use log::Log;
     use crate::dddk::errors::NoQueryHandlerRegisterForGivenQuery;
     use crate::dddk::query::bus_impl::query_dispatcher::QueryDispatcher;

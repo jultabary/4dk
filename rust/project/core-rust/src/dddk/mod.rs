@@ -23,6 +23,8 @@ pub mod event {
     pub mod event_bus;
     pub mod event_handler;
     mod event_handler_test;
+    pub mod event_handler_logger;
+    pub mod event_handler_logger_test;
 }
 pub mod query {
     pub mod query;

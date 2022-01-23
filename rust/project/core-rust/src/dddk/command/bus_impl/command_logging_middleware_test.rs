@@ -1,5 +1,5 @@
 #[cfg(test)]
-pub mod test {
+pub mod command_logging_middleware_test {
     use log::Log;
     use crate::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
     use crate::dddk::command::bus_impl::command_logging_middleware::CommandLoggingMiddleware;
