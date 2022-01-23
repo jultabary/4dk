@@ -54,3 +54,4 @@ impl Bus {
         self.query_bus.dispatch(query)
     }
 }
+

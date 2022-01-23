@@ -1,6 +1,4 @@
 use std::str::FromStr;
-use dddk_core::dddk::command::command_bus::CommandBus;
-use dddk_core::dddk::query::query_bus::QueryBus;
 use dddk_core::dddk::query::response::Response;
 use rocket::serde::json::{Json};
 use rocket::State;
@@ -30,7 +28,7 @@ impl FooModelApi {
 #[get("/foo")]
 pub fn get_all_foo(context: &State<Context>) -> Json<Vec<FooModelApi>> {
     let what_are_all_the_foos = WhatAreAllTheFoosQuery {};
-    let foos_as_response = context.query_bus.dispatch(&what_are_all_the_foos).unwrap();
+    let foos_as_response = context.get_bus().dispatch_query(&what_are_all_the_foos).unwrap();
     let mut responses = Vec::new();
     foos_as_response
         .iter()
@@ -47,7 +45,7 @@ pub fn post_foo(raw_foo: Json<FooModelApi>, context: &State<Context>) -> String 
         Uuid::from_str(&raw_foo.id).unwrap(),
         raw_foo.title.clone(),
     );
-    let events = context.command_bus.dispatch(&command).unwrap();
+    let events = context.get_bus().dispatch_command(&command).unwrap();
     events.get(0)
         .unwrap().as_any().downcast_ref::<FooCreatedEvent>()
         .unwrap()
