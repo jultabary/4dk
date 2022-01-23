@@ -50,7 +50,7 @@ pub mod event_handler_logger_test {
 
         // Then
         assert_eq!(2, logger.messages.borrow().len());
-        let first_log = "INFO_Handling an event [AnEvent].".to_string();
+        let first_log = "INFO_Handling an event [AnEvent] by [AnEventHandler].".to_string();
         let second_log = "INFO_Event[AnEvent] has been handled by [AnEventHandler].".to_string();
         assert_eq!(&first_log, logger.messages.borrow().get(0).unwrap());
         assert_eq!(&second_log, logger.messages.borrow().get(1).unwrap());

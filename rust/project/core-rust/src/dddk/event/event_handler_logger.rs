@@ -19,7 +19,10 @@ impl EventHandlerLogger {
 impl EventHandlerInBus for EventHandlerLogger {
     fn handle_from_bus(&self, event: Arc<dyn Event>) {
         let event_name = event.get_event_name();
-        info!("Handling an event [{}].", event_name.clone());
+        info!("Handling an event [{}] by [{}].",
+            event_name.clone(),
+            self.inner_event_handler.get_event_handler_name()
+        );
         self.inner_event_handler.handle_from_bus(event);
         info!("Event[{}] has been handled by [{}].",
             event_name,
