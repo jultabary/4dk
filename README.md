@@ -55,10 +55,11 @@ More exactly, it will be the <a href="http://www.plainionist.net/Implementing-Cl
 | Features               | Description                                                                            | Java | Rust |
 |------------------------|----------------------------------------------------------------------------------------|------|------|
 | QueryDispatcher        | QueryBus which dispatches query to its associated QueryHandler                         | X    | X    |
-| QueryLoggingMiddleware | QueryBus which logs all query handled and responses resulted                           | X    | ...  |
+| QueryLoggingMiddleware | QueryBus which logs all query handled and responses resulted                           | X    | X    |
 | SecuredQueryDispatcher | QueryDispatcher which dispatches SecuredQuery only if they have correct authorization  | X    | X    |
 
 ### Event
-| Features        | Description                                                     | Java | Rust |
-|-----------------|-----------------------------------------------------------------|------|------|
-| EventDispatcher | EventBus which dispatches event to its associated EventHandlers | X    | X    |
+| Features           | Description                                                     | Java | Rust |
+|--------------------|-----------------------------------------------------------------|------|------|
+| EventDispatcher    | EventBus which dispatches event to its associated EventHandlers | X    | X    |
+| EventHandlerLogger | Add Logging to EventHandler                                     | X    | X    |
