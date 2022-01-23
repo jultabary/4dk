@@ -20,7 +20,7 @@ Event Storming design the behaviours of your domains with commands and events. <
 
 These framework implements with bus all the successions rules between event storming "post it" :<br/>
 
-To see "how to switch from events storming into the code" please follow java samples. You will see how an "events storming" could be your software design.
+To see "how to switch from events storming into the code" please follow basic samples (Java or Rust). You will see how an "events storming" could be your software design.
 
 ### Command (Blue post-it): 
 `Command` object matches this post it. <br />
