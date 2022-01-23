@@ -1,6 +1,6 @@
 [package]
 name = "dddk_security"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 authors = ["Julien TABARY <julien@tabary.net>"]
 description = "Security module of dddk_core. Impl features regarding command_bus pattern and security"
