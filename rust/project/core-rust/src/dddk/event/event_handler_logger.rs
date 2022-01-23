@@ -40,9 +40,9 @@ impl EventHandlerInBus for EventHandlerLogger {
     }
 }
 
-pub fn encapsulated_event_handler_with_logger(event_handlers: Vec<Box<dyn EventHandlerInBus>>) -> Vec<Arc<dyn EventHandlerInBus>> {
+pub fn encapsulated_event_handler_with_logger(event_handlers: Vec<Box<dyn EventHandlerInBus>>) -> Vec<Box<dyn EventHandlerInBus>> {
     event_handlers.into_iter()
         .map(|event_handler|
-            { Arc::new(EventHandlerLogger::new(event_handler)) as Arc<dyn EventHandlerInBus> })
-        .collect::<Vec<Arc<dyn EventHandlerInBus>>>()
+            { Box::new(EventHandlerLogger::new(event_handler)) as Box<dyn EventHandlerInBus> })
+        .collect::<Vec<Box<dyn EventHandlerInBus>>>()
 }
