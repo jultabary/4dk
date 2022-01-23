@@ -6,7 +6,7 @@ pub struct Forbidden {}
 
 impl Display for Forbidden {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Command does not have the right permission to execute handler !")
+        write!(f, "Message does not have the right permission to execute handler !")
     }
 }
 

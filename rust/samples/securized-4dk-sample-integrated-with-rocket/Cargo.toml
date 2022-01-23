@@ -6,11 +6,12 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dddk_core = "0.1.0"
-dddk_macro = "0.1.0"
-dddk_security = "0.1.1"
+dddk_core = { path = "../../project/core-rust" }
+dddk_macro = { path = "../../project/fourdk-macro" }
+dddk_security = { path = "../../project/security-rust" }
 rocket = { version = "0.5.0-rc.1", features = ["json", "uuid"] }
 diesel = { version = "1.4.4", features = ["postgres", "uuid"] }
 uuid = { version = "0.6.5", features = ["v4"] }
 dotenv = "0.15.0"
 serde = "1.0.130"
+log = "0.4"
