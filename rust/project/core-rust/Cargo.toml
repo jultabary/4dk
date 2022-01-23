@@ -1,6 +1,6 @@
 [package]
 name = "dddk_core"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["Julien TABARY <julien@tabary.net>"]
 description = "Tactical DDD framework based on command_bus, event_bus and query_bus. It offers annex feature such as authorization, logging ..."
@@ -16,4 +16,4 @@ publish = ["crates-io"]
 log = "0.4"
 
 [dev-dependencies]
-dddk_macro = { path = "../../project/fourdk-macro" }
+dddk_macro = "0.2.0"

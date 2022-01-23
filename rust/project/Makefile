@@ -30,13 +30,26 @@ release: ## release app ✓
 	cd $(SECURITY_RUST_DIR)
 	cargo build --release
 
-.PHONY: package
-package: ## package app ✓
+.PHONY: package-and-publish-macro
+package-and-publish-macro: ## package and publish macro crate ✓
 	cd $(MACRO_RUST_DIR)
+	cargo test
+	cargo build --release
 	cargo package
-	cd -
+	cargo publish	
+
+.PHONY: package-and-publish-core
+package-and-publish-core: ## package and publish core crate ✓
 	cd $(CORE_RUST_DIR)
+	cargo test
+	cargo build --release
 	cargo package
-	cd -
+	cargo publish
+
+.PHONY: package-and-publish-security
+package-and-publish-security: ## package and publish security crate ✓
 	cd $(SECURITY_RUST_DIR)
+	cargo test
+	cargo build --release
 	cargo package
+	cargo publish
