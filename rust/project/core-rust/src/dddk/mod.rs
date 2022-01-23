@@ -5,7 +5,7 @@ pub mod command {
     pub mod bus_impl {
         pub mod command_dispatcher;
         pub mod command_logging_middleware;
-        mod command_logging_middleware_test;
+        pub mod command_logging_middleware_test;
         mod command_dispatcher_test;
         pub mod event_produced_by_command_bus_dispatcher;
         mod event_produced_by_command_bus_dispatcher_test;
@@ -33,6 +33,8 @@ pub mod query {
     pub mod bus_impl {
         pub mod query_dispatcher;
         mod query_dispatcher_test;
+        pub mod query_logging_middleware;
+        pub mod query_logging_middleware_test;
     }
 }
 mod test_tools {
@@ -43,9 +45,11 @@ mod test_tools {
     pub mod some_query_for_test;
     pub mod some_response_for_test;
     pub mod some_query_handler_for_test;
+    pub mod some_logger_for_test;
 }
 mod test_macro {
     mod command_macro_test;
     mod event_macro_test;
     mod query_macro_test;
 }
+mod logger_test;
