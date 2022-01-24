@@ -31,7 +31,7 @@ pub mod event_handler_logger_test {
         let an_event = Arc::new(AnEvent::new(1));
 
         // When
-        event_handler_logger.handle_from_bus(an_event);
+        let _result = event_handler_logger.handle_from_bus(an_event);
 
         // Then
         assert_eq!(true, event_handler_logger.as_any().downcast_ref::<AnEventHandler>().is_some());
@@ -46,7 +46,7 @@ pub mod event_handler_logger_test {
         let an_event = Arc::new(AnEvent::new(1));
 
         // When
-        event_handler_logger.handle_from_bus(an_event);
+        let _result = event_handler_logger.handle_from_bus(an_event);
 
         // Then
         assert_eq!(2, logger.messages.borrow().len());

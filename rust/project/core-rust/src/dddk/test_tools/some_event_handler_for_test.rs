@@ -44,8 +44,9 @@ pub mod some_event_handler_for_test {
     }
 
     impl EventHandlerInBus for AnEventHandler {
-        fn handle_from_bus(&self, event: Arc<dyn Event>) {
-            self.handle_generic_event(event);
+        fn handle_from_bus(&self, event: Arc<dyn Event>) -> Result<(), GenericError> {
+            let _result = self.handle_generic_event(event);
+            Ok(())
         }
 
         fn get_associated_event_from_bus(&self) -> TypeId {
@@ -85,8 +86,9 @@ pub mod some_event_handler_for_test {
     }
 
     impl EventHandlerInBus for AnotherEventHandler {
-        fn handle_from_bus(&self, event: Arc<dyn Event>) {
-            self.handle_generic_event(event);
+        fn handle_from_bus(&self, event: Arc<dyn Event>) -> Result<(), GenericError> {
+            let _result = self.handle_generic_event(event);
+            Ok(())
         }
 
         fn get_associated_event_from_bus(&self) -> TypeId {
@@ -114,8 +116,8 @@ pub mod some_event_handler_for_test {
     }
 
     impl EventHandler<AnEvent> for AThirdEventHandler {
-        fn handle(&self, event: &AnEvent) -> Result<(), GenericError>{
-            push_event_id_to_store(&self.handled_events, event.id);
+        fn handle(&self, event: &AnEvent) -> Result<(), GenericError> {
+            let _result = push_event_id_to_store(&self.handled_events, event.id);
             Ok(())
         }
     }
@@ -127,8 +129,9 @@ pub mod some_event_handler_for_test {
     }
 
     impl EventHandlerInBus for AThirdEventHandler {
-        fn handle_from_bus(&self, event: Arc<dyn Event>) {
-            self.handle_generic_event(event);
+        fn handle_from_bus(&self, event: Arc<dyn Event>) -> Result<(), GenericError> {
+            let _result = self.handle_generic_event(event);
+            Ok(())
         }
 
         fn get_associated_event_from_bus(&self) -> TypeId {

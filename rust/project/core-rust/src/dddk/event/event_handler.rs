@@ -4,9 +4,9 @@ use crate::dddk::event::event::Event;
 use crate::dddk::aliases::GenericError;
 
 pub trait EventHandler<E: Sized + Any + Event> {
-    fn handle_generic_event(&self, event: Arc<dyn Event>) {
+    fn handle_generic_event(&self, event: Arc<dyn Event>) -> Result<(), GenericError> {
         if let Some(event_ref) = event.as_any().downcast_ref::<E>() {
-            let _result = self.handle(event_ref.clone());
+            return self.handle(event_ref.clone());
         } else {
             panic!("Given event is not associated with the handler !");
         }
@@ -20,7 +20,7 @@ pub trait EventHandler<E: Sized + Any + Event> {
 }
 
 pub trait EventHandlerInBus {
-    fn handle_from_bus(&self, event: Arc<dyn Event>);
+    fn handle_from_bus(&self, event: Arc<dyn Event>) -> Result<(), GenericError>;
 
     fn get_associated_event_from_bus(&self) -> TypeId;
 

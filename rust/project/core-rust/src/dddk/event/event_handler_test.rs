@@ -12,7 +12,7 @@ mod tests {
         let an_event = Arc::new(AnEvent::new(1));
 
         // When
-        an_event_handler.handle_generic_event(an_event.clone());
+        let _result = an_event_handler.handle_generic_event(an_event.clone());
 
         // Then
         assert_eq!(true, an_event_handler.has_event_been_handled(an_event.id));
@@ -26,7 +26,7 @@ mod tests {
         let another_event = Arc::new(AnotherEvent::new(2));
 
         // When
-        an_event_handler.handle_generic_event(another_event.clone());
+        let _result = an_event_handler.handle_generic_event(another_event.clone());
 
         // Then
         // should panic

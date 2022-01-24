@@ -6,7 +6,7 @@ pub fn impl_event_handler_in_bus(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
         impl EventHandlerInBus for #name {
-            fn handle_from_bus(&self, event: Arc<dyn Event>) {
+            fn handle_from_bus(&self, event: Arc<dyn Event>) -> Result<(), GenericError> {
                 self.handle_generic_event(event)
             }
 

@@ -53,7 +53,7 @@ pub mod event_macro_tests {
         let a_event_handler = AnEventHandler { has_been_called: RefCell::new(false) };
 
         // When
-        a_event_handler.handle_from_bus(Arc::new(an_event));
+        let _result = a_event_handler.handle_from_bus(Arc::new(an_event));
         let event_handler_name = a_event_handler.get_event_handler_name();
         let event_type_id = a_event_handler.get_associated_event_from_bus();
 
