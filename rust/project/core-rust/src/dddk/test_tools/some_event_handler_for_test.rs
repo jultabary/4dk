@@ -4,6 +4,7 @@ pub mod some_event_handler_for_test {
     use std::cell::RefCell;
     use std::sync::Arc;
     use crate::dddk::aliases::GenericError;
+    use crate::dddk::errors::NoCommandHandlerRegisterForGivenCommand;
     use crate::dddk::event::event::Event;
     use crate::dddk::event::event_handler::{EventHandler, EventHandlerInBus};
     use crate::dddk::test_tools::some_event_for_test::some_event_for_test::{AnEvent, AnotherEvent};
@@ -144,6 +145,38 @@ pub mod some_event_handler_for_test {
 
         fn get_event_handler_name(&self) -> String {
             "AThirdEventHandler".to_string()
+        }
+    }
+
+    pub struct AFourthAnEventHandler {}
+
+    impl AFourthAnEventHandler {
+        pub fn new() -> AFourthAnEventHandler {
+            AFourthAnEventHandler {}
+        }
+    }
+
+    impl EventHandler<AnEvent> for AFourthAnEventHandler {
+        fn handle(&self, _event: &AnEvent) -> Result<(), GenericError> {
+            Err(Box::new(NoCommandHandlerRegisterForGivenCommand {}))
+        }
+    }
+
+    impl EventHandlerInBus for AFourthAnEventHandler {
+        fn handle_from_bus(&self, event: Arc<dyn Event>) -> Result<(), GenericError> {
+            self.handle_generic_event(event)
+        }
+
+        fn get_associated_event_from_bus(&self) -> TypeId {
+            TypeId::of::<AnEvent>()
+        }
+
+        fn as_any(&self) -> &dyn Any {
+            self
+        }
+
+        fn get_event_handler_name(&self) -> String {
+            "AFourthAnEventHandler".to_string()
         }
     }
 }

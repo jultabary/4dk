@@ -6,7 +6,7 @@ pub mod event_handler_logger_test {
     use crate::dddk::event::event_handler::EventHandlerInBus;
     use crate::dddk::event::event_handler_logger::EventHandlerLogger;
     use crate::dddk::test_tools::some_event_for_test::some_event_for_test::AnEvent;
-    use crate::dddk::test_tools::some_event_handler_for_test::some_event_handler_for_test::{AnEventHandler, EventHandlerForTest};
+    use crate::dddk::test_tools::some_event_handler_for_test::some_event_handler_for_test::{AFourthAnEventHandler, AnEventHandler, EventHandlerForTest};
     use crate::dddk::test_tools::some_logger_for_test::some_logger_for_test::MockLogger;
 
     #[test]
@@ -56,4 +56,24 @@ pub mod event_handler_logger_test {
         assert_eq!(&second_log, logger.messages.borrow().get(1).unwrap());
         logger.flush();
     }
+
+    pub fn it_should_trace_error_when_there_is_an_error_returned_by_handler(logger: &MockLogger) {
+        // Given
+        let event_handler = AFourthAnEventHandler::new();
+        let event_handler_logger = EventHandlerLogger::new(Box::new(event_handler) as Box<dyn EventHandlerInBus>);
+        let an_event = Arc::new(AnEvent::new(1));
+
+        // When
+        let result = event_handler_logger.handle_from_bus(an_event);
+
+        // Then
+        assert_eq!(2, logger.messages.borrow().len());
+        assert_eq!(true, result.is_err());
+        let first_log = "INFO_Handling an event [AnEvent] by [AFourthAnEventHandler].".to_string();
+        let second_log = "ERROR_An error has occurred when Event[AnEvent] [AnEvent] has been handled by [AFourthAnEventHandler] !!".to_string();
+        assert_eq!(&first_log, logger.messages.borrow().get(0).unwrap());
+        assert_eq!(&second_log, logger.messages.borrow().get(1).unwrap());
+        logger.flush();
+    }
+
 }
