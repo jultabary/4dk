@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
 use dddk_core::dddk::aliases::Events;
 use dddk_core::dddk::command::command::Command;
@@ -12,6 +13,16 @@ use crate::infrastructure::parking_repository::ParkingRepository;
 pub struct ParkCarCommand {
     car_id: CarId,
     parking_id: i32,
+}
+
+impl Debug for ParkCarCommand {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f,
+               "ParkCarCommand[car_id: [{}], parking_id: [{}]]",
+            self.car_id.id,
+            self.parking_id
+        )
+    }
 }
 
 impl ParkCarCommand {

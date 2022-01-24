@@ -148,15 +148,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dddk_core"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "abcd1a2186086fd6793d02c18b6e2f9f4c6672613a95a1a606322f2a10f9f02d"
-dependencies = [
- "log",
-]
-
-[[package]]
 name = "dddk_macro"
 version = "0.2.0"
 dependencies = [
@@ -168,7 +159,7 @@ dependencies = [
 name = "dddk_security"
 version = "0.2.0"
 dependencies = [
- "dddk_core 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "dddk_core",
 ]
 
 [[package]]
@@ -1051,7 +1042,7 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 name = "securized-4dk-sample-integrated-with-rust"
 version = "0.1.0"
 dependencies = [
- "dddk_core 0.2.0",
+ "dddk_core",
  "dddk_macro",
  "dddk_security",
  "diesel",

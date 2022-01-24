@@ -17,14 +17,17 @@ impl QueryLoggingMiddleware {
 
 impl QueryBus for QueryLoggingMiddleware {
     fn dispatch<'b>(&self, query: &'b dyn Query) -> Responses {
-        info!("Dispatching a query [{}].", query.get_query_name());
+        info!("Dispatching a query [{}] [{:?}].",
+              query.get_query_name(),
+              query);
         let responses = self.query_bus.dispatch(query);
         if responses.is_err() {
             let error = responses.err().unwrap();
             let error_message = error.to_string();
             error!(
-                "An error has occurred when dispatching query [{}]: {}",
+                "An error has occurred when dispatching query [{}] [{:?}]: {}",
                 query.get_query_name(),
+                query,
                 error_message
             );
             return Err(error);
@@ -37,8 +40,9 @@ impl QueryBus for QueryLoggingMiddleware {
                 response_names.push_str(" ");
             });
         info!(
-            "Query[{}] has been handled and has produced [{}] responses [{}].",
+            "Query[{}] [{:?}] has been handled and has produced [{}] responses [{}].",
             query.get_query_name(),
+            query,
             responses.len(),
             response_names
         );

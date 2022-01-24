@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
 use dddk_core::dddk::aliases::Responses;
 use dddk_core::dddk::query::query::Query;
@@ -9,6 +10,12 @@ use crate::domain::repository::FooRepository;
 
 #[derive(Query)]
 pub struct WhatAreAllTheFoosQuery {}
+
+impl Debug for WhatAreAllTheFoosQuery {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "WhatAreAllTheFoosQuery")
+    }
+}
 
 #[derive(QueryHandlerInBus)]
 pub struct WhatAreAllTheFoosQueryHandler {

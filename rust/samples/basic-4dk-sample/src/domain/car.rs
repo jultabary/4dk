@@ -1,5 +1,5 @@
 pub struct CarId {
-    id: i32,
+    pub id: i32,
 }
 
 impl CarId {

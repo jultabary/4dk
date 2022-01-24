@@ -1,6 +1,7 @@
 #[cfg(test)]
 pub mod command_macro_tests {
     use std::any::{Any,TypeId};
+    use std::fmt::{Debug, Formatter};
     use std::sync::Arc;
     use crate::dddk::command::command::Command;
     use crate::dddk::event::event::Event;
@@ -13,6 +14,12 @@ pub mod command_macro_tests {
 
     #[derive(Command)]
     struct ACommand {}
+
+    impl Debug for ACommand {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            write!(f, "ACommand")
+        }
+    }
 
     #[derive(Event)]
     struct AnEvent {}

@@ -1,6 +1,7 @@
 #[cfg(test)]
 pub mod query_macro_tests {
     use std::any::{Any,TypeId};
+    use std::fmt::{Debug, Formatter};
     use crate::dddk::query::query::Query;
     use crate::dddk::query::response::Response;
     use dddk_macro::Query;
@@ -12,6 +13,12 @@ pub mod query_macro_tests {
 
     #[derive(Query)]
     struct AQuery {}
+
+    impl Debug for AQuery {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AQuery")
+        }
+    }
 
     #[derive(Response)]
     struct AResponse {}

@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
 use std::sync::Arc;
 use dddk_core::dddk::aliases::Events;
@@ -16,6 +17,16 @@ use crate::usecases::events::foo_created_event::FooCreatedEvent;
 pub struct CreateFooCommand {
     id: Uuid,
     title: String,
+}
+
+impl Debug for CreateFooCommand {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f,
+               "CreateFooCommand[id: [{}], title: [{}]",
+               self.id,
+               self.title
+        )
+    }
 }
 
 impl CreateFooCommand {
@@ -44,7 +55,7 @@ impl CommandHandler<CreateFooCommand> for CreateFooCommandHandler {
     fn handle(&self, command: &CreateFooCommand) -> Events {
         let foo = Foo::new(command.id.clone(), command.title.clone());
         let foo_created_event = FooCreatedEvent::new(
-            foo.get_id().clone(), foo.get_title().clone()
+            foo.get_id().clone(), foo.get_title().clone(),
         );
         self.foo_repository.save(foo);
         let mut events = Vec::new() as Vec<Arc<dyn Event>>;

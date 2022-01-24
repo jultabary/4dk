@@ -13,7 +13,7 @@ categories = ["rust-patterns", "web-programming"]
 publish = ["crates-io"]
 
 [dependencies]
-dddk_core = "0.2.0"
+dddk_core = { path = "../../project/core-rust" }
 
 [dev-dependencies]
-dddk_macro = "0.2.0"
+dddk_macro = { path = "../../project/fourdk-macro" }

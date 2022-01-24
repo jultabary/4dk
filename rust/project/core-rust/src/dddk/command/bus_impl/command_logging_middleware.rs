@@ -17,14 +17,17 @@ impl CommandLoggingMiddleware {
 
 impl CommandBus for CommandLoggingMiddleware {
     fn dispatch<'b>(&self, command: &'b dyn Command) -> Events {
-        info!("Dispatching a command [{}].", command.get_command_name());
+        info!("Dispatching a command [{}] [{:?}].",
+            command.get_command_name(),
+            command);
         let events = self.command_bus.dispatch(command);
         if events.is_err() {
             let error = events.err().unwrap();
             let error_message = error.to_string();
             error!(
-                "An error has occurred when dispatching command [{}]: {}",
+                "An error has occurred when dispatching command [{}] [{:?}]: {}",
                 command.get_command_name(),
+                command,
                 error_message
             );
             return Err(error);
@@ -37,8 +40,9 @@ impl CommandBus for CommandLoggingMiddleware {
                 event_names.push_str(" ");
             });
         info!(
-            "Command[{}] has been handled and has produced [{}] events [{}].",
+            "Command[{}] [{:?}] has been handled and has produced [{}] events [{}].",
             command.get_command_name(),
+            command,
             events.len(),
             event_names
         );

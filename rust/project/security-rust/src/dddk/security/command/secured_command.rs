@@ -1,4 +1,5 @@
 use std::any::Any;
+use std::fmt::{Debug, Formatter};
 use dddk_core::dddk::command::command::Command;
 
 pub struct SecuredCommand {
@@ -20,6 +21,12 @@ impl SecuredCommand {
 
     pub fn get_roles_names(&self) -> &Vec<String> {
         &self.role_names
+    }
+}
+
+impl Debug for SecuredCommand {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        self.command.fmt(f)
     }
 }
 

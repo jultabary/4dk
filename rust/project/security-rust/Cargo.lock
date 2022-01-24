@@ -11,8 +11,6 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "dddk_core"
 version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "abcd1a2186086fd6793d02c18b6e2f9f4c6672613a95a1a606322f2a10f9f02d"
 dependencies = [
  "log",
 ]
@@ -20,8 +18,6 @@ dependencies = [
 [[package]]
 name = "dddk_macro"
 version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16d5850444d5e1191c548fa0e1d3d8d06cfa526216991050eaf86017ae9dc693"
 dependencies = [
  "quote",
  "syn",

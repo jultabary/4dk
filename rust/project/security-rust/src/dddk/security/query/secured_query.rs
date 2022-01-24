@@ -1,4 +1,5 @@
 use std::any::Any;
+use std::fmt::{Debug, Formatter};
 use dddk_core::dddk::query::query::Query;
 
 pub struct SecuredQuery {
@@ -20,6 +21,12 @@ impl SecuredQuery {
 
     pub fn get_roles_names(&self) -> &Vec<String> {
         &self.role_names
+    }
+}
+
+impl Debug for SecuredQuery {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        self.query.fmt(f)
     }
 }
 

@@ -25,8 +25,8 @@ pub mod command_logging_middleware_test {
         assert_eq!(true, events.is_ok());
         assert_eq!(1, events.unwrap().len());
         assert_eq!(2, logger.messages.borrow().len());
-        let first_log = "INFO_Dispatching a command [ACommand].".to_string();
-        let second_log = "INFO_Command[ACommand] has been handled and has produced [1] events [AnEvent ].".to_string();
+        let first_log = "INFO_Dispatching a command [ACommand] [ACommand].".to_string();
+        let second_log = "INFO_Command[ACommand] [ACommand] has been handled and has produced [1] events [AnEvent ].".to_string();
         assert_eq!(&first_log, logger.messages.borrow().get(0).unwrap());
         assert_eq!(&second_log, logger.messages.borrow().get(1).unwrap());
         logger.flush();
@@ -47,8 +47,8 @@ pub mod command_logging_middleware_test {
         assert_eq!(true, error.is_err());
         assert_eq!(true, error.err().unwrap().downcast_ref::<NoCommandHandlerRegisterForGivenCommand>().is_some());
         assert_eq!(2, logger.messages.borrow().len());
-        let first_log = "INFO_Dispatching a command [AnotherCommand].".to_string();
-        let second_log = "ERROR_An error has occurred when dispatching command [AnotherCommand]: No CommandHandler is registered for given command !".to_string();
+        let first_log = "INFO_Dispatching a command [AnotherCommand] [AnotherCommand].".to_string();
+        let second_log = "ERROR_An error has occurred when dispatching command [AnotherCommand] [AnotherCommand]: No CommandHandler is registered for given command !".to_string();
         assert_eq!(&first_log, logger.messages.borrow().get(0).unwrap());
         assert_eq!(&second_log, logger.messages.borrow().get(1).unwrap());
         logger.flush();

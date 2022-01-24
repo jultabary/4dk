@@ -24,8 +24,8 @@ pub mod query_logging_middleware_test {
         assert_eq!(true, responses.is_ok());
         assert_eq!(1, responses.unwrap().len());
         assert_eq!(2, logger.messages.borrow().len());
-        let first_log = "INFO_Dispatching a query [AQuery].".to_string();
-        let second_log = "INFO_Query[AQuery] has been handled and has produced [1] responses [AResponse ].".to_string();
+        let first_log = "INFO_Dispatching a query [AQuery] [AQuery].".to_string();
+        let second_log = "INFO_Query[AQuery] [AQuery] has been handled and has produced [1] responses [AResponse ].".to_string();
         assert_eq!(&first_log, logger.messages.borrow().get(0).unwrap());
         assert_eq!(&second_log, logger.messages.borrow().get(1).unwrap());
         logger.flush();
@@ -46,8 +46,8 @@ pub mod query_logging_middleware_test {
         assert_eq!(true, error.is_err());
         assert_eq!(true, error.err().unwrap().downcast_ref::<NoQueryHandlerRegisterForGivenQuery>().is_some());
         assert_eq!(2, logger.messages.borrow().len());
-        let first_log = "INFO_Dispatching a query [AnotherQuery].".to_string();
-        let second_log = "ERROR_An error has occurred when dispatching query [AnotherQuery]: No QueryHandler is registered for given query !".to_string();
+        let first_log = "INFO_Dispatching a query [AnotherQuery] [AnotherQuery].".to_string();
+        let second_log = "ERROR_An error has occurred when dispatching query [AnotherQuery] [AnotherQuery]: No QueryHandler is registered for given query !".to_string();
         assert_eq!(&first_log, logger.messages.borrow().get(0).unwrap());
         assert_eq!(&second_log, logger.messages.borrow().get(1).unwrap());
         logger.flush();

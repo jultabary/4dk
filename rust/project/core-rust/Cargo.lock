@@ -19,8 +19,6 @@ dependencies = [
 [[package]]
 name = "dddk_macro"
 version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16d5850444d5e1191c548fa0e1d3d8d06cfa526216991050eaf86017ae9dc693"
 dependencies = [
  "quote",
  "syn",
