@@ -1,5 +1,6 @@
 use std::any::{Any, TypeId};
 use std::sync::Arc;
+use dddk_core::dddk::aliases::GenericError;
 use dddk_core::dddk::event::event::Event;
 use dddk_core::dddk::event::event_handler::{EventHandler, EventHandlerInBus};
 use dddk_macro::Event;
@@ -25,7 +26,8 @@ impl FooCreatedEvent {
 pub struct PrintThatFooHasBeenCreatedEventHandler {}
 
 impl EventHandler<FooCreatedEvent> for PrintThatFooHasBeenCreatedEventHandler {
-    fn handle(&self, event: &FooCreatedEvent) {
+    fn handle(&self, event: &FooCreatedEvent) -> Result<(), GenericError> {
         println!("foo with {} {} has been created", event.id, event.title);
+        Ok(())
     }
 }

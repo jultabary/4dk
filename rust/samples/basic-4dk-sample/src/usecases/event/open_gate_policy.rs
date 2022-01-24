@@ -1,6 +1,7 @@
 use std::any::{Any, TypeId};
 use std::rc::Rc;
 use std::sync::Arc;
+use dddk_core::dddk::aliases::GenericError;
 use dddk_core::dddk::event::event::Event;
 use dddk_core::dddk::event::event_handler::{EventHandler, EventHandlerInBus};
 use dddk_macro::EventHandlerInBus;
@@ -19,7 +20,8 @@ impl OpenGatePolicyHandler {
 }
 
 impl EventHandler<ANewCarIsParkedEvent> for OpenGatePolicyHandler {
-    fn handle(&self, _event: &ANewCarIsParkedEvent) {
+    fn handle(&self, _event: &ANewCarIsParkedEvent) -> Result<(), GenericError> {
         self.gate_repository.open_gate();
+        Ok(())
     }
 }

@@ -6,6 +6,7 @@ pub mod event_macro_tests {
     use dddk_macro::Event;
     use std::sync::Arc;
     use dddk_macro::EventHandlerInBus;
+    use crate::dddk::aliases::GenericError;
     use crate::dddk::event::event_handler::EventHandlerInBus;
     use crate::dddk::event::event_handler::EventHandler;
 
@@ -18,8 +19,9 @@ pub mod event_macro_tests {
     }
 
     impl EventHandler<AnEvent> for AnEventHandler {
-        fn handle(&self, _event: &AnEvent) {
+        fn handle(&self, _event: &AnEvent) -> Result<(), GenericError> {
             self.has_been_called.replace(true);
+            Ok(())
         }
     }
 

@@ -3,6 +3,7 @@ pub mod some_event_handler_for_test {
     use std::any::{Any, TypeId};
     use std::cell::RefCell;
     use std::sync::Arc;
+    use crate::dddk::aliases::GenericError;
     use crate::dddk::event::event::Event;
     use crate::dddk::event::event_handler::{EventHandler, EventHandlerInBus};
     use crate::dddk::test_tools::some_event_for_test::some_event_for_test::{AnEvent, AnotherEvent};
@@ -36,8 +37,9 @@ pub mod some_event_handler_for_test {
     }
 
     impl EventHandler<AnEvent> for AnEventHandler {
-        fn handle(&self, event: &AnEvent) {
+        fn handle(&self, event: &AnEvent) -> Result<(), GenericError> {
             push_event_id_to_store(&self.handled_events, event.id);
+            Ok(())
         }
     }
 
@@ -76,8 +78,9 @@ pub mod some_event_handler_for_test {
     }
 
     impl EventHandler<AnotherEvent> for AnotherEventHandler {
-        fn handle(&self, event: &AnotherEvent) {
+        fn handle(&self, event: &AnotherEvent) -> Result<(), GenericError> {
             push_event_id_to_store(&self.handled_events, event.id);
+            Ok(())
         }
     }
 
@@ -111,8 +114,9 @@ pub mod some_event_handler_for_test {
     }
 
     impl EventHandler<AnEvent> for AThirdEventHandler {
-        fn handle(&self, event: &AnEvent) {
+        fn handle(&self, event: &AnEvent) -> Result<(), GenericError>{
             push_event_id_to_store(&self.handled_events, event.id);
+            Ok(())
         }
     }
 
