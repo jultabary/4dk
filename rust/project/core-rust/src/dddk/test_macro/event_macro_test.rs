@@ -2,6 +2,7 @@
 pub mod event_macro_tests {
     use std::any::{Any, TypeId};
     use std::cell::RefCell;
+    use std::fmt::{Debug, Formatter};
     use crate::dddk::event::event::Event;
     use dddk_macro::Event;
     use std::sync::Arc;
@@ -12,6 +13,12 @@ pub mod event_macro_tests {
 
     #[derive(Event)]
     struct AnEvent {}
+
+    impl Debug for AnEvent {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AnEvent")
+        }
+    }
 
     #[derive(EventHandlerInBus)]
     struct AnEventHandler {

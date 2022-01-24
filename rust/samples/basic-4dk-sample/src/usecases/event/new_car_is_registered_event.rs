@@ -1,4 +1,5 @@
 use std::any::Any;
+use std::fmt::{Debug, Formatter};
 use dddk_core::dddk::event::event::Event;
 use dddk_macro::Event;
 use crate::domain::car::CarId;
@@ -6,6 +7,12 @@ use crate::domain::car::CarId;
 #[derive(Event)]
 pub struct ANewCarIsParkedEvent {
     car_id: CarId,
+}
+
+impl Debug for ANewCarIsParkedEvent {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "ANewCarIsParkedEvent")
+    }
 }
 
 impl ANewCarIsParkedEvent {

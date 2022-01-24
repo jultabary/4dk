@@ -1,4 +1,5 @@
 use std::any::{Any, TypeId};
+use std::fmt::{Debug, Formatter};
 use std::sync::Arc;
 use dddk_core::dddk::aliases::GenericError;
 use dddk_core::dddk::event::event::Event;
@@ -11,6 +12,12 @@ use uuid::Uuid;
 pub struct FooCreatedEvent {
     pub id: Uuid,
     title: String,
+}
+
+impl Debug for FooCreatedEvent {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "FooCreatedEvent")
+    }
 }
 
 impl FooCreatedEvent {

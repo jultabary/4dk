@@ -24,6 +24,12 @@ pub mod command_macro_tests {
     #[derive(Event)]
     struct AnEvent {}
 
+    impl Debug for AnEvent {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AnEvent")
+        }
+    }
+
     #[derive(CommandHandlerInBus)]
     struct ACommandHandler {}
 
