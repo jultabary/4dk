@@ -12,3 +12,4 @@ dddk_core = { path = "../../project/core-rust" }
 dddk_macro = { path = "../../project/fourdk-macro" }
 log = "0.4"
 actix-web = "3"
+dotenv = "0.15.0"
