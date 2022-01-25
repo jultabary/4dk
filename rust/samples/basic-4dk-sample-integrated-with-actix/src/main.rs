@@ -9,7 +9,7 @@ use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
 use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
 use log::LevelFilter;
-use crate::infrastructure::api::routes::get_all_foo;
+use crate::infrastructure::api::routes::{get_all_foo, post_foo};
 use crate::infrastructure::database::database_repository::{establish_connection, FooRepositoryAdapter};
 use crate::logger::SimpleLogger;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommandHandler;
@@ -66,6 +66,7 @@ async fn main() -> std::io::Result<()> {
             let context = RefCell::new(Context::new());
             App::new()
                 .service(get_all_foo)
+                .service(post_foo)
                 .data(context)
         })
         .bind("127.0.0.1:8000")?
