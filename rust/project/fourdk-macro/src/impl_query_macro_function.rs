@@ -6,7 +6,7 @@ pub fn impl_query_handler_in_bus(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
         impl QueryHandlerInBus for #name {
-            fn handle_from_bus(&self, query: &dyn Query) -> Responses {
+            fn handle_from_bus(&self, query: &dyn Query) -> ResponseFromHandler {
                 self.handle_generic_query(query)
             }
 

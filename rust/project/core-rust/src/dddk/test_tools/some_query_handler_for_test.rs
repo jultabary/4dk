@@ -1,7 +1,7 @@
 #[cfg(test)]
 pub mod some_query_handler_for_test {
     use std::any::{Any, TypeId};
-    use crate::dddk::aliases::Responses;
+    use crate::dddk::aliases::ResponseFromHandler;
     use crate::dddk::query::query::Query;
     use crate::dddk::query::query_handler::{QueryHandler, QueryHandlerInBus};
     use crate::dddk::test_tools::some_query_for_test::some_query_for_test::{AnotherQuery, AQuery};
@@ -10,9 +10,9 @@ pub mod some_query_handler_for_test {
     pub struct AQueryHandler {}
 
     impl QueryHandler<AQuery> for AQueryHandler {
-        fn handle(&self, _query: &AQuery) -> Responses {
+        fn handle(&self, _query: &AQuery) -> ResponseFromHandler {
             let a_response = AResponse {};
-            Ok(vec![Box::new(a_response)])
+            Ok(Box::new(a_response))
         }
     }
 
@@ -23,7 +23,7 @@ pub mod some_query_handler_for_test {
     }
 
     impl QueryHandlerInBus for AQueryHandler {
-        fn handle_from_bus<'a>(&self, query: &'a dyn Query) -> Responses {
+        fn handle_from_bus<'a>(&self, query: &'a dyn Query) -> ResponseFromHandler {
             self.handle_generic_query(query)
         }
 
@@ -49,7 +49,7 @@ pub mod some_query_handler_for_test {
     }
 
     impl QueryHandlerInBus for AnotherQueryHandler {
-        fn handle_from_bus<'a>(&self, query: &'a dyn Query) -> Responses {
+        fn handle_from_bus<'a>(&self, query: &'a dyn Query) -> ResponseFromHandler {
             self.handle_generic_query(query)
         }
 
@@ -67,9 +67,9 @@ pub mod some_query_handler_for_test {
     }
 
     impl QueryHandler<AnotherQuery> for AnotherQueryHandler {
-        fn handle(&self, _query: &AnotherQuery) -> Responses {
+        fn handle(&self, _query: &AnotherQuery) -> ResponseFromHandler {
             let another_response = AnotherResponse {};
-            Ok(vec![Box::new(another_response)])
+            Ok(Box::new(another_response))
         }
     }
 }

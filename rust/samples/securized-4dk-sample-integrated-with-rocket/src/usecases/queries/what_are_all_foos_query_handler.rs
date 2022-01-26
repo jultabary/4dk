@@ -1,7 +1,7 @@
 use std::any::{Any, TypeId};
 use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
-use dddk_core::dddk::aliases::Responses;
+use dddk_core::dddk::aliases::ResponseFromHandler;
 use dddk_core::dddk::query::query::Query;
 use dddk_core::dddk::query::query_handler::{QueryHandler, QueryHandlerInBus};
 use dddk_macro::Query;
@@ -31,7 +31,7 @@ impl WhatAreAllTheFoosQueryHandler {
 }
 
 impl QueryHandler<WhatAreAllTheFoosQuery> for WhatAreAllTheFoosQueryHandler {
-    fn handle(&self, _query: &WhatAreAllTheFoosQuery) -> Responses {
+    fn handle(&self, _query: &WhatAreAllTheFoosQuery) -> ResponseFromHandler {
         Ok(self.foo_repository.get_all_foo())
     }
 }

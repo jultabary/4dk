@@ -1,6 +1,6 @@
 use std::rc::Rc;
 use std::sync::Arc;
-use dddk_core::dddk::aliases::{Events, Responses};
+use dddk_core::dddk::aliases::{Events, ResponseFromHandler};
 use dddk_core::dddk::command::bus_impl::command_logging_middleware::CommandLoggingMiddleware;
 use dddk_core::dddk::command::bus_impl::event_produced_by_command_bus_dispatcher::EventsProducedByCommandBusDispatcher;
 use dddk_core::dddk::command::command::Command;
@@ -62,7 +62,7 @@ impl SecuredBus {
         self.command_bus.dispatch(command)
     }
 
-    pub fn dispatch_query(&self, query: &dyn Query) -> Responses {
+    pub fn dispatch_query(&self, query: &dyn Query) -> ResponseFromHandler {
         self.query_bus.dispatch(query)
     }
 }

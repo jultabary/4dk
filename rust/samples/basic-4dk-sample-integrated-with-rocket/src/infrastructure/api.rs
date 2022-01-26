@@ -1,5 +1,4 @@
 use std::str::FromStr;
-use dddk_core::dddk::query::response::Response;
 use rocket::serde::json::{Json};
 use rocket::State;
 use rocket::serde::{Serialize, Deserialize};
@@ -8,6 +7,7 @@ use crate::Context;
 use crate::domain::foo::Foo;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommand;
 use crate::usecases::events::foo_created_event::FooCreatedEvent;
+use crate::usecases::queries::foos_response::FoosResponse;
 use crate::usecases::queries::what_are_all_foos_query_handler::WhatAreAllTheFoosQuery;
 
 #[derive(Serialize, Deserialize)]
@@ -29,14 +29,11 @@ impl FooModelApi {
 pub fn get_all_foo(context: &State<Context>) -> Json<Vec<FooModelApi>> {
     let what_are_all_the_foos = WhatAreAllTheFoosQuery {};
     let foos_as_response = context.get_bus().dispatch_query(&what_are_all_the_foos).unwrap();
-    let mut responses = Vec::new();
-    foos_as_response
-        .iter()
-        .for_each(|response: &Box<dyn Response>| {
-            let foo = response.as_any().downcast_ref::<Foo>().unwrap();
-            responses.push(FooModelApi::from_domain(foo))
-        });
-    Json(responses)
+    let foos = foos_as_response.as_any().downcast_ref::<FoosResponse>().unwrap();
+    let api_reponse: Vec<FooModelApi> = foos.get_foos()
+        .iter().map(|foo| { FooModelApi::from_domain(foo) })
+        .collect();
+    Json(api_reponse)
 }
 
 #[post("/foo", format = "json", data = "<raw_foo>")]

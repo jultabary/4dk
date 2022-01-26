@@ -1,12 +1,12 @@
 use std::env;
 use std::rc::Rc;
 use dddk_core::dddk::query::response::Response;
-use diesel::{Connection, PgConnection};
+use diesel::{Connection, PgConnection, RunQueryDsl};
 use dotenv::dotenv;
 use uuid::Uuid;
-use crate::diesel::RunQueryDsl;
 use crate::domain::foo::Foo;
 use crate::domain::repository::FooRepository;
+use crate::usecases::queries::foos_response::FoosResponse;
 use self::super::super::schema::foo;
 
 
@@ -56,15 +56,16 @@ impl FooRepositoryAdapter {
 }
 
 impl FooRepository for FooRepositoryAdapter {
-    fn get_all_foo(&self) -> Vec<Box<dyn Response>> {
+    fn get_all_foo(&self) -> Box<dyn Response> {
         let results: Vec<FooModel> = foo::table
             .load::<FooModel>(self.pg_connection.as_ref())
             .expect("Error loading foos");
         let foos = results
             .iter()
-            .map(|model| { Box::new(Foo::from_database(model)) as Box<dyn Response> })
+            .map(|model| { Foo::from_database(model) })
             .collect();
-        return foos;
+        let foos_reponse = FoosResponse::new(foos);
+        return Box::new(foos_reponse);
     }
 
     fn save(&self, a_foo: Foo) {

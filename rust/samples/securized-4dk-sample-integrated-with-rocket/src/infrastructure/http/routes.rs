@@ -7,12 +7,12 @@ use rocket::serde::json::Json;
 use rocket::State;
 use uuid::Uuid;
 use crate::Context;
-use crate::domain::foo::Foo;
 use crate::infrastructure::http::error_handling::catch_error_from_bus;
 use crate::infrastructure::http::guard::Token;
 use crate::infrastructure::http::model::FooModelApi;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommand;
 use crate::usecases::events::foo_created_event::FooCreatedEvent;
+use crate::usecases::queries::foos_response::FoosResponse;
 use crate::usecases::queries::what_are_all_foos_query_handler::WhatAreAllTheFoosQuery;
 
 
@@ -43,13 +43,9 @@ pub fn post_foo(token: Token, raw_foo: Json<FooModelApi>, context: &State<Contex
         .id.to_string()
 }
 
-fn convert_response_to_foo_model_api(foos_as_response: Vec<Box<dyn Response>>) -> Vec<FooModelApi> {
-    let mut responses = Vec::new();
-    foos_as_response
-        .iter()
-        .for_each(|response: &Box<dyn Response>| {
-            let foo = response.as_any().downcast_ref::<Foo>().unwrap();
-            responses.push(FooModelApi::from_domain(foo))
-        });
-    responses
+fn convert_response_to_foo_model_api(foos_as_response: Box<dyn Response>) -> Vec<FooModelApi> {
+    let foos = foos_as_response.as_any().downcast_ref::<FoosResponse>().unwrap();
+    foos.get_foos()
+        .iter().map(|foo| { FooModelApi::from_domain(foo) })
+        .collect()
 }

@@ -1,6 +1,6 @@
 use std::any::TypeId;
 use std::collections::HashMap;
-use crate::dddk::aliases::Responses;
+use crate::dddk::aliases::ResponseFromHandler;
 use crate::dddk::errors::NoQueryHandlerRegisterForGivenQuery;
 use crate::dddk::query::query::Query;
 use crate::dddk::query::query_bus::QueryBus;
@@ -33,7 +33,7 @@ impl QueryDispatcher {
 }
 
 impl QueryBus for QueryDispatcher {
-    fn dispatch<'b>(&self, query: &'b dyn Query) -> Responses {
+    fn dispatch<'b>(&self, query: &'b dyn Query) -> ResponseFromHandler {
         if let Option::Some(query_handler) = self.query_handlers.get(&query.as_any().type_id()) {
             let responses = query_handler.handle_from_bus(query);
             return responses;

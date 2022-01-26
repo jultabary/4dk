@@ -1,7 +1,7 @@
 #[cfg(test)]
 pub mod some_secured_query_handler_for_test {
     use std::any::{Any, TypeId};
-    use dddk_core::dddk::aliases::Responses;
+    use dddk_core::dddk::aliases::ResponseFromHandler;
     use dddk_core::dddk::query::query::Query;
     use dddk_core::dddk::query::query_handler::{QueryHandler, QueryHandlerInBus};
     use dddk_core::dddk::query::response::Response;
@@ -21,9 +21,9 @@ pub mod some_secured_query_handler_for_test {
     }
 
     impl QueryHandler<AQuery> for AQueryHandler {
-        fn handle(&self, _command: &AQuery) -> Responses {
+        fn handle(&self, _command: &AQuery) -> ResponseFromHandler {
             let response = Box::new(AResponse::new()) as Box<dyn Response>;
-            Ok(vec![response])
+            Ok(response)
         }
     }
 
@@ -44,9 +44,9 @@ pub mod some_secured_query_handler_for_test {
     }
 
     impl QueryHandler<AnotherQuery> for AnotherQueryHandler {
-        fn handle(&self, _query: &AnotherQuery) -> Responses {
+        fn handle(&self, _query: &AnotherQuery) -> ResponseFromHandler {
             let response = Box::new(AnotherResponse::new()) as Box<dyn Response>;
-            Ok(vec![response])
+            Ok(response)
         }
     }
 }

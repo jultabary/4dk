@@ -1,9 +1,5 @@
-use std::any::Any;
-use dddk_core::dddk::query::response::Response;
-use dddk_macro::Response;
 use uuid::Uuid;
 
-#[derive(Response)]
 pub struct Foo {
     id: Uuid,
     title: String

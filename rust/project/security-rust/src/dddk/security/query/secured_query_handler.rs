@@ -1,5 +1,5 @@
 use std::any::{Any, TypeId};
-use dddk_core::dddk::aliases::Responses;
+use dddk_core::dddk::aliases::ResponseFromHandler;
 use dddk_core::dddk::query::query::Query;
 use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
 use crate::dddk::security::permission::Permission;
@@ -27,7 +27,7 @@ impl SecuredQueryHandler {
 }
 
 impl QueryHandlerInBus for SecuredQueryHandler {
-    fn handle_from_bus<'a>(&self, command: &'a dyn Query) -> Responses {
+    fn handle_from_bus<'a>(&self, command: &'a dyn Query) -> ResponseFromHandler {
         self.query_handler.handle_from_bus(command)
     }
 

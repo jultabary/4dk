@@ -7,7 +7,7 @@ pub mod query_macro_tests {
     use dddk_macro::Query;
     use dddk_macro::QueryHandlerInBus;
     use dddk_macro::Response;
-    use crate::dddk::aliases::Responses;
+    use crate::dddk::aliases::ResponseFromHandler;
     use crate::dddk::query::query_handler::QueryHandlerInBus;
     use crate::dddk::query::query_handler::QueryHandler;
 
@@ -27,8 +27,8 @@ pub mod query_macro_tests {
     struct AQueryHandler {}
 
     impl QueryHandler<AQuery> for AQueryHandler {
-        fn handle(&self, _query: &AQuery) -> Responses {
-            Ok(vec![Box::new(AResponse {})])
+        fn handle(&self, _query: &AQuery) -> ResponseFromHandler {
+            Ok(Box::new(AResponse {}))
         }
     }
 
@@ -53,13 +53,13 @@ pub mod query_macro_tests {
         let a_query_handler = AQueryHandler {};
 
         // When
-        let responses: Responses = a_query_handler.handle_from_bus(&a_query);
+        let response: ResponseFromHandler = a_query_handler.handle_from_bus(&a_query);
         let query_handler_name = a_query_handler.get_query_handler_name();
         let query_type_id = a_query_handler.get_associated_query_from_bus();
+
         // Then
-        let responses = responses.unwrap();
-        assert_eq!(1, responses.len());
-        assert_eq!(true, responses.get(0).unwrap().as_any().downcast_ref::<AResponse>().is_some());
+        let response = response.unwrap();
+        assert_eq!(true, response.as_any().downcast_ref::<AResponse>().is_some());
         assert_eq!("AQueryHandler".to_string(), query_handler_name);
         assert_eq!(TypeId::of::<AQuery>(), query_type_id);
 

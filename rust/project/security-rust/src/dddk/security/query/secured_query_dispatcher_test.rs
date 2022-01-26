@@ -127,8 +127,7 @@ pub mod test {
 
         // Then
         let events = events.unwrap();
-        assert_eq!(1, events.len());
-        assert_eq!(true, events.get(0).unwrap().as_any().downcast_ref::<AResponse>().is_some());
+        assert_eq!(true, events.as_any().downcast_ref::<AResponse>().is_some());
     }
 
     #[test]
@@ -145,12 +144,11 @@ pub mod test {
         let query = AnotherQuery::new();
 
         // When
-        let events = secured_query_dispatcher.dispatch(&query);
+        let responses = secured_query_dispatcher.dispatch(&query);
 
         // Then
-        let events = events.unwrap();
-        assert_eq!(1, events.len());
-        assert_eq!(true, events.get(0).unwrap().as_any().downcast_ref::<AnotherResponse>().is_some());
+        let responses = responses.unwrap();
+        assert_eq!(true, responses.as_any().downcast_ref::<AnotherResponse>().is_some());
     }
 
     #[test]
@@ -198,10 +196,10 @@ pub mod test {
         let query = SecuredQuery::new(Box::new(AQuery::new()), vec![user_role]);
 
         // When
-        let events = secured_query_dispatcher.dispatch(&query);
+        let response = secured_query_dispatcher.dispatch(&query);
 
         // Then
-        let events = events.unwrap();
-        assert_eq!(1, events.len());
+        let response = response.unwrap();
+        assert_eq!(true, response.as_any().downcast_ref::<AResponse>().is_some());
     }
 }

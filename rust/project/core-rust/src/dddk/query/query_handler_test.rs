@@ -13,13 +13,11 @@ mod tests {
         let a_query = AQuery { };
 
         // When
-        let responses = a_query_handler.handle_generic_query(&a_query);
+        let response = a_query_handler.handle_generic_query(&a_query);
 
         // Then
-        assert_eq!(true, responses.is_ok());
-        let responses = responses.unwrap();
-        assert_eq!(1, responses.len());
-        let response = responses.get(0).unwrap();
+        assert_eq!(true, response.is_ok());
+        let response = response.unwrap();
         let a_response = response.as_ref().as_any().downcast_ref::<AResponse>();
         assert_eq!(true, a_response.is_some());
     }

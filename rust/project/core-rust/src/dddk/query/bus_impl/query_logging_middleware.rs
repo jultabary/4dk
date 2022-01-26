@@ -1,5 +1,5 @@
 use log::{error, info};
-use crate::dddk::aliases::Responses;
+use crate::dddk::aliases::ResponseFromHandler;
 use crate::dddk::query::query::Query;
 use crate::dddk::query::query_bus::QueryBus;
 
@@ -16,13 +16,13 @@ impl QueryLoggingMiddleware {
 }
 
 impl QueryBus for QueryLoggingMiddleware {
-    fn dispatch<'b>(&self, query: &'b dyn Query) -> Responses {
+    fn dispatch<'b>(&self, query: &'b dyn Query) -> ResponseFromHandler {
         info!("Dispatching a query [{}] [{:?}].",
               query.get_query_name(),
               query);
-        let responses = self.query_bus.dispatch(query);
-        if responses.is_err() {
-            let error = responses.err().unwrap();
+        let response = self.query_bus.dispatch(query);
+        if response.is_err() {
+            let error = response.err().unwrap();
             let error_message = error.to_string();
             error!(
                 "An error has occurred when dispatching query [{}] [{:?}]: {}",
@@ -32,21 +32,14 @@ impl QueryBus for QueryLoggingMiddleware {
             );
             return Err(error);
         }
-        let responses = responses.unwrap();
-        let mut response_names = String::new();
-        responses.iter()
-            .for_each(|response| {
-                response_names.push_str(response.get_response_name().as_str());
-                response_names.push_str(" ");
-            });
+        let response = response.unwrap();
         info!(
-            "Query[{}] [{:?}] has been handled and has produced [{}] responses [{}].",
+            "Query[{}] [{:?}] has been handled and has returned response [{}].",
             query.get_query_name(),
             query,
-            responses.len(),
-            response_names
+            response.get_response_name()
         );
-        return Ok(responses);
+        return Ok(response);
     }
 }
 

@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use crate::dddk::aliases::{Events, Responses};
+use crate::dddk::aliases::{Events, ResponseFromHandler};
 use crate::dddk::command::bus_impl::command_dispatcher::CommandDispatcher;
 use crate::dddk::command::bus_impl::command_logging_middleware::CommandLoggingMiddleware;
 use crate::dddk::command::bus_impl::event_produced_by_command_bus_dispatcher::EventsProducedByCommandBusDispatcher;
@@ -50,7 +50,7 @@ impl Bus {
         self.command_bus.dispatch(command)
     }
 
-    pub fn dispatch_query(&self, query: &dyn Query) -> Responses {
+    pub fn dispatch_query(&self, query: &dyn Query) -> ResponseFromHandler {
         self.query_bus.dispatch(query)
     }
 }

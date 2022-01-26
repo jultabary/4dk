@@ -5,4 +5,4 @@ use crate::dddk::query::response::Response;
 
 pub type GenericError = Box<dyn Error + Send + Sync + 'static>;
 pub type Events = Result<Vec<Arc<dyn Event>>, GenericError>;
-pub type Responses = Result<Vec<Box<dyn Response>>, GenericError>;
+pub type ResponseFromHandler = Result<Box<dyn Response>, GenericError>;

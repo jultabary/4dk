@@ -9,14 +9,15 @@ mod tests {
     use crate::domain::foo::Foo;
     use crate::domain::repository::FooRepository;
     use crate::usecases::commands::create_foo_command_handler::CreateFooCommand;
+    use crate::usecases::queries::foos_response::FoosResponse;
 
     struct FooRepositoryFake {
         pub save_has_been_called: RefCell<Option<bool>>,
     }
 
     impl FooRepository for FooRepositoryFake {
-        fn get_all_foo(&self) -> Vec<Box<dyn Response>> {
-            vec![]
+        fn get_all_foo(&self) -> Box<dyn Response> {
+            Box::new(FoosResponse::new(vec![]))
         }
 
         fn save(&self, _foo: Foo) {

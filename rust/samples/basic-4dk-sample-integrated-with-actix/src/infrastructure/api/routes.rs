@@ -3,11 +3,11 @@ use std::str::FromStr;
 use actix_web::{Responder, web, get, post, Result};
 use uuid::Uuid;
 use crate::Context;
-use crate::domain::foo::Foo;
 use crate::infrastructure::api::api_model::FooApi;
 use crate::infrastructure::api::error_handling::CustomHttpError;
 use crate::usecases::commands::create_foo_command_handler::CreateFooCommand;
 use crate::usecases::events::foo_created_event::FooCreatedEvent;
+use crate::usecases::queries::foos_response::FoosResponse;
 use crate::usecases::queries::what_are_all_foos_query_handler::WhatAreAllTheFoosQuery;
 
 #[post("/foo")]
@@ -35,12 +35,10 @@ pub async fn get_all_foo(context: web::Data<RefCell<Context>>) -> Result<impl Re
     if result.is_err() {
         return Err(CustomHttpError::InternalServerError);
     }
-    let foos: Vec<FooApi> = result.unwrap()
-        .iter()
-        .map(|response| {
-            let foo = response.as_any().downcast_ref::<Foo>().unwrap();
-            FooApi::from_domain(foo)
-        })
+    let response = result.unwrap();
+    let foos = response.as_any().downcast_ref::<FoosResponse>().unwrap();
+    let api_reponse: Vec<FooApi> = foos.get_foos()
+        .iter().map(|foo| { FooApi::from_domain(foo) })
         .collect();
-    Ok(web::Json(foos))
+    Ok(web::Json(api_reponse))
 }

@@ -1,7 +1,7 @@
 use std::any::TypeId;
 use std::collections::HashMap;
 use std::rc::Rc;
-use dddk_core::dddk::aliases::Responses;
+use dddk_core::dddk::aliases::ResponseFromHandler;
 use dddk_core::dddk::errors::NoQueryHandlerRegisterForGivenQuery;
 use dddk_core::dddk::query::query::Query;
 use dddk_core::dddk::query::query_bus::QueryBus;
@@ -68,7 +68,7 @@ impl SecuredQueryDispatcher {
 }
 
 impl QueryBus for SecuredQueryDispatcher {
-    fn dispatch(&self, query: &dyn Query) -> Responses {
+    fn dispatch(&self, query: &dyn Query) -> ResponseFromHandler {
         return if let Some(secured_query) = query.as_any().downcast_ref::<SecuredQuery>() {
             let query_handler_result = self.get_query_handler_from_secured_query(secured_query);
             if query_handler_result.is_err() {
