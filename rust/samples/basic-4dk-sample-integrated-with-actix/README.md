@@ -1,12 +1,12 @@
 # Sample
-Integration of 4dk in a Rocket and Diesel context.<br>
+Integration of 4dk in a Actix and Diesel context.<br>
 
-## basic-4dk-sample-integrated-with-rocket
+## basic-4dk-sample-integrated-with-actix
 
 ### Diesel
 <a href="https://diesel.rs/">Diesel</a> is a famous Rust ORM. 
 
-### Rocket
+### Actix
 <a href="https://actix.rs/">Actix</a> is a famous Rust web framework.
 
 ## Presentation
@@ -16,13 +16,13 @@ Integration of 4dk in a Rocket and Diesel context.<br>
 `Context` factory `new` makes all the dependency injection needed for the project. <br/>
 Only context is injected in the rocket container (manage).
 
-### infrastructure/api.rs
-Only this file contains Rocket code with `main.rs` <br />
+### infrastructure/api/routes.rs
+Only this file contains Actix code with `main.rs` <br />
 Exposed routes:
 - `get_all_foo` GET /foo
 - `post_foo` POST /foo
 
-### infrastructure/database.rs
+### infrastructure/database/*.rs
 Only this file contains Diesel <br />
 It contains all code relative to the database <br />
 
