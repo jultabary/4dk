@@ -1,0 +1,10 @@
+pub mod some_command_for_test;
+pub mod some_command_handler_for_test;
+pub mod some_event_for_test;
+pub mod some_event_handler_for_test;
+pub mod some_query_for_test;
+pub mod some_response_for_test;
+pub mod some_query_handler_for_test;
+pub mod some_logger_for_test;
+pub mod some_external_event_for_test;
+pub mod some_policy_handler_for_test;

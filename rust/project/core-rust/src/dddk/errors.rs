@@ -44,3 +44,25 @@ impl Display for NoQueryHandlerRegisterForGivenQuery {
         write!(f, "No QueryHandler is registered for given query !")
     }
 }
+
+#[derive(Debug)]
+pub struct ExternalEventIsNotAssociatedWithThisPolicyHandler {}
+
+impl Error for ExternalEventIsNotAssociatedWithThisPolicyHandler {}
+
+impl Display for ExternalEventIsNotAssociatedWithThisPolicyHandler {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "External Event is not associated with this PolicyHandler !")
+    }
+}
+
+#[derive(Debug)]
+pub struct NoPolicyHandlerRegisterForGivenExternalEvent {}
+
+impl Error for NoPolicyHandlerRegisterForGivenExternalEvent {}
+
+impl Display for NoPolicyHandlerRegisterForGivenExternalEvent {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "No PolicyHandler is registered for given external event !")
+    }
+}
