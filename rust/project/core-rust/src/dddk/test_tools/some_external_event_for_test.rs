@@ -3,6 +3,7 @@ pub mod some_external_event_for_test {
     use std::any::Any;
     use crate::dddk::external_event::external_event::ExternalEvent;
 
+    #[derive(Debug)]
     pub struct AnExternalEvent {}
 
     impl ExternalEvent for AnExternalEvent {
@@ -15,6 +16,7 @@ pub mod some_external_event_for_test {
         }
     }
 
+    #[derive(Debug)]
     pub struct AnotherExternalEvent {}
 
     impl ExternalEvent for AnotherExternalEvent {

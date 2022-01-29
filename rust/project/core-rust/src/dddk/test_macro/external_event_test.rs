@@ -7,7 +7,7 @@ pub mod external_event_macro_tests {
     use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::ACommand;
     use dddk_macro::{ExternalEvent, PolicyHandlerInBus};
 
-    #[derive(ExternalEvent)]
+    #[derive(ExternalEvent, Debug)]
     pub struct AnExternalEvent {}
 
     #[derive(PolicyHandlerInBus)]
