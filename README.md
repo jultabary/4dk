@@ -67,3 +67,10 @@ More exactly, it will be the <a href="http://www.plainionist.net/Implementing-Cl
 |--------------------|-----------------------------------------------------------------|------|------|
 | EventDispatcher    | EventBus which dispatches event to its associated EventHandlers | X    | X    |
 | EventHandlerLogger | Add Logging to EventHandler                                     | X    | X    |
+
+### External Event
+| Features                                    | Description                                                                              | Java | Rust |
+|---------------------------------------------|------------------------------------------------------------------------------------------|------|------|
+| ExternalEventDispatcher                     | ExternalEventBus which dispatches external event to its associated PolicyHandler         | X    | X    |
+| ExternalEventLoggingMiddleware              | ExternalEventBus which logs all external event handled and commands returned by policies | X    | X    |
+| CommandProducedByExternalEventBusDispatcher | Dispatch Command produced by ExternalEventBus to CommandBus                              | X    | X    |
