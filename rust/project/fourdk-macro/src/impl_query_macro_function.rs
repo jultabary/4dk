@@ -46,7 +46,7 @@ pub fn impl_response(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
         impl Response for #name {
-            fn as_any(&self) -> &dyn Any {
+            fn as_any(&mut self) -> &mut dyn Any {
                 self
             }
 

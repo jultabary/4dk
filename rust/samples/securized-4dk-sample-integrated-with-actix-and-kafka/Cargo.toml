@@ -1,0 +1,20 @@
+[package]
+name = "securized-4dk-sample-integrated-with-actix-and-kafka"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+diesel = { version = "1.4.4", features = ["postgres", "uuid"] }
+uuid = { version = "0.6.5", features = ["v4"] }
+dddk_core = { path = "../../project/core-rust" }
+dddk_macro = { path = "../../project/fourdk-macro" }
+log = "0.4"
+actix-web = "3"
+derive_more="0.99"
+dotenv = "0.15.0"
+serde = "1"
+serde_json = "1"
+kafka = "0.8.0"
+chrono = "0.4"
