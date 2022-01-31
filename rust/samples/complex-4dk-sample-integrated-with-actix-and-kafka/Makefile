@@ -36,21 +36,13 @@ start-release: ## start app for prod ✓
 clean: ## clean compiled code ✓
 	cargo clean
 
-.PHONY: start-db
-start-db: ## start the docker database
-	docker run -d \
-		--name rust-postgres \
-		-e POSTGRES_PASSWORD=password \
-		-e POSTGRES_USER=user \
-		-e POSTGRES_DB=rust-sample \
-		-p 5432:5432 \
-		-v $(DIR)/resources/database:/docker-entrypoint-initdb.d \
-		postgres:14.1
+.PHONY: start-infra
+start-infra: ## start the docker database
+	docker compose up -d
 
-.PHONY: stop-db
-stop-db: ## stop the docker database and remove it
-	docker stop rust-postgres
-	docker rm rust-postgres
+.PHONY: stop-infra
+stop-infra: ## stop the docker database + kafka broker
+	docker compose down
 
 .PHONY: access-db
 access-db: ## access to database shell
