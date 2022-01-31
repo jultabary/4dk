@@ -26,8 +26,8 @@ impl KafkaConfig {
         self.group.clone()
     }
 
-    pub fn get_broker_url(&self) -> Vec<String> {
-        self.broker_url.clone()
+    pub fn move_broker_url(&mut self) -> Vec<String> {
+        std::mem::replace(&mut self.broker_url, Vec::new())
     }
 }
 
