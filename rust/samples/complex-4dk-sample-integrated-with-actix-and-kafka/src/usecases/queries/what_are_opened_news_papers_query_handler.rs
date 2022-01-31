@@ -5,7 +5,6 @@ use dddk_core::dddk::query::response::Response;
 use dddk_core::dddk::query::query::Query;
 use dddk_core::dddk::query::query_handler::{QueryHandler, QueryHandlerInBus};
 use dddk_macro::{Query, QueryHandlerInBus, Response};
-use crate::domain::news_paper::NewsPaper;
 use crate::domain::news_paper_repository::NewsPaperRepository;
 use crate::domain::response::news_paper_response::NewsPaperResponse;
 

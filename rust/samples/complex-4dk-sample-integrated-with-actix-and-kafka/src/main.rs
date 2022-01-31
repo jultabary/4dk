@@ -3,6 +3,7 @@ extern crate diesel;
 
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::sync::Arc;
 use std::thread;
 use actix_web::{App, HttpServer};
 use dddk_core::Bus;
@@ -17,7 +18,7 @@ use crate::infrastructure::kafka::config::KafkaConfig;
 use crate::infrastructure::kafka::generic_consumer::consume_messages;
 use crate::logger::SimpleLogger;
 use crate::usecases::commands::open_news_paper_command_handler::OpenNewsPaperCommandHandler;
-use crate::usecases::commands::publish_article_command_handler::PublishArticleCommandHandler;
+use crate::usecases::commands::submit_article_command_handler::SubmitArticleCommandHandler;
 use crate::usecases::queries::what_are_opened_news_papers_query_handler::WhatAreOpenedNewsPaperQueryHandler;
 
 mod domain;
@@ -39,7 +40,7 @@ impl Context {
         let news_paper_repository = Rc::new(NewsPaperRepositoryAdapter::new(connection));
 
         let open_news_paper_command_handler = OpenNewsPaperCommandHandler::new(news_paper_repository.clone());
-        let publish_article_command_handler = PublishArticleCommandHandler::new(news_paper_repository.clone());
+        let publish_article_command_handler = SubmitArticleCommandHandler::new(news_paper_repository.clone());
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
         command_handlers.push(Box::new(open_news_paper_command_handler));
         command_handlers.push(Box::new(publish_article_command_handler));
@@ -70,17 +71,22 @@ async fn main() -> std::io::Result<()> {
     // I prefer to copy middleware rather share all the bus between the two contexts (Actix and Kafka)
     // Bus is stateless and copy it does not cos a lot
     // In the other hand, i have shared the database context in both with an Arc.
+    let kafka_context = Arc::new(Context::new());
     thread::spawn(|| {
         let kafka_config = KafkaConfig::from_var_env();
-        consume_messages(kafka_config, "article.review".to_string(), consume_article_review_event);
+        let _error = consume_messages(kafka_config,
+                         "article.review".to_string(),
+                         kafka_context,
+                         consume_article_review_event,
+        );
     });
     HttpServer::new(
         || {
-            let context = RefCell::new(Context::new());
+            let actix_context = RefCell::new(Context::new());
             App::new()
                 .service(get_all_news_paper)
                 .service(post_one_news_paper)
-                .data(context)
+                .data(actix_context)
         })
         .bind("127.0.0.1:8000")?
         .run()

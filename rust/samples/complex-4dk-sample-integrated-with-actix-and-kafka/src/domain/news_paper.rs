@@ -1,8 +1,8 @@
 use std::sync::Arc;
 use dddk_core::dddk::event::event::Event;
 use crate::domain::article::Article;
-use crate::domain::error::ArticleIsAlreadyPublished;
-use crate::usecases::events::new_article_published_event::NewArticlePublishedEvent;
+use crate::domain::error::{ArticleDoesNotExist, ArticleIsAlreadyPublished};
+use crate::usecases::events::new_article_published_event::NewArticleSubmittedEvent;
 use crate::usecases::events::new_news_paper_opened_event::NewNewsPaperOpenedEvent;
 
 pub struct NewsPaper {
@@ -30,17 +30,28 @@ impl NewsPaper {
         }
     }
 
-    pub fn publish(&mut self, article: Article) -> Result<(), ArticleIsAlreadyPublished> {
-        if let Some(_article) = self.get_article_by_name(article.get_title().clone()) {
+    pub fn submit(&mut self, article: Article) -> Result<(), ArticleIsAlreadyPublished> {
+        if let Some(_) = self.get_article_by_name(article.get_title().clone()) {
             return Err(ArticleIsAlreadyPublished { article: article.get_title().clone() });
         } else {
-            self.generated_events.push(Arc::new(NewArticlePublishedEvent::new(&article)));
+            self.generated_events.push(Arc::new(NewArticleSubmittedEvent::new(&article)));
             Ok(self.articles.push(article))
         }
     }
 
-    pub fn get_article_by_name(&self, name: String) -> Option<&Article> {
-        self.articles.iter()
+    pub fn publish_article(&mut self, article_name: String) -> Result<(), ArticleDoesNotExist> {
+        if let Some(article) = self.get_article_by_name(article_name.clone()) {
+            let article_has_been_published_event = article.publish();
+            self.generated_events.push(Arc::new(article_has_been_published_event));
+            Ok(())
+        } else {
+            return Err(ArticleDoesNotExist { article: article_name.clone() });
+        }
+
+    }
+
+    pub fn get_article_by_name(&mut self, name: String) -> Option<&mut Article> {
+        self.articles.iter_mut()
             .find(|published_article| { published_article.get_title().clone() == name })
     }
 

@@ -1,7 +1,6 @@
 use actix_web::{HttpResponse, ResponseError};
 use actix_web::dev::HttpResponseBuilder;
 use actix_web::http::{header, StatusCode};
-use dddk_core::dddk::aliases::GenericError;
 use derive_more::{Display, Error};
 
 #[derive(Debug, Display, Error)]

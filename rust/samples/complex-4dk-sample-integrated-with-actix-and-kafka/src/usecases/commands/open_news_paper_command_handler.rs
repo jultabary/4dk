@@ -6,7 +6,7 @@ use dddk_macro::Command;
 use dddk_macro::CommandHandlerInBus;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
-use crate::domain::error::{NewsPaperAlreadyExist, NewsPaperDoesNotExist};
+use crate::domain::error::NewsPaperAlreadyExist;
 use crate::domain::news_paper::NewsPaper;
 use crate::domain::news_paper_repository::NewsPaperRepository;
 

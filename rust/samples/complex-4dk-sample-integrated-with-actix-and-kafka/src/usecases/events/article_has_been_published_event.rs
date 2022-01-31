@@ -1,18 +1,18 @@
 use chrono::{DateTime, Utc};
+use crate::domain::article::Article;
 use dddk_macro::Event;
 use dddk_core::dddk::event::event::Event;
 use std::any::Any;
-use crate::domain::article::Article;
 
 #[derive(Event, Debug)]
-pub struct NewArticleSubmittedEvent {
+pub struct ArticleHasBeenPublishedEvent {
     title: String,
     date_time: DateTime<Utc>,
 }
 
-impl NewArticleSubmittedEvent {
-    pub fn new(article: &Article) -> NewArticleSubmittedEvent {
-        NewArticleSubmittedEvent {
+impl ArticleHasBeenPublishedEvent {
+    pub fn new(article: &Article) -> ArticleHasBeenPublishedEvent {
+        ArticleHasBeenPublishedEvent {
             title: article.get_title().clone(),
             date_time: Utc::now(),
         }

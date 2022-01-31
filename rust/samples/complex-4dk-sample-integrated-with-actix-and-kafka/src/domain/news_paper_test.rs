@@ -37,14 +37,14 @@ mod news_paper_test {
     }
 
     #[test]
-    fn it_should_publish_with_success_article_when_it_was_not_already_published() {
+    fn it_should_submit_with_success_article_when_it_was_not_already_submitted() {
         // Given
         let name = "La gazette du sorcier".to_string();
         let article = Article::new("Mon titre".to_string(), "Mon article".to_string());
         let mut news_paper = NewsPaper::new(name);
 
         // When
-        let err = news_paper.publish(article);
+        let err = news_paper.submit(article);
 
         // Then
         assert_eq!(false, err.is_err());
@@ -52,7 +52,7 @@ mod news_paper_test {
     }
 
     #[test]
-    fn it_should_fail_to_publish_article_when_it_was_already_published() {
+    fn it_should_fail_to_submit_article_when_it_was_already_submited() {
         // Given
         let name = "La gazette du sorcier".to_string();
         let article = Article::new("Mon titre".to_string(), "Mon article".to_string());
@@ -61,7 +61,7 @@ mod news_paper_test {
         let mut news_paper = NewsPaper::reconstitute(name, articles);
 
         // When
-        let err = news_paper.publish(article);
+        let err = news_paper.submit(article);
 
         // Then
         assert_eq!(true, err.is_err());

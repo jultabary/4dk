@@ -1,14 +1,12 @@
 use std::env;
 use std::rc::Rc;
-use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl, BelongingToDsl, JoinOnDsl, GroupedBy, OptionalExtension};
+use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl, BelongingToDsl, GroupedBy, OptionalExtension};
 use dotenv::dotenv;
 use crate::domain::news_paper::NewsPaper;
 use crate::domain::news_paper_repository::NewsPaperRepository;
 use crate::domain::response::news_paper_response::NewsPaperResponse;
 use crate::infrastructure::database::database_model::{ArticleDbModel, NewsPaperDbModel};
-use crate::schema::articles;
 use crate::schema::news_papers;
-use crate::usecases::queries::what_are_opened_news_papers_query_handler::NewsPapersResponse;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();

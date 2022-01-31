@@ -1,5 +1,4 @@
 use chrono::{DateTime, Utc};
-use crate::domain::news_paper::NewsPaper;
 use dddk_macro::Event;
 use dddk_core::dddk::event::event::Event;
 use std::any::Any;

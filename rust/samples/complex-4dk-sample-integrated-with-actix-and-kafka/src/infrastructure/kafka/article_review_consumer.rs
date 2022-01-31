@@ -3,7 +3,7 @@ use log::info;
 use serde::Deserialize;
 use crate::Context;
 
-pub fn consume_article_review_event(message: &str) {
+pub fn consume_article_review_event(message: &str, _context: &Arc<Context>) {
     let article_review = serde_json::from_str::<ArticleReview>(message).unwrap();
     info!("Received message: {:?}", article_review);
 

@@ -40,3 +40,16 @@ impl Display for NewsPaperDoesNotExist {
 }
 
 impl Error for NewsPaperDoesNotExist {}
+
+#[derive(Debug)]
+pub struct ArticleDoesNotExist {
+    pub article: String,
+}
+
+impl Display for ArticleDoesNotExist {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "Article [{}] does not exist", self.article)
+    }
+}
+
+impl Error for ArticleDoesNotExist {}

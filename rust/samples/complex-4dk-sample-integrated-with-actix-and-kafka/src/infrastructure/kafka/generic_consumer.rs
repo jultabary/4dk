@@ -1,13 +1,16 @@
-use std::error::Error;
-use std::fmt::{Debug, Display, Formatter};
+use std::sync::Arc;
 use kafka::client::{FetchOffset, GroupOffsetStorage};
 use kafka::consumer::Consumer;
 use kafka::error::Error as KafkaError;
-use log::{info, trace};
+use log::trace;
+use crate::Context;
 use crate::infrastructure::kafka::config::KafkaConfig;
 
 
-pub fn consume_messages(mut kafka_config: KafkaConfig, topic: String, controller: fn(message: &str)) -> Result<(), KafkaError> {
+pub fn consume_messages(mut kafka_config: KafkaConfig,
+                        topic: String,
+                        context: Arc<Context>,
+                        controller: fn(message: &str, context: &Arc<Context>)) -> Result<(), KafkaError> {
     let brokers_url = kafka_config.move_broker_url();
     let mut con = Consumer::from_hosts(brokers_url)
         .with_topic(topic)
@@ -24,7 +27,7 @@ pub fn consume_messages(mut kafka_config: KafkaConfig, topic: String, controller
 
         for ms in mss.iter() {
             for m in ms.messages() {
-                controller(std::str::from_utf8(m.value).unwrap());
+                controller(std::str::from_utf8(m.value).unwrap(), &context);
             }
             let _ = con.consume_messageset(ms);
         }
