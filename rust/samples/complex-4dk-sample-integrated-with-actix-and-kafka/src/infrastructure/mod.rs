@@ -5,7 +5,7 @@ pub mod database {
 pub mod kafka {
     pub mod generic_consumer;
     pub mod config;
-    pub mod consumers;
+    pub mod article_review_consumer;
 }
 pub mod api {
     pub mod routes;

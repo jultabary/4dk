@@ -7,7 +7,7 @@ use log::{info, trace};
 use crate::infrastructure::kafka::config::KafkaConfig;
 
 
-pub fn consume_messages(mut kafka_config: KafkaConfig, topic: String) -> Result<(), KafkaError> {
+pub fn consume_messages(mut kafka_config: KafkaConfig, topic: String, controller: fn(message: &str)) -> Result<(), KafkaError> {
     let brokers_url = kafka_config.move_broker_url();
     let mut con = Consumer::from_hosts(brokers_url)
         .with_topic(topic)
@@ -24,11 +24,7 @@ pub fn consume_messages(mut kafka_config: KafkaConfig, topic: String) -> Result<
 
         for ms in mss.iter() {
             for m in ms.messages() {
-                info!("Received message: {}:{}@{}: {:?}",
-                    ms.topic(),
-                    ms.partition(),
-                    m.offset,
-                    std::str::from_utf8(m.value).unwrap());
+                controller(std::str::from_utf8(m.value).unwrap());
             }
             let _ = con.consume_messageset(ms);
         }
