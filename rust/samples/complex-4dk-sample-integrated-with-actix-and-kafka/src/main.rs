@@ -12,7 +12,8 @@ use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 use dddk_core::dddk::external_event::policy_handler::PolicyHandlerInBus;
 use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
 use log::LevelFilter;
-use crate::infrastructure::api::routes::{get_all_news_paper, post_one_news_paper, submit_article_to_existing_news_paper};
+use crate::infrastructure::api::routes::{admin_get_all_news_paper, get_all_news_paper, post_one_news_paper, submit_article_to_existing_news_paper};
+use crate::infrastructure::database::database_query_repository::NewsPaperQueryRepositoryAdapter;
 use crate::infrastructure::database::database_repository::{establish_connection, NewsPaperRepositoryAdapter};
 use crate::infrastructure::kafka::article_review_consumer::consume_article_review_event;
 use crate::infrastructure::kafka::config::KafkaConfig;
@@ -23,6 +24,7 @@ use crate::usecases::commands::publish_article_command_handler::PublishArticleCo
 use crate::usecases::commands::submit_article_command_handler::SubmitArticleCommandHandler;
 use crate::usecases::policies::publish_article_if_validated_policy_handler::PublishArticleIfValidatedPolicyHandler;
 use crate::usecases::queries::what_are_news_papers_query_handler::WhatAreNewsPaperQueryHandler;
+use crate::usecases::queries::what_are_news_papers_query_handler_even_with_unpublished_articles::WhatAreNewsPaperEventWithUnpublishedArticlesQueryHandler;
 
 mod domain;
 mod infrastructure;
@@ -40,7 +42,8 @@ impl Context {
     pub fn new() -> Context {
         // clone a Rc smart pointer doesn't copy the value, it creates a new pointer. See Rc and Arc documentation for more detail
         let connection = Rc::new(establish_connection());
-        let news_paper_repository = Rc::new(NewsPaperRepositoryAdapter::new(connection));
+        let news_paper_repository = Rc::new(NewsPaperRepositoryAdapter::new(connection.clone()));
+        let news_paper_query_repository = Rc::new(NewsPaperQueryRepositoryAdapter::new(connection.clone()));
 
         let create_news_paper_command_handler = CreateNewsPaperCommandHandler::new(news_paper_repository.clone());
         let submit_article_command_handler = SubmitArticleCommandHandler::new(news_paper_repository.clone());
@@ -50,9 +53,11 @@ impl Context {
         command_handlers.push(Box::new(publish_article_command_handler));
         command_handlers.push(Box::new(submit_article_command_handler));
 
-        let what_are_news_paper_query_handler = WhatAreNewsPaperQueryHandler::new(news_paper_repository.clone());
+        let what_are_news_paper_query_handler = WhatAreNewsPaperQueryHandler::new(news_paper_query_repository.clone());
+        let what_are_news_paper_query_handler_even_with_unpublished_articles = WhatAreNewsPaperEventWithUnpublishedArticlesQueryHandler::new(news_paper_query_repository.clone());
         let mut query_handlers = Vec::new() as Vec<Box<dyn QueryHandlerInBus>>;
         query_handlers.push(Box::new(what_are_news_paper_query_handler));
+        query_handlers.push(Box::new(what_are_news_paper_query_handler_even_with_unpublished_articles));
 
         let event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
 
@@ -96,6 +101,7 @@ async fn main() -> std::io::Result<()> {
                 .service(get_all_news_paper)
                 .service(post_one_news_paper)
                 .service(submit_article_to_existing_news_paper)
+                .service(admin_get_all_news_paper)
                 .data(actix_context)
         })
         .bind("127.0.0.1:8000")?

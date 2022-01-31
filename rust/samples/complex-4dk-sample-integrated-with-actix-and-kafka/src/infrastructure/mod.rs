@@ -1,6 +1,7 @@
 pub mod database {
     pub mod database_model;
     pub mod database_repository;
+    pub mod database_query_repository;
 }
 pub mod kafka {
     pub mod generic_consumer;

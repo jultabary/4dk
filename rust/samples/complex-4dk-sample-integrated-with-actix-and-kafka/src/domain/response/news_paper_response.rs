@@ -1,4 +1,7 @@
 use serde::Serialize;
+use dddk_macro::Response;
+use std::any::Any;
+use dddk_core::dddk::query::response::Response;
 
 #[derive(Serialize)]
 pub struct NewsPaperResponse {
@@ -19,13 +22,26 @@ impl NewsPaperResponse {
 pub struct ArticleResponse {
     title: String,
     body: String,
+    is_published: bool
 }
 
 impl ArticleResponse {
-    pub fn new(title: String, body: String) -> ArticleResponse {
+    pub fn new(title: String, body: String, is_published: bool) -> ArticleResponse {
         ArticleResponse {
             title,
-            body
+            body,
+            is_published
         }
+    }
+}
+
+#[derive(Response)]
+pub struct NewsPapersResponse {
+    pub news_papers: Vec<NewsPaperResponse>,
+}
+
+impl NewsPapersResponse {
+    pub fn move_news_papers(&mut self) -> Vec<NewsPaperResponse> {
+        std::mem::replace(&mut self.news_papers, Vec::new())
     }
 }

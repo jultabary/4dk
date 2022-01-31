@@ -3,6 +3,7 @@ table! {
         title -> Varchar,
         body -> Varchar,
         news_paper_name -> Varchar,
+        is_published -> Bool,
     }
 }
 

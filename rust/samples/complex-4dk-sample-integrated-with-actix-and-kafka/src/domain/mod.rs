@@ -5,4 +5,5 @@ pub mod news_paper_repository;
 pub mod error;
 pub mod response {
     pub mod news_paper_response;
+    pub mod news_paper_query_repository;
 }

@@ -2,7 +2,7 @@ use std::sync::Arc;
 use kafka::client::{FetchOffset, GroupOffsetStorage};
 use kafka::consumer::Consumer;
 use kafka::error::Error as KafkaError;
-use log::{error, trace};
+use log::trace;
 use crate::Context;
 use crate::infrastructure::kafka::config::KafkaConfig;
 
@@ -33,5 +33,4 @@ pub fn consume_messages(mut kafka_config: KafkaConfig,
         }
         con.commit_consumed()?;
     }
-    error!("End kafka Connection");
 }

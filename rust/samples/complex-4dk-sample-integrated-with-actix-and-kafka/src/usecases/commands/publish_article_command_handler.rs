@@ -6,7 +6,6 @@ use dddk_macro::CommandHandlerInBus;
 use std::any::{Any, TypeId};
 use std::rc::Rc;
 use crate::domain::error::NewsPaperDoesNotExist;
-use crate::domain::news_paper::NewsPaper;
 use crate::domain::news_paper_repository::NewsPaperRepository;
 
 #[derive(Command, Debug)]

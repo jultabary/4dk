@@ -12,13 +12,14 @@ pub struct NewsPaperDbModel {
 }
 
 #[derive(Queryable, Insertable, Identifiable, AsChangeset, Associations, PartialEq)]
-#[belongs_to(NewsPaperDbModel, foreign_key="news_paper_name")]
+#[belongs_to(NewsPaperDbModel, foreign_key = "news_paper_name")]
 #[primary_key(title)]
 #[table_name = "articles"]
 pub struct ArticleDbModel {
     title: String,
     body: String,
     news_paper_name: String,
+    is_published: bool,
 }
 
 impl NewsPaperDbModel {
@@ -39,6 +40,7 @@ impl ArticleDbModel {
             title: article.get_title().clone(),
             body: article.get_body().clone(),
             news_paper_name,
+            is_published: article.is_published(),
         }
     }
 }
@@ -53,7 +55,10 @@ impl NewsPaper {
     pub fn from_db_model(results: (NewsPaperDbModel, Vec<ArticleDbModel>)) -> NewsPaper {
         let articles = results.1.iter()
             .map(|article_db_model| {
-                Article::new(article_db_model.title.clone(), article_db_model.body.clone())
+                Article::reconstitute(
+                    article_db_model.title.clone(),
+                    article_db_model.body.clone(),
+                    article_db_model.is_published.clone())
             })
             .collect::<Vec<Article>>();
         NewsPaper::reconstitute(
@@ -67,7 +72,11 @@ impl NewsPaperResponse {
     pub fn from_db_model(results: (NewsPaperDbModel, Vec<ArticleDbModel>)) -> NewsPaperResponse {
         let articles = results.1.iter()
             .map(|article_db_model| {
-                ArticleResponse::new(article_db_model.title.clone(), article_db_model.body.clone())
+                ArticleResponse::new(
+                    article_db_model.title.clone(),
+                    article_db_model.body.clone(),
+                    article_db_model.is_published.clone(),
+                )
             })
             .collect::<Vec<ArticleResponse>>();
         NewsPaperResponse::new(

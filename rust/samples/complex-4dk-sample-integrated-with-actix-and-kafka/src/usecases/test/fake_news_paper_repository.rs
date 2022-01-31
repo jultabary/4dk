@@ -58,5 +58,9 @@ pub mod fake_news_paper_repository {
         fn find_all(&self) -> Vec<NewsPaperResponse> {
             todo!()
         }
+
+        fn find_all_even_with_unpublished_article(&self) -> Vec<NewsPaperResponse> {
+            todo!()
+        }
     }
 }

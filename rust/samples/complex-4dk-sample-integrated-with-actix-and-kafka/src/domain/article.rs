@@ -16,6 +16,14 @@ impl Article {
         }
     }
 
+    pub fn reconstitute(title: String, body: String, is_published: bool) -> Article {
+        Article {
+            title,
+            body,
+            is_published,
+        }
+    }
+
     pub fn publish(&mut self) -> Result<ArticleHasBeenPublishedEvent, ArticleIsAlreadyPublished> {
         if self.is_published {
             Err(ArticleIsAlreadyPublished { article: self.title.clone() })
@@ -31,5 +39,9 @@ impl Article {
 
     pub fn get_body(&self) -> &String {
         &self.body
+    }
+
+    pub fn is_published(&self) -> bool {
+        self.is_published.clone()
     }
 }

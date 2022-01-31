@@ -1,10 +1,9 @@
 use std::env;
 use std::rc::Rc;
-use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl, BelongingToDsl, GroupedBy, OptionalExtension};
+use diesel::{Connection, ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl, BelongingToDsl, OptionalExtension};
 use dotenv::dotenv;
 use crate::domain::news_paper::NewsPaper;
 use crate::domain::news_paper_repository::NewsPaperRepository;
-use crate::domain::response::news_paper_response::NewsPaperResponse;
 use crate::infrastructure::database::database_model::{ArticleDbModel, NewsPaperDbModel};
 use crate::schema::articles;
 use crate::schema::news_papers;
@@ -66,23 +65,5 @@ impl NewsPaperRepository for NewsPaperRepositoryAdapter {
                     .execute(self.pg_connection.as_ref())
                     .expect("Error when upsert article");
             });
-    }
-
-    fn find_all(&self) -> Vec<NewsPaperResponse> {
-        let news_paper_founds: Vec<NewsPaperDbModel> = news_papers::table
-            .load::<NewsPaperDbModel>(self.pg_connection.as_ref())
-            .expect("Error");
-        let articles =
-            ArticleDbModel::belonging_to(&news_paper_founds)
-                .load::<ArticleDbModel>(self.pg_connection.as_ref())
-                .expect("Error")
-                .grouped_by(&news_paper_founds);
-        let results: Vec<(NewsPaperDbModel, Vec<ArticleDbModel>)> = news_paper_founds.into_iter().zip(articles).collect::<Vec<_>>();
-        let mut news_papers_results = Vec::new() as Vec<NewsPaperResponse>;
-        results.into_iter().for_each(|news_papers_with_articles| {
-            let news_paper = NewsPaperResponse::from_db_model(news_papers_with_articles);
-            news_papers_results.push(news_paper);
-        });
-        return news_papers_results;
     }
 }
