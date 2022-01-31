@@ -12,13 +12,14 @@ use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 use dddk_core::dddk::external_event::policy_handler::PolicyHandlerInBus;
 use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
 use log::LevelFilter;
-use crate::infrastructure::api::routes::{get_all_news_paper, post_one_news_paper};
+use crate::infrastructure::api::routes::{get_all_news_paper, post_one_news_paper, submit_article_to_existing_news_paper};
 use crate::infrastructure::database::database_repository::{establish_connection, NewsPaperRepositoryAdapter};
 use crate::infrastructure::kafka::article_review_consumer::consume_article_review_event;
 use crate::infrastructure::kafka::config::KafkaConfig;
 use crate::infrastructure::kafka::generic_consumer::consume_messages;
 use crate::logger::SimpleLogger;
 use crate::usecases::commands::create_news_paper_command_handler::CreateNewsPaperCommandHandler;
+use crate::usecases::commands::publish_article_command_handler::PublishArticleCommandHandler;
 use crate::usecases::commands::submit_article_command_handler::SubmitArticleCommandHandler;
 use crate::usecases::policies::publish_article_if_validated_policy_handler::PublishArticleIfValidatedPolicyHandler;
 use crate::usecases::queries::what_are_news_papers_query_handler::WhatAreNewsPaperQueryHandler;
@@ -42,10 +43,12 @@ impl Context {
         let news_paper_repository = Rc::new(NewsPaperRepositoryAdapter::new(connection));
 
         let create_news_paper_command_handler = CreateNewsPaperCommandHandler::new(news_paper_repository.clone());
-        let publish_article_command_handler = SubmitArticleCommandHandler::new(news_paper_repository.clone());
+        let submit_article_command_handler = SubmitArticleCommandHandler::new(news_paper_repository.clone());
+        let publish_article_command_handler = PublishArticleCommandHandler::new(news_paper_repository.clone());
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
         command_handlers.push(Box::new(create_news_paper_command_handler));
         command_handlers.push(Box::new(publish_article_command_handler));
+        command_handlers.push(Box::new(submit_article_command_handler));
 
         let what_are_news_paper_query_handler = WhatAreNewsPaperQueryHandler::new(news_paper_repository.clone());
         let mut query_handlers = Vec::new() as Vec<Box<dyn QueryHandlerInBus>>;
@@ -92,6 +95,7 @@ async fn main() -> std::io::Result<()> {
             App::new()
                 .service(get_all_news_paper)
                 .service(post_one_news_paper)
+                .service(submit_article_to_existing_news_paper)
                 .data(actix_context)
         })
         .bind("127.0.0.1:8000")?

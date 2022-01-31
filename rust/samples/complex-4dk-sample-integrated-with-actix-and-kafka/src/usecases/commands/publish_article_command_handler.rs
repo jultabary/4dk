@@ -35,6 +35,7 @@ impl CommandHandler<PublishArticleCommand> for PublishArticleCommandHandler {
             if err.is_err() {
                 return Err(err.err().unwrap());
             }
+            self.repository.update(&news_paper);
             Ok(news_paper.move_generated_events())
         } else {
             Err(Box::new(NewsPaperDoesNotExist { news_paper: command.news_paper_name.clone() }))

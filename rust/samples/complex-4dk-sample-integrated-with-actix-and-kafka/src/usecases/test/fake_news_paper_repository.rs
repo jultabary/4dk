@@ -8,17 +8,23 @@ pub mod fake_news_paper_repository {
 
     pub struct FakeNewspaperRepository {
         save_has_been_called: RefCell<bool>,
+        update_has_been_called: RefCell<bool>,
     }
 
     impl FakeNewspaperRepository {
         pub fn new() -> FakeNewspaperRepository {
             FakeNewspaperRepository {
                 save_has_been_called: RefCell::new(false),
+                update_has_been_called: RefCell::new(false),
             }
         }
 
         pub fn get_save_has_been_called(&self) -> &RefCell<bool> {
             return &self.save_has_been_called;
+        }
+
+        pub fn get_update_has_been_called(&self) -> &RefCell<bool> {
+            return &self.update_has_been_called;
         }
 
         pub fn get_existing_news_paper_name() -> String {
@@ -34,7 +40,7 @@ pub mod fake_news_paper_repository {
             if name == &FakeNewspaperRepository::get_existing_news_paper_name() {
                 Some(NewsPaper::reconstitute(
                     FakeNewspaperRepository::get_existing_news_paper_name(),
-                    vec![Article::new(FakeNewspaperRepository::get_associated_article_title(), "".to_string())]
+                    vec![Article::new(FakeNewspaperRepository::get_associated_article_title(), "".to_string())],
                 ))
             } else {
                 None
@@ -45,9 +51,12 @@ pub mod fake_news_paper_repository {
             self.save_has_been_called.replace(true);
         }
 
+        fn update(&self, news_paper: &NewsPaper) {
+            self.update_has_been_called.replace(true);
+        }
+
         fn find_all(&self) -> Vec<NewsPaperResponse> {
             todo!()
         }
     }
-
 }

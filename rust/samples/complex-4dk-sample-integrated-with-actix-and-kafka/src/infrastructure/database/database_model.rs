@@ -11,7 +11,7 @@ pub struct NewsPaperDbModel {
     name: String,
 }
 
-#[derive(Queryable, Insertable, Identifiable, Associations, PartialEq)]
+#[derive(Queryable, Insertable, Identifiable, AsChangeset, Associations, PartialEq)]
 #[belongs_to(NewsPaperDbModel, foreign_key="news_paper_name")]
 #[primary_key(title)]
 #[table_name = "articles"]

@@ -47,7 +47,7 @@ mod submit_article_command_handler_test {
 
         // Then
         assert_eq!(false, err.is_err());
-        assert_eq!(true, fake_repository.get_save_has_been_called().take());
+        assert_eq!(true, fake_repository.get_update_has_been_called().take());
     }
 
     #[test]

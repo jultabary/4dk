@@ -6,5 +6,7 @@ pub trait NewsPaperRepository {
 
     fn save(&self, news_paper: &NewsPaper);
 
+    fn update(&self, news_paper: &NewsPaper);
+
     fn find_all(&self) -> Vec<NewsPaperResponse>;
 }

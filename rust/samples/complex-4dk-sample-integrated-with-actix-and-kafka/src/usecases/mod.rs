@@ -11,7 +11,7 @@ pub mod queries {
 }
 pub mod events {
     pub mod news_paper_created_event;
-    pub mod new_article_published_event;
+    pub mod new_article_submitted_event;
     pub mod article_has_been_published_event;
 }
 pub mod policies {

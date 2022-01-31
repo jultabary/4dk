@@ -1,11 +1,16 @@
 use std::sync::Arc;
-use log::info;
+use log::{info, warn};
 use serde::Deserialize;
 use crate::Context;
 use crate::usecases::policies::article_has_been_reviewed_event::ArticleHasBeenReviewedEvent;
 
 pub fn consume_article_review_event(message: &str, context: &Arc<Context>) {
-    let article_review = serde_json::from_str::<ArticleReview>(message).unwrap();
+    let article_review = serde_json::from_str::<ArticleReview>(message);
+    if article_review.is_err() {
+        warn!("Undesired received message !!");
+        return;
+    }
+    let article_review = article_review.unwrap();
     info!("Received message: {:?}", article_review);
     let external_event = ArticleHasBeenReviewedEvent {
         news_paper_name: article_review.news_paper_name.clone(),

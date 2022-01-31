@@ -64,6 +64,7 @@ mod publish_article_command_handler_test {
         let events = events.unwrap();
         assert_eq!(1, events.len());
         let event = events.get(0).unwrap();
-        assert_eq!(true, event.as_any().downcast_ref::<ArticleHasBeenPublishedEvent>().is_some())
+        assert_eq!(true, event.as_any().downcast_ref::<ArticleHasBeenPublishedEvent>().is_some());
+        assert_eq!(true, fake_repository.get_update_has_been_called().take());
     }
 }

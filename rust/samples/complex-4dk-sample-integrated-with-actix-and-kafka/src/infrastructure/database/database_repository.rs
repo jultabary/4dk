@@ -6,6 +6,7 @@ use crate::domain::news_paper::NewsPaper;
 use crate::domain::news_paper_repository::NewsPaperRepository;
 use crate::domain::response::news_paper_response::NewsPaperResponse;
 use crate::infrastructure::database::database_model::{ArticleDbModel, NewsPaperDbModel};
+use crate::schema::articles;
 use crate::schema::news_papers;
 
 pub fn establish_connection() -> PgConnection {
@@ -35,7 +36,6 @@ impl NewsPaperRepository for NewsPaperRepositoryAdapter {
             .first::<NewsPaperDbModel>(self.pg_connection.as_ref())
             .optional()
             .expect("Error") {
-
             let articles: Vec<ArticleDbModel> =
                 ArticleDbModel::belonging_to(&news_paper_found)
                     .load::<ArticleDbModel>(self.pg_connection.as_ref())
@@ -51,6 +51,21 @@ impl NewsPaperRepository for NewsPaperRepositoryAdapter {
             .values(&news_paper_db_model.0)
             .execute(self.pg_connection.as_ref())
             .expect("Error when saving NewsPaper");
+    }
+
+    fn update(&self, news_paper: &NewsPaper) {
+        news_paper.get_articles()
+            .into_iter()
+            .for_each(|article| {
+                let article_db_model = ArticleDbModel::from_domain(article, news_paper.get_name().clone());
+                diesel::insert_into(articles::table)
+                    .values(&article_db_model)
+                    .on_conflict(articles::columns::title)
+                    .do_update()
+                    .set(&article_db_model)
+                    .execute(self.pg_connection.as_ref())
+                    .expect("Error when upsert article");
+            });
     }
 
     fn find_all(&self) -> Vec<NewsPaperResponse> {
