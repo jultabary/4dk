@@ -1,6 +1,7 @@
 pub mod commands {
     pub mod publish_article_command_handler;
     pub mod open_news_paper_command_handler;
+    mod open_news_paper_command_handler_test;
 }
 pub mod queries {
     pub mod what_are_opened_news_papers_query_handler;

@@ -1,5 +1,5 @@
 #[cfg(test)]
-pub mod news_paper_test {
+mod news_paper_test {
     use crate::domain::article::Article;
     use crate::domain::news_paper::NewsPaper;
     use crate::usecases::events::new_news_paper_opened_event::NewNewsPaperOpenedEvent;
