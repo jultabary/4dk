@@ -2,10 +2,10 @@
 mod news_paper_test {
     use crate::domain::article::Article;
     use crate::domain::news_paper::NewsPaper;
-    use crate::usecases::events::new_news_paper_opened_event::NewNewsPaperOpenedEvent;
+    use crate::usecases::events::news_paper_created_event::NewsPaperCreatedEvent;
 
     #[test]
-    fn it_should_create_news_paper_with_news_paper_opened_event_when_use_new_factory_method() {
+    fn it_should_create_news_paper_with_news_paper_created_event_when_use_new_factory_method() {
         // Given
         let name = "La gazette du sorcier".to_string();
 
@@ -15,8 +15,8 @@ mod news_paper_test {
         // Then
         let events = news_paper.move_generated_events();
         assert_eq!(1, events.len());
-        let news_paper_opened_event_opt = events.get(0).unwrap();
-        assert_eq!(true, news_paper_opened_event_opt.as_any().downcast_ref::<NewNewsPaperOpenedEvent>().is_some());
+        let news_paper_event_opt = events.get(0).unwrap();
+        assert_eq!(true, news_paper_event_opt.as_any().downcast_ref::<NewsPaperCreatedEvent>().is_some());
     }
 
     #[test]

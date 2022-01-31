@@ -3,7 +3,7 @@ use dddk_core::dddk::event::event::Event;
 use crate::domain::article::Article;
 use crate::domain::error::{ArticleDoesNotExist, ArticleIsAlreadyPublished};
 use crate::usecases::events::new_article_published_event::NewArticleSubmittedEvent;
-use crate::usecases::events::new_news_paper_opened_event::NewNewsPaperOpenedEvent;
+use crate::usecases::events::news_paper_created_event::NewsPaperCreatedEvent;
 
 pub struct NewsPaper {
     name: String,
@@ -14,7 +14,7 @@ pub struct NewsPaper {
 impl NewsPaper {
     pub fn new(name: String) -> NewsPaper {
         let mut events = Vec::new() as Vec<Arc<dyn Event>>;
-        events.push(Arc::new(NewNewsPaperOpenedEvent::new(&name.clone())));
+        events.push(Arc::new(NewsPaperCreatedEvent::new(&name.clone())));
         NewsPaper {
             name,
             articles: Vec::new(),

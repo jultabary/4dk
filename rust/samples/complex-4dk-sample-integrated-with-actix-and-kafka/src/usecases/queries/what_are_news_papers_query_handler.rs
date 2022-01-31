@@ -9,7 +9,7 @@ use crate::domain::news_paper_repository::NewsPaperRepository;
 use crate::domain::response::news_paper_response::NewsPaperResponse;
 
 #[derive(Query, Debug)]
-pub struct WhatAreOpenedNewsPaperQuery {}
+pub struct WhatAreNewsPaperQuery {}
 
 #[derive(Response)]
 pub struct NewsPapersResponse {
@@ -23,20 +23,20 @@ impl NewsPapersResponse {
 }
 
 #[derive(QueryHandlerInBus)]
-pub struct WhatAreOpenedNewsPaperQueryHandler {
+pub struct WhatAreNewsPaperQueryHandler {
     news_paper_repository: Rc<dyn NewsPaperRepository>,
 }
 
-impl WhatAreOpenedNewsPaperQueryHandler {
-    pub fn new(news_paper_repository: Rc<dyn NewsPaperRepository>) -> WhatAreOpenedNewsPaperQueryHandler {
-        WhatAreOpenedNewsPaperQueryHandler {
+impl WhatAreNewsPaperQueryHandler {
+    pub fn new(news_paper_repository: Rc<dyn NewsPaperRepository>) -> WhatAreNewsPaperQueryHandler {
+        WhatAreNewsPaperQueryHandler {
             news_paper_repository
         }
     }
 }
 
-impl QueryHandler<WhatAreOpenedNewsPaperQuery> for WhatAreOpenedNewsPaperQueryHandler {
-    fn handle(&self, _query: &WhatAreOpenedNewsPaperQuery) -> ResponseFromHandler {
+impl QueryHandler<WhatAreNewsPaperQuery> for WhatAreNewsPaperQueryHandler {
+    fn handle(&self, _query: &WhatAreNewsPaperQuery) -> ResponseFromHandler {
         Ok(Box::new(NewsPapersResponse { news_papers: self.news_paper_repository.find_all() }))
     }
 }

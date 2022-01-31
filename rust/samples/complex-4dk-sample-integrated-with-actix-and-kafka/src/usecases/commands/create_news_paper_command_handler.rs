@@ -11,34 +11,34 @@ use crate::domain::news_paper::NewsPaper;
 use crate::domain::news_paper_repository::NewsPaperRepository;
 
 #[derive(Command)]
-pub struct OpenNewsPaperCommand {
+pub struct CreateNewsPaperCommand {
     pub name: String,
 }
 
-impl Debug for OpenNewsPaperCommand {
+impl Debug for CreateNewsPaperCommand {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f,
-               "OpenNewsPaperCommand[name: [{}]]",
+               "CreateNewsPaperCommand[name: [{}]]",
                self.name
         )
     }
 }
 
 #[derive(CommandHandlerInBus)]
-pub struct OpenNewsPaperCommandHandler {
+pub struct CreateNewsPaperCommandHandler {
     news_paper_repository: Rc<dyn NewsPaperRepository>,
 }
 
-impl OpenNewsPaperCommandHandler {
-    pub fn new(news_paper_repository: Rc<dyn NewsPaperRepository>) -> OpenNewsPaperCommandHandler {
-        OpenNewsPaperCommandHandler {
+impl CreateNewsPaperCommandHandler {
+    pub fn new(news_paper_repository: Rc<dyn NewsPaperRepository>) -> CreateNewsPaperCommandHandler {
+        CreateNewsPaperCommandHandler {
             news_paper_repository
         }
     }
 }
 
-impl CommandHandler<OpenNewsPaperCommand> for OpenNewsPaperCommandHandler {
-    fn handle(&self, command: &OpenNewsPaperCommand) -> Events {
+impl CommandHandler<CreateNewsPaperCommand> for CreateNewsPaperCommandHandler {
+    fn handle(&self, command: &CreateNewsPaperCommand) -> Events {
         if let Some(_) = self.news_paper_repository.find_by_name(&command.name) {
             Err(Box::new(NewsPaperAlreadyExist { news_paper: command.name.clone() }))
         } else {

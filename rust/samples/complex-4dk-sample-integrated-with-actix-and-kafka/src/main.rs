@@ -17,9 +17,9 @@ use crate::infrastructure::kafka::article_review_consumer::consume_article_revie
 use crate::infrastructure::kafka::config::KafkaConfig;
 use crate::infrastructure::kafka::generic_consumer::consume_messages;
 use crate::logger::SimpleLogger;
-use crate::usecases::commands::open_news_paper_command_handler::OpenNewsPaperCommandHandler;
+use crate::usecases::commands::create_news_paper_command_handler::CreateNewsPaperCommandHandler;
 use crate::usecases::commands::submit_article_command_handler::SubmitArticleCommandHandler;
-use crate::usecases::queries::what_are_opened_news_papers_query_handler::WhatAreOpenedNewsPaperQueryHandler;
+use crate::usecases::queries::what_are_news_papers_query_handler::WhatAreNewsPaperQueryHandler;
 
 mod domain;
 mod infrastructure;
@@ -39,15 +39,15 @@ impl Context {
         let connection = Rc::new(establish_connection());
         let news_paper_repository = Rc::new(NewsPaperRepositoryAdapter::new(connection));
 
-        let open_news_paper_command_handler = OpenNewsPaperCommandHandler::new(news_paper_repository.clone());
+        let create_news_paper_command_handler = CreateNewsPaperCommandHandler::new(news_paper_repository.clone());
         let publish_article_command_handler = SubmitArticleCommandHandler::new(news_paper_repository.clone());
         let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
-        command_handlers.push(Box::new(open_news_paper_command_handler));
+        command_handlers.push(Box::new(create_news_paper_command_handler));
         command_handlers.push(Box::new(publish_article_command_handler));
 
-        let what_are_opened_news_paper_query_handler = WhatAreOpenedNewsPaperQueryHandler::new(news_paper_repository.clone());
+        let what_are_news_paper_query_handler = WhatAreNewsPaperQueryHandler::new(news_paper_repository.clone());
         let mut query_handlers = Vec::new() as Vec<Box<dyn QueryHandlerInBus>>;
-        query_handlers.push(Box::new(what_are_opened_news_paper_query_handler));
+        query_handlers.push(Box::new(what_are_news_paper_query_handler));
 
         let event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
 
