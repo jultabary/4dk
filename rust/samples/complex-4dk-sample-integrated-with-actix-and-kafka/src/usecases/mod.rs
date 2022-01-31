@@ -16,6 +16,7 @@ pub mod events {
 }
 pub mod policies {
     pub mod publish_article_if_validated_policy_handler;
+    mod publish_article_if_validated_policy_handler_test;
     pub mod article_has_been_reviewed_event;
 }
 pub mod test {

@@ -3,7 +3,6 @@ use dddk_core::dddk::aliases::GenericError;
 use dddk_core::dddk::event::event::Event;
 use crate::domain::article::Article;
 use crate::domain::error::{ArticleDoesNotExist, ArticleIsAlreadySubmitted};
-use crate::usecases::events::article_has_been_published_event::ArticleHasBeenPublishedEvent;
 use crate::usecases::events::new_article_published_event::NewArticleSubmittedEvent;
 use crate::usecases::events::news_paper_created_event::NewsPaperCreatedEvent;
 

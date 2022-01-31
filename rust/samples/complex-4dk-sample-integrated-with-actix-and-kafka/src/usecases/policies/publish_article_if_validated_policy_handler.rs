@@ -12,6 +12,7 @@ pub struct PublishArticleIfValidatedPolicyHandler {}
 
 impl PolicyHandler<ArticleHasBeenReviewedEvent> for PublishArticleIfValidatedPolicyHandler {
     fn handle(&self, external_event: &ArticleHasBeenReviewedEvent) -> Commands {
+        // could be more complex with database persistence
         let mut commands = Vec::new() as Vec<Box<dyn Command>>;
         if external_event.is_validated {
             commands.push(Box::new(
