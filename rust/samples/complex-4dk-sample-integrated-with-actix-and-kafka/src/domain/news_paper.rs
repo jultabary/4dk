@@ -1,7 +1,9 @@
 use std::sync::Arc;
+use dddk_core::dddk::aliases::GenericError;
 use dddk_core::dddk::event::event::Event;
 use crate::domain::article::Article;
-use crate::domain::error::{ArticleDoesNotExist, ArticleIsAlreadyPublished};
+use crate::domain::error::{ArticleDoesNotExist, ArticleIsAlreadySubmitted};
+use crate::usecases::events::article_has_been_published_event::ArticleHasBeenPublishedEvent;
 use crate::usecases::events::new_article_published_event::NewArticleSubmittedEvent;
 use crate::usecases::events::news_paper_created_event::NewsPaperCreatedEvent;
 
@@ -30,22 +32,28 @@ impl NewsPaper {
         }
     }
 
-    pub fn submit(&mut self, article: Article) -> Result<(), ArticleIsAlreadyPublished> {
+    pub fn submit(&mut self, article: Article) -> Result<(), ArticleIsAlreadySubmitted> {
         if let Some(_) = self.get_article_by_name(article.get_title().clone()) {
-            return Err(ArticleIsAlreadyPublished { article: article.get_title().clone() });
+            return Err(ArticleIsAlreadySubmitted { article: article.get_title().clone() });
         } else {
             self.generated_events.push(Arc::new(NewArticleSubmittedEvent::new(&article)));
             Ok(self.articles.push(article))
         }
     }
 
-    pub fn publish_article(&mut self, article_name: String) -> Result<(), ArticleDoesNotExist> {
-        if let Some(article) = self.get_article_by_name(article_name.clone()) {
-            let article_has_been_published_event = article.publish();
-            self.generated_events.push(Arc::new(article_has_been_published_event));
-            Ok(())
+    pub fn publish_article(&mut self, article_name: String) -> Result<(), GenericError> {
+        return if let Some(article) = self.get_article_by_name(article_name.clone()) {
+            match article.publish() {
+                Ok(event) => {
+                    self.generated_events.push(Arc::new(event));
+                    Ok(())
+                }
+                Err(error) => {
+                    Err(Box::new(error))
+                }
+            }
         } else {
-            return Err(ArticleDoesNotExist { article: article_name.clone() });
+            Err(Box::new(ArticleDoesNotExist { article: article_name.clone() }))
         }
 
     }

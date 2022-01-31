@@ -2,6 +2,19 @@ use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 
 #[derive(Debug)]
+pub struct ArticleIsAlreadySubmitted {
+    pub article: String,
+}
+
+impl Display for ArticleIsAlreadySubmitted {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "Article [{}] is already submitted", self.article)
+    }
+}
+
+impl Error for ArticleIsAlreadySubmitted {}
+
+#[derive(Debug)]
 pub struct ArticleIsAlreadyPublished {
     pub article: String,
 }

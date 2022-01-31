@@ -1,3 +1,4 @@
+use crate::domain::error::ArticleIsAlreadyPublished;
 use crate::usecases::events::article_has_been_published_event::ArticleHasBeenPublishedEvent;
 
 pub struct Article {
@@ -11,13 +12,17 @@ impl Article {
         Article {
             title,
             body,
-            is_published: false
+            is_published: false,
         }
     }
 
-    pub fn publish(&mut self) -> ArticleHasBeenPublishedEvent {
-        self.is_published = true;
-        ArticleHasBeenPublishedEvent::new(self)
+    pub fn publish(&mut self) -> Result<ArticleHasBeenPublishedEvent, ArticleIsAlreadyPublished> {
+        if self.is_published {
+            Err(ArticleIsAlreadyPublished { article: self.title.clone() })
+        } else {
+            self.is_published = true;
+            Ok(ArticleHasBeenPublishedEvent::new(self))
+        }
     }
 
     pub fn get_title(&self) -> &String {
