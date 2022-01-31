@@ -9,6 +9,7 @@ use actix_web::{App, HttpServer};
 use dddk_core::Bus;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
 use dddk_core::dddk::event::event_handler::EventHandlerInBus;
+use dddk_core::dddk::external_event::policy_handler::PolicyHandlerInBus;
 use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
 use log::LevelFilter;
 use crate::infrastructure::api::routes::{get_all_news_paper, post_one_news_paper};
@@ -19,6 +20,7 @@ use crate::infrastructure::kafka::generic_consumer::consume_messages;
 use crate::logger::SimpleLogger;
 use crate::usecases::commands::create_news_paper_command_handler::CreateNewsPaperCommandHandler;
 use crate::usecases::commands::submit_article_command_handler::SubmitArticleCommandHandler;
+use crate::usecases::policies::publish_article_if_validated_policy_handler::PublishArticleIfValidatedPolicyHandler;
 use crate::usecases::queries::what_are_news_papers_query_handler::WhatAreNewsPaperQueryHandler;
 
 mod domain;
@@ -51,7 +53,11 @@ impl Context {
 
         let event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
 
-        let bus = Bus::new(command_handlers, event_handlers, query_handlers);
+        let publish_article_if_it_has_been_reviewed = PublishArticleIfValidatedPolicyHandler {};
+        let mut policy_handlers = Vec::new() as Vec<Box<dyn PolicyHandlerInBus>>;
+        policy_handlers.push(Box::new(publish_article_if_it_has_been_reviewed));
+
+        let bus = Bus::new(command_handlers, event_handlers, query_handlers, policy_handlers);
         Context {
             bus
         }
