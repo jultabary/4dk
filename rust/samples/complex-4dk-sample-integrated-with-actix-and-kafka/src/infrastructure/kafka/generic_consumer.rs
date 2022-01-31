@@ -3,6 +3,7 @@ use std::fmt::{Debug, Display, Formatter};
 use kafka::client::{FetchOffset, GroupOffsetStorage};
 use kafka::consumer::Consumer;
 use kafka::error::Error as KafkaError;
+use log::{info, trace};
 use crate::infrastructure::kafka::config::KafkaConfig;
 
 
@@ -18,13 +19,16 @@ pub fn consume_messages(mut kafka_config: KafkaConfig, topic: String) -> Result<
     loop {
         let mss = con.poll()?;
         if mss.is_empty() {
-            println!("No messages available right now.");
-            return Ok(());
+            trace!("No messages available right now.");
         }
 
         for ms in mss.iter() {
             for m in ms.messages() {
-                println!("{}:{}@{}: {:?}", ms.topic(), ms.partition(), m.offset, m.value);
+                info!("Received message: {}:{}@{}: {:?}",
+                    ms.topic(),
+                    ms.partition(),
+                    m.offset,
+                    std::str::from_utf8(m.value).unwrap());
             }
             let _ = con.consume_messageset(ms);
         }

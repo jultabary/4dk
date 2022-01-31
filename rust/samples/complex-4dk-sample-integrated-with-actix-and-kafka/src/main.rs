@@ -3,6 +3,7 @@ extern crate diesel;
 
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::thread;
 use actix_web::{App, HttpServer};
 use dddk_core::Bus;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
@@ -11,6 +12,8 @@ use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
 use log::LevelFilter;
 use crate::infrastructure::api::routes::{get_all_news_paper, post_one_news_paper};
 use crate::infrastructure::database::database_repository::{establish_connection, NewsPaperRepositoryAdapter};
+use crate::infrastructure::kafka::config::KafkaConfig;
+use crate::infrastructure::kafka::generic_consumer::consume_messages;
 use crate::logger::SimpleLogger;
 use crate::usecases::commands::open_news_paper_command_handler::OpenNewsPaperCommandHandler;
 use crate::usecases::commands::publish_article_command_handler::PublishArticleCommandHandler;
@@ -66,6 +69,10 @@ async fn main() -> std::io::Result<()> {
     // I prefer to copy middleware rather share all the bus between the two contexts (Actix and Kafka)
     // Bus is stateless and copy it does not cos a lot
     // In the other hand, i have shared the database context in both with an Arc.
+    thread::spawn(|| {
+        let kafka_config = KafkaConfig::from_var_env();
+        consume_messages(kafka_config, "article.review".to_string());
+    });
     HttpServer::new(
         || {
             let context = RefCell::new(Context::new());

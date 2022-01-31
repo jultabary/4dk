@@ -4,7 +4,7 @@ pub struct SimpleLogger {}
 
 impl Log for SimpleLogger {
     fn enabled(&self, metadata: &Metadata) -> bool {
-        metadata.level() <= Level::Debug
+        metadata.level() <= Level::Info
     }
 
     fn log(&self, record: &Record) {
