@@ -5,7 +5,7 @@ mod create_news_paper_command_handler_test {
     use crate::domain::error::NewsPaperAlreadyExist;
     use crate::usecases::commands::create_news_paper_command_handler::{CreateNewsPaperCommand, CreateNewsPaperCommandHandler};
     use crate::usecases::events::news_paper_created_event::NewsPaperCreatedEvent;
-    use crate::usecases::test::fake_news_paper_repository::fake_news_paper_repository::FakeNewspaperRepository;
+    use crate::usecases::test::fake_news_paper_repository::fake_repository::FakeNewspaperRepository;
 
     #[test]
     fn it_should_return_an_error_when_trying_to_create_an_already_create_news_paper() {

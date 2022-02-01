@@ -1,5 +1,6 @@
 use std::any::TypeId;
 use std::collections::HashMap;
+use log::debug;
 use crate::dddk::aliases::Commands;
 use crate::dddk::errors::NoPolicyHandlerRegisterForGivenExternalEvent;
 use crate::dddk::external_event::external_event::ExternalEvent;
@@ -17,6 +18,7 @@ impl ExternalEventDispatcher {
             if let Some(_) = map.get(&item.get_associated_external_event_from_bus()) {
                 panic!("A PolicyHandler has already been registered for this external event");
             }
+            debug!("[ExternalEventDispatcher]: register handler {}", item.get_policy_handler_name());
             map.insert(item.get_associated_external_event_from_bus(), item);
         });
         return ExternalEventDispatcher {

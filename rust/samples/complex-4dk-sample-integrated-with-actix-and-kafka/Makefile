@@ -46,7 +46,7 @@ release: ## release app ✓
 
 .PHONY: start-release
 start-release: ## start app for prod ✓
-	$(DIR)/target/release/securized-4dk-sample-integrated-with-actix-and-kafka
+	$(DIR)/target/release/complex_4dk_sample
 
 .PHONY: clean
 clean: ## clean compiled code ✓

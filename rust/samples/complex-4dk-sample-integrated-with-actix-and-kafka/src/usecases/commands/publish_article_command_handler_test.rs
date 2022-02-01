@@ -5,7 +5,7 @@ mod publish_article_command_handler_test {
     use crate::domain::error::{ArticleDoesNotExist, NewsPaperDoesNotExist};
     use crate::usecases::commands::publish_article_command_handler::{PublishArticleCommand, PublishArticleCommandHandler};
     use crate::usecases::events::article_has_been_published_event::ArticleHasBeenPublishedEvent;
-    use crate::usecases::test::fake_news_paper_repository::fake_news_paper_repository::FakeNewspaperRepository;
+    use crate::usecases::test::fake_news_paper_repository::fake_repository::FakeNewspaperRepository;
 
     #[test]
     fn it_should_fail_to_publish_an_article_if_news_paper_does_not_exist() {

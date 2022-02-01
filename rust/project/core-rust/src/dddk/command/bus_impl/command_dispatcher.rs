@@ -1,5 +1,6 @@
 use std::any::TypeId;
 use std::collections::HashMap;
+use log::debug;
 use crate::dddk::aliases::Events;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
@@ -17,6 +18,7 @@ impl CommandDispatcher {
             if let Some(_) = map.get(&item.get_associated_command_from_bus()) {
                 panic!("A CommandHandler has already been registered for this command");
             }
+            debug!("[CommandDispatcher]: register handler {}", item.get_command_handler_name());
             map.insert(item.get_associated_command_from_bus(), item);
         });
         return CommandDispatcher {

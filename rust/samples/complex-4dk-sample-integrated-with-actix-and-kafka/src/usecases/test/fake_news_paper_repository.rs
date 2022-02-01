@@ -1,9 +1,11 @@
 #[cfg(test)]
-pub mod fake_news_paper_repository {
+pub mod fake_repository {
     use std::cell::RefCell;
     use crate::domain::article::Article;
     use crate::domain::news_paper::NewsPaper;
     use crate::domain::news_paper_repository::NewsPaperRepository;
+    use crate::domain::response::news_paper_query_repository::NewsPaperQueryRepository;
+    use crate::domain::response::news_paper_response::NewsPaperResponse;
 
     pub struct FakeNewspaperRepository {
         save_has_been_called: RefCell<bool>,
@@ -54,4 +56,39 @@ pub mod fake_news_paper_repository {
             self.update_has_been_called.replace(true);
         }
     }
+
+    pub struct FakeNewsPaperQueryRepository {
+        find_all_has_been_called: RefCell<bool>,
+        find_all_with_unpublished_article: RefCell<bool>,
+    }
+
+    impl NewsPaperQueryRepository for FakeNewsPaperQueryRepository {
+        fn find_all(&self) -> Vec<NewsPaperResponse> {
+            self.find_all_has_been_called.replace(true);
+            Vec::new()
+        }
+
+        fn find_all_even_with_unpublished_article(&self) -> Vec<NewsPaperResponse> {
+            self.find_all_with_unpublished_article.replace(true);
+            Vec::new()
+        }
+    }
+
+    impl FakeNewsPaperQueryRepository {
+        pub fn new() -> FakeNewsPaperQueryRepository {
+            FakeNewsPaperQueryRepository {
+                find_all_has_been_called: RefCell::new(false),
+                find_all_with_unpublished_article: RefCell::new(false),
+            }
+        }
+
+        pub fn get_find_all_has_been_called(&self) -> &RefCell<bool> {
+            return &self.find_all_has_been_called;
+        }
+
+        pub fn get_find_all_with_unpublished_article(&self) -> &RefCell<bool> {
+            return &self.find_all_with_unpublished_article;
+        }
+    }
+
 }

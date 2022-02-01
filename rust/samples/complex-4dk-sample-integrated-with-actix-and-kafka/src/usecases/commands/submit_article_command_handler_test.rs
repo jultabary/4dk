@@ -4,7 +4,7 @@ mod submit_article_command_handler_test {
     use dddk_core::dddk::command::command_handler::CommandHandler;
     use crate::domain::error::{ArticleIsAlreadySubmitted, NewsPaperDoesNotExist};
     use crate::usecases::commands::submit_article_command_handler::{SubmitArticleCommand, SubmitArticleCommandHandler};
-    use crate::usecases::test::fake_news_paper_repository::fake_news_paper_repository::FakeNewspaperRepository;
+    use crate::usecases::test::fake_news_paper_repository::fake_repository::FakeNewspaperRepository;
 
     #[test]
     fn it_should_not_submit_an_article_to_a_news_paper_which_not_exist() {

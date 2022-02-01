@@ -8,7 +8,7 @@ use actix_web::{App, HttpServer};
 use log::LevelFilter;
 use bus_config::Context;
 use crate::infrastructure::api::routes::{admin_get_all_news_paper, get_all_news_paper, post_one_news_paper, submit_article_to_existing_news_paper};
-use crate::infrastructure::kafka::article_review_consumer::consume_article_review_event;
+use crate::infrastructure::kafka::article_reviewed_consumer::consume_article_review_event;
 use crate::infrastructure::kafka::config::KafkaConfig;
 use crate::infrastructure::kafka::generic_consumer::consume_messages;
 use crate::logger::SimpleLogger;

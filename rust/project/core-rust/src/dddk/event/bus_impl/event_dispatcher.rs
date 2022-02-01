@@ -1,6 +1,7 @@
 use std::any::TypeId;
 use std::collections::HashMap;
 use std::sync::Arc;
+use log::debug;
 use crate::dddk::event::event::Event;
 use crate::dddk::event::event_bus::EventBus;
 use crate::dddk::event::event_handler::EventHandlerInBus;
@@ -18,6 +19,7 @@ impl EventDispatcher {
             } else {
                 let mut vec = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
                 let type_id = item.get_associated_event_from_bus();
+                debug!("[EventDispatcher]: register handler {}", item.get_event_handler_name());
                 vec.push(item);
                 map.insert(type_id, vec);
             }

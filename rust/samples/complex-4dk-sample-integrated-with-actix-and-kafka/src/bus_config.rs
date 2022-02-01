@@ -6,9 +6,13 @@ use dddk_core::dddk::external_event::policy_handler::PolicyHandlerInBus;
 use dddk_core::Bus;
 use crate::infrastructure::database::database_query_repository::NewsPaperQueryRepositoryAdapter;
 use crate::infrastructure::database::database_repository::{establish_connection, NewsPaperRepositoryAdapter};
+use crate::infrastructure::kafka::article_submitted_producer::ReviewApplicationKafkaProducer;
+use crate::infrastructure::kafka::generic_producer::create_kafka_producer;
+use crate::KafkaConfig;
 use crate::usecases::commands::create_news_paper_command_handler::CreateNewsPaperCommandHandler;
 use crate::usecases::commands::publish_article_command_handler::PublishArticleCommandHandler;
 use crate::usecases::commands::submit_article_command_handler::SubmitArticleCommandHandler;
+use crate::usecases::events::new_article_submitted_event::BroadcastArticledSubmittedEventHandler;
 use crate::usecases::policies::publish_article_if_validated_policy_handler::PublishArticleIfValidatedPolicyHandler;
 use crate::usecases::queries::what_are_news_papers_query_handler::WhatAreNewsPaperQueryHandler;
 use crate::usecases::queries::what_are_news_papers_query_handler_even_with_unpublished_articles::WhatAreNewsPaperEventWithUnpublishedArticlesQueryHandler;
@@ -24,6 +28,10 @@ impl Context {
         let news_paper_repository = Rc::new(NewsPaperRepositoryAdapter::new(connection.clone()));
         let news_paper_query_repository = Rc::new(NewsPaperQueryRepositoryAdapter::new(connection.clone()));
 
+        let kafka_config = KafkaConfig::from_var_env();
+        let kafka_producer = create_kafka_producer(kafka_config).unwrap();
+        let review_application_repository = ReviewApplicationKafkaProducer::new(kafka_producer);
+
         let create_news_paper_command_handler = CreateNewsPaperCommandHandler::new(news_paper_repository.clone());
         let submit_article_command_handler = SubmitArticleCommandHandler::new(news_paper_repository.clone());
         let publish_article_command_handler = PublishArticleCommandHandler::new(news_paper_repository.clone());
@@ -38,7 +46,9 @@ impl Context {
         query_handlers.push(Box::new(what_are_news_paper_query_handler));
         query_handlers.push(Box::new(what_are_news_paper_query_handler_even_with_unpublished_articles));
 
-        let event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
+        let broadcast_article_submitted_event_handler = BroadcastArticledSubmittedEventHandler::new(Box::new(review_application_repository));
+        let mut event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
+        event_handlers.push(Box::new(broadcast_article_submitted_event_handler));
 
         let publish_article_if_it_has_been_reviewed = PublishArticleIfValidatedPolicyHandler {};
         let mut policy_handlers = Vec::new() as Vec<Box<dyn PolicyHandlerInBus>>;

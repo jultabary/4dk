@@ -1,5 +1,6 @@
 use std::any::TypeId;
 use std::collections::HashMap;
+use log::debug;
 use crate::dddk::aliases::ResponseFromHandler;
 use crate::dddk::errors::NoQueryHandlerRegisterForGivenQuery;
 use crate::dddk::query::query::Query;
@@ -17,6 +18,7 @@ impl QueryDispatcher {
             if let Some(_) = map.get(&item.get_associated_query_from_bus()) {
                 panic!("A QueryHandler has already been registered for this query");
             }
+            debug!("[QueryDispatcher]: register handler {}", item.get_query_handler_name());
             map.insert(item.get_associated_query_from_bus(), item);
         });
         return QueryDispatcher {

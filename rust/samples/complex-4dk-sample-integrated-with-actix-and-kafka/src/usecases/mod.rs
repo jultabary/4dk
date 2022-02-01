@@ -9,6 +9,8 @@ pub mod commands {
 pub mod queries {
     pub mod what_are_news_papers_query_handler;
     pub mod what_are_news_papers_query_handler_even_with_unpublished_articles;
+    mod what_are_news_papers_query_handler_test;
+    mod what_are_news_papers_query_handler_even_with_unpublished_articles_test;
 }
 pub mod events {
     pub mod news_paper_created_event;
