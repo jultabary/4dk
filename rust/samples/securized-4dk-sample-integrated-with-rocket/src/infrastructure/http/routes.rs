@@ -43,7 +43,7 @@ pub fn post_foo(token: Token, raw_foo: Json<FooModelApi>, context: &State<Contex
         .id.to_string()
 }
 
-fn convert_response_to_foo_model_api(foos_as_response: Box<dyn Response>) -> Vec<FooModelApi> {
+fn convert_response_to_foo_model_api(mut foos_as_response: Box<dyn Response>) -> Vec<FooModelApi> {
     let foos = foos_as_response.as_any().downcast_ref::<FoosResponse>().unwrap();
     foos.get_foos()
         .iter().map(|foo| { FooModelApi::from_domain(foo) })

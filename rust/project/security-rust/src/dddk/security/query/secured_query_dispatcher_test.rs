@@ -123,11 +123,11 @@ pub mod test {
         let secured_query = get_a_query_secured(vec![String::from("a_role")]);
 
         // When
-        let events = secured_query_dispatcher.dispatch(&secured_query);
+        let responses = secured_query_dispatcher.dispatch(&secured_query);
 
         // Then
-        let events = events.unwrap();
-        assert_eq!(true, events.as_any().downcast_ref::<AResponse>().is_some());
+        let mut responses = responses.unwrap();
+        assert_eq!(true, responses.as_any().downcast_ref::<AResponse>().is_some());
     }
 
     #[test]
@@ -147,7 +147,7 @@ pub mod test {
         let responses = secured_query_dispatcher.dispatch(&query);
 
         // Then
-        let responses = responses.unwrap();
+        let mut responses = responses.unwrap();
         assert_eq!(true, responses.as_any().downcast_ref::<AnotherResponse>().is_some());
     }
 
@@ -199,7 +199,7 @@ pub mod test {
         let response = secured_query_dispatcher.dispatch(&query);
 
         // Then
-        let response = response.unwrap();
+        let mut response = response.unwrap();
         assert_eq!(true, response.as_any().downcast_ref::<AResponse>().is_some());
     }
 }

@@ -35,7 +35,7 @@ pub async fn get_all_foo(context: web::Data<RefCell<Context>>) -> Result<impl Re
     if result.is_err() {
         return Err(CustomHttpError::InternalServerError);
     }
-    let response = result.unwrap();
+    let mut response = result.unwrap();
     let foos = response.as_any().downcast_ref::<FoosResponse>().unwrap();
     let api_reponse: Vec<FooApi> = foos.get_foos()
         .iter().map(|foo| { FooApi::from_domain(foo) })

@@ -41,7 +41,7 @@ fn main() {
     event_handlers.push(Box::new(open_gate_policy));
     event_handlers.push(Box::new(refresh_screen_policy));
 
-    let bus = Bus::new(command_handlers, event_handlers, Vec::new());
+    let bus = Bus::new(command_handlers, event_handlers, Vec::new(), Vec::new());
 
     let command = ParkCarCommand::new(CarId::new(1), 1);
     let _events = bus.dispatch_command(&command);

@@ -28,7 +28,7 @@ impl FooModelApi {
 #[get("/foo")]
 pub fn get_all_foo(context: &State<Context>) -> Json<Vec<FooModelApi>> {
     let what_are_all_the_foos = WhatAreAllTheFoosQuery {};
-    let foos_as_response = context.get_bus().dispatch_query(&what_are_all_the_foos).unwrap();
+    let mut foos_as_response = context.get_bus().dispatch_query(&what_are_all_the_foos).unwrap();
     let foos = foos_as_response.as_any().downcast_ref::<FoosResponse>().unwrap();
     let api_reponse: Vec<FooModelApi> = foos.get_foos()
         .iter().map(|foo| { FooModelApi::from_domain(foo) })

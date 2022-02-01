@@ -16,6 +16,10 @@ impl CommandProducedByExternalEventBusDispatcher {
             command_bus,
         }
     }
+
+    pub fn get_command_bus(&self) -> &Box<dyn CommandBus> {
+        &self.command_bus
+    }
 }
 
 impl ExternalEventBus for CommandProducedByExternalEventBusDispatcher {
@@ -31,4 +35,5 @@ impl ExternalEventBus for CommandProducedByExternalEventBusDispatcher {
             });
         return Ok(commands);
     }
+
 }

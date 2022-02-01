@@ -1,0 +1,1 @@
+ALTER TABLE articles DROP COLUMN is_published;
