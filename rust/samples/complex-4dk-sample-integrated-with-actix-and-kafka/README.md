@@ -24,6 +24,16 @@ For this sample, we will use the following fictive event storming. <br/>
 ### All Test
 `make test`
 
+## Endpoint
+### Kafka
+publish message such as  `{"news_paper_name": "LeJournalDuSorcier", "article_title": "Le mage noir est vaincu", "is_validate": true}` in `article.review` topic
+
+### API HTTP
+GET http://locahost:8000/news_paper <br/>
+GET http://locahost:8000/admin/news_paper <br/>
+POST http://localhost:8000/news_paper <br/>
+POST http://localhost:8000/news_paper/{name}/articles <br/>
+
 ## Start the sample
 ### start for dev
 Please enter the following commands:
