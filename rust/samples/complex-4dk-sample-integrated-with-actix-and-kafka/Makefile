@@ -27,6 +27,7 @@ test-integration: ## run integration tests✓
 .PHONY: test
 test: ## run all tests✓
 	make start-infra
+	sleep 1
 	make init-db
 	cargo test
 	make stop-db

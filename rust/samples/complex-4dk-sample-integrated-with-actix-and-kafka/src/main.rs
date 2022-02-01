@@ -12,6 +12,7 @@ use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 use dddk_core::dddk::external_event::policy_handler::PolicyHandlerInBus;
 use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
 use log::LevelFilter;
+use bus_config::Context;
 use crate::infrastructure::api::routes::{admin_get_all_news_paper, get_all_news_paper, post_one_news_paper, submit_article_to_existing_news_paper};
 use crate::infrastructure::database::database_query_repository::NewsPaperQueryRepositoryAdapter;
 use crate::infrastructure::database::database_repository::{establish_connection, NewsPaperRepositoryAdapter};
@@ -30,61 +31,16 @@ mod domain;
 mod infrastructure;
 mod usecases;
 mod logger;
+mod bus_config;
 pub mod schema;
 
 static LOGGER: SimpleLogger = SimpleLogger {};
-
-pub struct Context {
-    bus: Bus,
-}
-
-impl Context {
-    pub fn new() -> Context {
-        // clone a Rc smart pointer doesn't copy the value, it creates a new pointer. See Rc and Arc documentation for more detail
-        let connection = Rc::new(establish_connection());
-        let news_paper_repository = Rc::new(NewsPaperRepositoryAdapter::new(connection.clone()));
-        let news_paper_query_repository = Rc::new(NewsPaperQueryRepositoryAdapter::new(connection.clone()));
-
-        let create_news_paper_command_handler = CreateNewsPaperCommandHandler::new(news_paper_repository.clone());
-        let submit_article_command_handler = SubmitArticleCommandHandler::new(news_paper_repository.clone());
-        let publish_article_command_handler = PublishArticleCommandHandler::new(news_paper_repository.clone());
-        let mut command_handlers = Vec::new() as Vec<Box<dyn CommandHandlerInBus>>;
-        command_handlers.push(Box::new(create_news_paper_command_handler));
-        command_handlers.push(Box::new(publish_article_command_handler));
-        command_handlers.push(Box::new(submit_article_command_handler));
-
-        let what_are_news_paper_query_handler = WhatAreNewsPaperQueryHandler::new(news_paper_query_repository.clone());
-        let what_are_news_paper_query_handler_even_with_unpublished_articles = WhatAreNewsPaperEventWithUnpublishedArticlesQueryHandler::new(news_paper_query_repository.clone());
-        let mut query_handlers = Vec::new() as Vec<Box<dyn QueryHandlerInBus>>;
-        query_handlers.push(Box::new(what_are_news_paper_query_handler));
-        query_handlers.push(Box::new(what_are_news_paper_query_handler_even_with_unpublished_articles));
-
-        let event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
-
-        let publish_article_if_it_has_been_reviewed = PublishArticleIfValidatedPolicyHandler {};
-        let mut policy_handlers = Vec::new() as Vec<Box<dyn PolicyHandlerInBus>>;
-        policy_handlers.push(Box::new(publish_article_if_it_has_been_reviewed));
-
-        let bus = Bus::new(command_handlers, event_handlers, query_handlers, policy_handlers);
-        Context {
-            bus
-        }
-    }
-    pub fn get_bus(&self) -> &Bus {
-        &self.bus
-    }
-}
-
-unsafe impl Sync for Context {}
-
-unsafe impl Send for Context {}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let _result = log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Debug));
     // I prefer to copy middleware rather share all the bus between the two contexts (Actix and Kafka)
-    // Bus is stateless and copy it does not cos a lot
-    // In the other hand, i have shared the database context in both with an Arc.
+    // Bus is stateless and copy it does not cost a lot
     let kafka_context = Arc::new(Context::new());
     thread::spawn(|| {
         let kafka_config = KafkaConfig::from_var_env();

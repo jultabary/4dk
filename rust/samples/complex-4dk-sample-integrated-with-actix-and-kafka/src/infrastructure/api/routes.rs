@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 use actix_web::{get, post, Responder, web};
-use crate::Context;
+use crate::bus_config::Context;
 use crate::domain::response::news_paper_response::NewsPapersResponse;
 use crate::infrastructure::api::api_model::{NewsPaperBodyRequest, SubmitArticleRequest};
 use crate::infrastructure::api::error_handling::CustomHttpError;
@@ -12,7 +12,7 @@ use crate::usecases::queries::what_are_news_papers_query_handler_even_with_unpub
 #[get("/news_papers")]
 pub async fn get_all_news_paper(context: web::Data<RefCell<Context>>) -> Result<impl Responder, CustomHttpError> {
     let query = WhatAreNewsPaperQuery {};
-    let responses = context.get_ref().borrow().bus.dispatch_query(&query);
+    let responses = context.get_ref().borrow().get_bus().dispatch_query(&query);
     if responses.is_err() {
         return Err(CustomHttpError::InternalServerError);
     }
@@ -24,7 +24,7 @@ pub async fn get_all_news_paper(context: web::Data<RefCell<Context>>) -> Result<
 #[get("/admin/news_papers")]
 pub async fn admin_get_all_news_paper(context: web::Data<RefCell<Context>>) -> Result<impl Responder, CustomHttpError> {
     let query = WhatAreNewsPaperEventWithUnpublishedArticlesQuery {};
-    let responses = context.get_ref().borrow().bus.dispatch_query(&query);
+    let responses = context.get_ref().borrow().get_bus().dispatch_query(&query);
     if responses.is_err() {
         return Err(CustomHttpError::InternalServerError);
     }
@@ -37,7 +37,7 @@ pub async fn admin_get_all_news_paper(context: web::Data<RefCell<Context>>) -> R
 #[post("/news_paper")]
 pub async fn post_one_news_paper(body: web::Json<NewsPaperBodyRequest>, context: web::Data<RefCell<Context>>) -> Result<String, CustomHttpError>{
     let command = CreateNewsPaperCommand { name: body.name.clone() };
-    let events = context.get_ref().borrow().bus.dispatch_command(&command);
+    let events = context.get_ref().borrow().get_bus().dispatch_command(&command);
     if events.is_err() {
         return Err(CustomHttpError::InternalServerError);
     }
@@ -54,7 +54,7 @@ pub async fn submit_article_to_existing_news_paper(
         body: body.body.clone(),
         news_paper_name
     };
-    let events = context.get_ref().borrow().bus.dispatch_command(&command);
+    let events = context.get_ref().borrow().get_bus().dispatch_command(&command);
     if events.is_err() {
         return Err(CustomHttpError::InternalServerError);
     }

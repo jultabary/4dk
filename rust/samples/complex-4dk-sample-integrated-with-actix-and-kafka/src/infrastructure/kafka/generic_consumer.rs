@@ -3,7 +3,7 @@ use kafka::client::{FetchOffset, GroupOffsetStorage};
 use kafka::consumer::Consumer;
 use kafka::error::Error as KafkaError;
 use log::trace;
-use crate::Context;
+use crate::bus_config::Context;
 use crate::infrastructure::kafka::config::KafkaConfig;
 
 

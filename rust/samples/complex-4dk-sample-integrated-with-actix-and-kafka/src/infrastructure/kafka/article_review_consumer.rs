@@ -1,7 +1,7 @@
 use std::sync::Arc;
 use log::{info, warn};
 use serde::Deserialize;
-use crate::Context;
+use crate::bus_config::Context;
 use crate::usecases::policies::article_has_been_reviewed_event::ArticleHasBeenReviewedEvent;
 
 pub fn consume_article_review_event(message: &str, context: &Arc<Context>) {
@@ -17,7 +17,7 @@ pub fn consume_article_review_event(message: &str, context: &Arc<Context>) {
         article_title: article_review.article_title.clone(),
         is_validated: article_review.is_validate
     };
-    let _commands = context.bus.dispatch_external_event(&external_event);
+    let _commands = context.get_bus().dispatch_external_event(&external_event);
 }
 
 #[derive(Deserialize, Debug)]
