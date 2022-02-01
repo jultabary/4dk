@@ -50,7 +50,10 @@ Please enter the following commands:
 - `make release` : build for prod the app
 - `make start-release` : start the server
 
-## Benefits all such architecture
+
+## Benefits of such architecture
+### Design
+Events storming and source code share the same vocabulary and the same workflows.
 
 ### Log
 
