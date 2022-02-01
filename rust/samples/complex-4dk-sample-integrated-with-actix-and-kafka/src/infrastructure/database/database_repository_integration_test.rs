@@ -2,12 +2,13 @@
 mod database_repository_test {
     use std::rc::Rc;
     use diesel::PgConnection;
-    use crate::{establish_connection, NewsPaperQueryRepositoryAdapter, NewsPaperRepositoryAdapter};
     use crate::domain::article::Article;
     use crate::domain::news_paper::NewsPaper;
     use crate::domain::news_paper_repository::NewsPaperRepository;
     use crate::domain::response::news_paper_query_repository::NewsPaperQueryRepository;
     use crate::infrastructure::database::common_database_integration_test::common_database_integration_test::clean_db;
+    use crate::infrastructure::database::database_query_repository::NewsPaperQueryRepositoryAdapter;
+    use crate::infrastructure::database::database_repository::{establish_connection, NewsPaperRepositoryAdapter};
 
     #[test]
     fn it_should_be_ok() {
@@ -28,7 +29,7 @@ mod database_repository_test {
         let mut news_paper = NewsPaper::new("Lemonde".to_string());
         let article = Article::new("Une voiture volante a été vu".to_string(), "Une voiture volante bleu a été aperçu au-dessus de Londres".to_string());
         news_paper_repository.save(&news_paper);
-        news_paper.submit(article);
+        let _result = news_paper.submit(article);
         news_paper_repository.update(&news_paper);
     }
 
@@ -54,7 +55,7 @@ mod database_repository_test {
         let article = Article::new("Voldemort a été vaincu".to_string(), "Harry Potter a vaincu le seigneur des ténèbres !!".to_string());
         let news_paper_repository = NewsPaperRepositoryAdapter::new(connection);
         let mut news_paper = news_paper_repository.find_by_name(&news_paper_name).unwrap();
-        news_paper.submit(article);
+        let _result = news_paper.submit(article);
 
         // When
         news_paper_repository.update(&news_paper);
@@ -76,7 +77,7 @@ mod database_repository_test {
         let article = Article::new("Voldemort a été vaincu".to_string(), "Harry Potter a vaincu le seigneur des ténèbres !!".to_string());
         let news_paper_repository = NewsPaperRepositoryAdapter::new(connection);
         let mut news_paper = news_paper_repository.find_by_name(&news_paper_name).unwrap();
-        news_paper.publish_article(article.get_title().clone());
+        let _result = news_paper.publish_article(article.get_title().clone());
 
         // When
         news_paper_repository.update(&news_paper);

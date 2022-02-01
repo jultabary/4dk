@@ -4,7 +4,14 @@ use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
 use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 use dddk_core::dddk::external_event::policy_handler::PolicyHandlerInBus;
 use dddk_core::Bus;
-use crate::{CreateNewsPaperCommandHandler, establish_connection, NewsPaperQueryRepositoryAdapter, NewsPaperRepositoryAdapter, PublishArticleCommandHandler, PublishArticleIfValidatedPolicyHandler, SubmitArticleCommandHandler, WhatAreNewsPaperEventWithUnpublishedArticlesQueryHandler, WhatAreNewsPaperQueryHandler};
+use crate::infrastructure::database::database_query_repository::NewsPaperQueryRepositoryAdapter;
+use crate::infrastructure::database::database_repository::{establish_connection, NewsPaperRepositoryAdapter};
+use crate::usecases::commands::create_news_paper_command_handler::CreateNewsPaperCommandHandler;
+use crate::usecases::commands::publish_article_command_handler::PublishArticleCommandHandler;
+use crate::usecases::commands::submit_article_command_handler::SubmitArticleCommandHandler;
+use crate::usecases::policies::publish_article_if_validated_policy_handler::PublishArticleIfValidatedPolicyHandler;
+use crate::usecases::queries::what_are_news_papers_query_handler::WhatAreNewsPaperQueryHandler;
+use crate::usecases::queries::what_are_news_papers_query_handler_even_with_unpublished_articles::WhatAreNewsPaperEventWithUnpublishedArticlesQueryHandler;
 
 pub struct Context {
     bus: Bus,

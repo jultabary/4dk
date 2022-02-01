@@ -3,8 +3,7 @@ mod create_news_paper_command_handler_test {
     use std::rc::Rc;
     use dddk_core::dddk::command::command_handler::CommandHandler;
     use crate::domain::error::NewsPaperAlreadyExist;
-    use crate::CreateNewsPaperCommandHandler;
-    use crate::usecases::commands::create_news_paper_command_handler::CreateNewsPaperCommand;
+    use crate::usecases::commands::create_news_paper_command_handler::{CreateNewsPaperCommand, CreateNewsPaperCommandHandler};
     use crate::usecases::events::news_paper_created_event::NewsPaperCreatedEvent;
     use crate::usecases::test::fake_news_paper_repository::fake_news_paper_repository::FakeNewspaperRepository;
 

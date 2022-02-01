@@ -30,7 +30,7 @@ test: ## run all tests✓
 	sleep 1
 	make init-db
 	cargo test
-	make stop-db
+	make stop-infra
 
 .PHONY: build
 build: ## build app ✓

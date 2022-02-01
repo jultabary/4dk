@@ -5,22 +5,20 @@ use derive_more::{Display, Error};
 
 #[derive(Debug, Display, Error)]
 pub enum CustomHttpError {
-    #[display(fmt = "forbidden")]
-    Forbidden,
+    /*#[display(fmt = "forbidden")]
+    Forbidden,*/
 
     #[display(fmt = "internal server error")]
     InternalServerError,
 
-    #[display(fmt = "bad request")]
-    BadRequest
+    /*#[display(fmt = "bad request")]
+    BadRequest*/
 }
 
 impl ResponseError for CustomHttpError {
     fn status_code(&self) -> StatusCode {
         match *self {
-            CustomHttpError::Forbidden => StatusCode::FORBIDDEN,
             CustomHttpError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
-            CustomHttpError::BadRequest => StatusCode::BAD_REQUEST
         }
     }
 

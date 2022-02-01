@@ -3,8 +3,7 @@ mod submit_article_command_handler_test {
     use std::rc::Rc;
     use dddk_core::dddk::command::command_handler::CommandHandler;
     use crate::domain::error::{ArticleIsAlreadySubmitted, NewsPaperDoesNotExist};
-    use crate::SubmitArticleCommandHandler;
-    use crate::usecases::commands::submit_article_command_handler::SubmitArticleCommand;
+    use crate::usecases::commands::submit_article_command_handler::{SubmitArticleCommand, SubmitArticleCommandHandler};
     use crate::usecases::test::fake_news_paper_repository::fake_news_paper_repository::FakeNewspaperRepository;
 
     #[test]
