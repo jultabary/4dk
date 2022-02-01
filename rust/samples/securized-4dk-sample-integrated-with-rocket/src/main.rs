@@ -70,7 +70,7 @@ impl Context {
         let mut event_handlers = Vec::new() as Vec<Box<dyn EventHandlerInBus>>;
         event_handlers.push(an_event_handler);
 
-        let secured_bus = SecuredBus::new(command_handlers, event_handlers, query_handlers, role_based_strategy);
+        let secured_bus = SecuredBus::new(command_handlers, event_handlers, query_handlers, Vec::new(),role_based_strategy);
         Context {
             bus: secured_bus
         }

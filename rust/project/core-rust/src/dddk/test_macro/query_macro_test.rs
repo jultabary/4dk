@@ -58,7 +58,7 @@ pub mod query_macro_tests {
         let query_type_id = a_query_handler.get_associated_query_from_bus();
 
         // Then
-        let response = response.unwrap();
+        let mut response = response.unwrap();
         assert_eq!(true, response.as_any().downcast_ref::<AResponse>().is_some());
         assert_eq!("AQueryHandler".to_string(), query_handler_name);
         assert_eq!(TypeId::of::<AQuery>(), query_type_id);

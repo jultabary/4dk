@@ -17,8 +17,8 @@ mod tests {
 
         // Then
         assert_eq!(true, response.is_ok());
-        let response = response.unwrap();
-        let a_response = response.as_ref().as_any().downcast_ref::<AResponse>();
+        let mut response = response.unwrap();
+        let a_response = response.as_mut().as_any().downcast_ref::<AResponse>();
         assert_eq!(true, a_response.is_some());
     }
 

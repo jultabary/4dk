@@ -27,7 +27,7 @@ mod tests {
         }
     }
 
-    fn assert_expected_responses(response: Box<dyn Response>) {
+    fn assert_expected_responses(mut response: Box<dyn Response>) {
         let foo = response.as_any().downcast_ref::<FoosResponse>().unwrap();
         assert_eq!(1, foo.get_foos().len());
         assert_eq!(&Uuid::from_str("ee2c4426-4cb9-4671-8ef1-0e18d57bb2cd").unwrap(), foo.get_foos().get(0).unwrap().get_id());

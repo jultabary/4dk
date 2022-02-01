@@ -46,7 +46,7 @@ impl Context {
         let mut query_handlers = Vec::new() as Vec<Box<dyn QueryHandlerInBus>>;
         query_handlers.push(Box::new(a_query_handler));
 
-        let bus = Bus::new(command_handlers, event_handlers, query_handlers);
+        let bus = Bus::new(command_handlers, event_handlers, query_handlers, Vec::new());
         Context {
             bus
         }

@@ -12,7 +12,7 @@ pub mod some_response_for_test {
     }
 
     impl Response for AResponse {
-        fn as_any(&self) -> &dyn Any {
+        fn as_any(&mut self) -> &mut dyn Any {
             self
         }
 
@@ -30,7 +30,7 @@ pub mod some_response_for_test {
     }
 
     impl Response for AnotherResponse {
-        fn as_any(&self) -> &dyn Any {
+        fn as_any(&mut self) -> &mut dyn Any {
             self
         }
 
