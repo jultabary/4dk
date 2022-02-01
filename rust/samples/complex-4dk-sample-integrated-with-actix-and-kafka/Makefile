@@ -12,9 +12,24 @@ export KAFKA_GROUP_ID := my_group_id
 help: ## provides cli help for this makefile (default) 📖
 	@grep -E '^[a-zA-Z_0-9-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: test-unit
+test-unit: ## run unit tests✓
+	cargo test -- --skip integration_test
+
+.PHONY: test-integration
+test-integration: ## run integration tests✓
+	make start-infra
+	sleep 1
+	make init-db
+	cargo test -- '_integration_test'
+	make stop-infra
+
 .PHONY: test
-test: ## run unit tests✓
+test: ## run all tests✓
+	make start-infra
+	make init-db
 	cargo test
+	make stop-db
 
 .PHONY: build
 build: ## build app ✓

@@ -4,7 +4,6 @@ pub mod fake_news_paper_repository {
     use crate::domain::article::Article;
     use crate::domain::news_paper::NewsPaper;
     use crate::domain::news_paper_repository::NewsPaperRepository;
-    use crate::domain::response::news_paper_response::NewsPaperResponse;
 
     pub struct FakeNewspaperRepository {
         save_has_been_called: RefCell<bool>,
@@ -47,20 +46,12 @@ pub mod fake_news_paper_repository {
             }
         }
 
-        fn save(&self, news_paper: &NewsPaper) {
+        fn save(&self, _news_paper: &NewsPaper) {
             self.save_has_been_called.replace(true);
         }
 
-        fn update(&self, news_paper: &NewsPaper) {
+        fn update(&self, _news_paper: &NewsPaper) {
             self.update_has_been_called.replace(true);
-        }
-
-        fn find_all(&self) -> Vec<NewsPaperResponse> {
-            todo!()
-        }
-
-        fn find_all_even_with_unpublished_article(&self) -> Vec<NewsPaperResponse> {
-            todo!()
         }
     }
 }

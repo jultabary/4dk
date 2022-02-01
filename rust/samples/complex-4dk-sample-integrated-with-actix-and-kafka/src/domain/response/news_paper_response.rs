@@ -5,8 +5,8 @@ use dddk_core::dddk::query::response::Response;
 
 #[derive(Serialize)]
 pub struct NewsPaperResponse {
-    name: String,
-    articles: Vec<ArticleResponse>,
+    pub name: String,
+    pub articles: Vec<ArticleResponse>,
 }
 
 impl NewsPaperResponse {

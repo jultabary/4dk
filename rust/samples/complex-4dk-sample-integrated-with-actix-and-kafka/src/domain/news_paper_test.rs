@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod news_paper_test {
     use crate::domain::article::Article;
-    use crate::domain::error::{ArticleDoesNotExist, ArticleIsAlreadyPublished, ArticleIsAlreadySubmitted};
+    use crate::domain::error::{ArticleDoesNotExist, ArticleIsAlreadyPublished};
     use crate::domain::news_paper::NewsPaper;
     use crate::usecases::events::news_paper_created_event::NewsPaperCreatedEvent;
 
@@ -109,7 +109,7 @@ mod news_paper_test {
         let mut news_paper = NewsPaper::new("La Gazette du Sorcier".to_string());
 
         // When
-        let events = news_paper.publish_article("Mon titre".to_string());
+        let events = news_paper.publish_article(title);
 
         // Then
         assert_eq!(true, events.is_err());

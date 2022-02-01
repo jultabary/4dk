@@ -1,13 +1,8 @@
 #[cfg(test)]
 mod create_news_paper_command_handler_test {
-    use std::borrow::Borrow;
-    use std::cell::RefCell;
     use std::rc::Rc;
     use dddk_core::dddk::command::command_handler::CommandHandler;
     use crate::domain::error::NewsPaperAlreadyExist;
-    use crate::domain::news_paper::NewsPaper;
-    use crate::domain::news_paper_repository::NewsPaperRepository;
-    use crate::domain::response::news_paper_response::NewsPaperResponse;
     use crate::CreateNewsPaperCommandHandler;
     use crate::usecases::commands::create_news_paper_command_handler::CreateNewsPaperCommand;
     use crate::usecases::events::news_paper_created_event::NewsPaperCreatedEvent;
@@ -33,7 +28,7 @@ mod create_news_paper_command_handler_test {
     fn it_should_create_with_success_new_papers_when_it_does_not_already_exist() {
         // Given
         let fake_repository = Rc::new(FakeNewspaperRepository::new());
-        let mut fake_repository_ref = fake_repository.clone();
+        let fake_repository_ref = fake_repository.clone();
         let create_news_paper_command_handler = CreateNewsPaperCommandHandler::new(fake_repository);
         let command = CreateNewsPaperCommand { name: "NewNewsPaper".to_string() };
 

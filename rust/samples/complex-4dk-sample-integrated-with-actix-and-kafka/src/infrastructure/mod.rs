@@ -1,6 +1,8 @@
 pub mod database {
     pub mod database_model;
     pub mod database_repository;
+    mod database_repository_integration_test;
+    pub mod common_database_integration_test;
     pub mod database_query_repository;
 }
 pub mod kafka {

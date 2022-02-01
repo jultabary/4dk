@@ -1,12 +1,8 @@
 #[cfg(test)]
 mod publish_article_command_handler_test {
-    use std::cell::RefCell;
     use std::rc::Rc;
     use dddk_core::dddk::command::command_handler::CommandHandler;
     use crate::domain::error::{ArticleDoesNotExist, NewsPaperDoesNotExist};
-    use crate::domain::news_paper::NewsPaper;
-    use crate::domain::news_paper_repository::NewsPaperRepository;
-    use crate::domain::response::news_paper_response::NewsPaperResponse;
     use crate::usecases::commands::publish_article_command_handler::{PublishArticleCommand, PublishArticleCommandHandler};
     use crate::usecases::events::article_has_been_published_event::ArticleHasBeenPublishedEvent;
     use crate::usecases::test::fake_news_paper_repository::fake_news_paper_repository::FakeNewspaperRepository;
