@@ -10,14 +10,14 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "dddk_core"
-version = "0.2.0"
+version = "0.4.0"
 dependencies = [
  "log",
 ]
 
 [[package]]
 name = "dddk_macro"
-version = "0.2.0"
+version = "0.4.0"
 dependencies = [
  "quote",
  "syn",
@@ -25,7 +25,7 @@ dependencies = [
 
 [[package]]
 name = "dddk_security"
-version = "0.2.0"
+version = "0.4.0"
 dependencies = [
  "dddk_core",
  "dddk_macro",
