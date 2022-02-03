@@ -1,6 +1,6 @@
 [package]
 name = "dddk_core"
-version = "0.2.0"
+version = "0.4.0"
 edition = "2021"
 authors = ["Julien TABARY <julien@tabary.net>"]
 description = "Tactical DDD framework based on command_bus, event_bus and query_bus. It offers annex feature such as authorization, logging ..."
