@@ -5,16 +5,16 @@ use syn::DeriveInput;
 pub fn impl_query_handler_in_bus(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
-        impl QueryHandlerInBus for #name {
-            fn handle_from_bus(&self, query: &dyn Query) -> ResponseFromHandler {
+        impl dddk_core::dddk::query::query_handler::QueryHandlerInBus for #name {
+            fn handle_from_bus(&self, query: &dyn dddk_core::dddk::query::query::Query) -> dddk_core::dddk::aliases::ResponseFromHandler {
                 self.handle_generic_query(query)
             }
 
-            fn get_associated_query_from_bus(&self) -> TypeId {
+            fn get_associated_query_from_bus(&self) -> std::any::TypeId {
                 self.get_associated_query()
             }
 
-            fn as_any(&self) -> &dyn Any {
+            fn as_any(&self) -> &dyn std::any::Any {
                 self
             }
 
@@ -29,8 +29,8 @@ pub fn impl_query_handler_in_bus(ast: &DeriveInput) -> TokenStream {
 pub fn impl_query(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
-        impl Query for #name {
-            fn as_any(&self) -> &dyn Any {
+        impl dddk_core::dddk::query::query::Query for #name {
+            fn as_any(&self) -> &dyn std::any::Any {
                 self
             }
 
@@ -45,8 +45,8 @@ pub fn impl_query(ast: &DeriveInput) -> TokenStream {
 pub fn impl_response(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
-        impl Response for #name {
-            fn as_any(&mut self) -> &mut dyn Any {
+        impl dddk_core::dddk::query::response::Response for #name {
+            fn as_any(&mut self) -> &mut dyn std::any::Any {
                 self
             }
 

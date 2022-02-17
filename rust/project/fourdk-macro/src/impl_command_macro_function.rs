@@ -5,16 +5,17 @@ use syn::DeriveInput;
 pub fn impl_command_handler_in_bus(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
-        impl CommandHandlerInBus for #name {
-            fn handle_from_bus(&self, command: &dyn Command) -> Events {
+        impl dddk_core::dddk::command::command_handler::CommandHandlerInBus for #name {
+
+            fn handle_from_bus(&self, command: &dyn dddk_core::dddk::command::command::Command) -> dddk_core::dddk::aliases::Events {
                 self.handle_generic_command(command)
             }
 
-            fn get_associated_command_from_bus(&self) -> TypeId {
+            fn get_associated_command_from_bus(&self) -> std::any::TypeId {
                 self.get_associated_command()
             }
 
-            fn as_any(&self) -> &dyn Any {
+            fn as_any(&self) -> &dyn std::any::Any {
                 self
             }
 
@@ -29,8 +30,8 @@ pub fn impl_command_handler_in_bus(ast: &DeriveInput) -> TokenStream {
 pub fn impl_command(ast: &DeriveInput) -> TokenStream {
     let name = &ast.ident;
     let gen = quote! {
-        impl Command for #name {
-            fn as_any(&self) -> &dyn Any {
+        impl dddk_core::dddk::command::command::Command for #name {
+            fn as_any(&self) -> &dyn std::any::Any {
                 self
             }
 
