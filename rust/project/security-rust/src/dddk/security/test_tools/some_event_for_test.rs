@@ -1,8 +1,6 @@
 #[cfg(test)]
 pub mod some_event_for_test {
-    use std::any::Any;
     use std::fmt::{Debug, Formatter};
-    use dddk_core::dddk::event::event::Event;
     use dddk_macro::Event;
 
     #[derive(Event)]

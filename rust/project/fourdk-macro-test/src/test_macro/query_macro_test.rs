@@ -1,15 +1,15 @@
 #[cfg(test)]
 pub mod query_macro_tests {
-    use std::any::{Any,TypeId};
+    extern crate dddk_macro;
+    use std::any::{Any, TypeId};
     use std::fmt::{Debug, Formatter};
-    use crate::dddk::query::query::Query;
-    use crate::dddk::query::response::Response;
+    use dddk_core::dddk::aliases::ResponseFromHandler;
+    use dddk_core::dddk::query::query_handler::QueryHandler;
+    use dddk_core::dddk::query::query::Query;
     use dddk_macro::Query;
+    use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
     use dddk_macro::QueryHandlerInBus;
     use dddk_macro::Response;
-    use crate::dddk::aliases::ResponseFromHandler;
-    use crate::dddk::query::query_handler::QueryHandlerInBus;
-    use crate::dddk::query::query_handler::QueryHandler;
 
     #[derive(Query)]
     struct AQuery {}

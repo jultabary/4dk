@@ -1,8 +1,6 @@
 #[cfg(test)]
 pub mod some_secured_query_for_test {
-    use std::any::Any;
     use std::fmt::{Debug, Formatter};
-    use dddk_core::dddk::query::query::Query;
     use dddk_macro::Query;
     use crate::dddk::security::query::secured_query::SecuredQuery;
 

@@ -1,9 +1,7 @@
 #[cfg(test)]
 pub mod some_secured_query_handler_for_test {
-    use std::any::{Any, TypeId};
     use dddk_core::dddk::aliases::ResponseFromHandler;
-    use dddk_core::dddk::query::query::Query;
-    use dddk_core::dddk::query::query_handler::{QueryHandler, QueryHandlerInBus};
+    use dddk_core::dddk::query::query_handler::QueryHandler;
     use dddk_core::dddk::query::response::Response;
     use dddk_macro::QueryHandlerInBus;
     use crate::dddk::security::query::secured_query_handler::SecuredQueryHandler;

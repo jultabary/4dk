@@ -1,10 +1,8 @@
 #[cfg(test)]
 pub mod some_secured_command_handler_for_test {
-    use std::any::{Any, TypeId};
     use std::sync::Arc;
     use dddk_core::dddk::aliases::Events;
-    use dddk_core::dddk::command::command::Command;
-    use dddk_core::dddk::command::command_handler::{CommandHandler, CommandHandlerInBus};
+    use dddk_core::dddk::command::command_handler::CommandHandler;
     use dddk_core::dddk::event::event::Event;
     use dddk_macro::CommandHandlerInBus;
     use crate::dddk::security::command::secured_command_handler::SecuredCommandHandler;

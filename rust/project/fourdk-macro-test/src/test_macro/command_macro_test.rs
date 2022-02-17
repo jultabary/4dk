@@ -1,32 +1,22 @@
 #[cfg(test)]
 pub mod command_macro_tests {
-    use std::any::{Any,TypeId};
+    use std::any::{Any, TypeId};
     use std::fmt::{Debug, Formatter};
     use std::sync::Arc;
-    use crate::dddk::command::command::Command;
-    use crate::dddk::event::event::Event;
+    use dddk_core::dddk::aliases::Events;
+    use dddk_core::dddk::command::command_handler::CommandHandler;
     use dddk_macro::Command;
+    use dddk_core::dddk::command::command::Command;
     use dddk_macro::CommandHandlerInBus;
-    use dddk_macro::Event;
-    use crate::dddk::aliases::Events;
-    use crate::dddk::command::command_handler::CommandHandler;
-    use crate::dddk::command::command_handler::CommandHandlerInBus;
+    use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
+    use crate::test_macro::event_macro_test::event_macro_tests::AnEvent;
 
     #[derive(Command)]
-    struct ACommand {}
+    pub struct ACommand {}
 
     impl Debug for ACommand {
         fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
             write!(f, "ACommand")
-        }
-    }
-
-    #[derive(Event)]
-    struct AnEvent {}
-
-    impl Debug for AnEvent {
-        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AnEvent")
         }
     }
 

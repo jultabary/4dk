@@ -3,16 +3,16 @@ pub mod event_macro_tests {
     use std::any::{Any, TypeId};
     use std::cell::RefCell;
     use std::fmt::{Debug, Formatter};
-    use crate::dddk::event::event::Event;
     use dddk_macro::Event;
+    use dddk_core::dddk::event::event::Event;
     use std::sync::Arc;
+    use dddk_core::dddk::aliases::GenericError;
+    use dddk_core::dddk::event::event_handler::EventHandler;
     use dddk_macro::EventHandlerInBus;
-    use crate::dddk::aliases::GenericError;
-    use crate::dddk::event::event_handler::EventHandlerInBus;
-    use crate::dddk::event::event_handler::EventHandler;
+    use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 
     #[derive(Event)]
-    struct AnEvent {}
+    pub struct AnEvent {}
 
     impl Debug for AnEvent {
         fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {

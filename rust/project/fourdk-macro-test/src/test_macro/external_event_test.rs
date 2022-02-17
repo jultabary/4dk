@@ -1,11 +1,12 @@
 #[cfg(test)]
 pub mod external_event_macro_tests {
     use std::any::{Any, TypeId};
-    use crate::dddk::aliases::Commands;
-    use crate::dddk::external_event::external_event::ExternalEvent;
-    use crate::dddk::external_event::policy_handler::{PolicyHandler, PolicyHandlerInBus};
-    use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::ACommand;
+    use dddk_core::dddk::aliases::Commands;
+    use dddk_core::dddk::external_event::policy_handler::PolicyHandler;
     use dddk_macro::{ExternalEvent, PolicyHandlerInBus};
+    use crate::test_macro::command_macro_test::command_macro_tests::ACommand;
+    use dddk_core::dddk::external_event::external_event::ExternalEvent;
+    use dddk_core::dddk::external_event::policy_handler::PolicyHandlerInBus;
 
     #[derive(ExternalEvent, Debug)]
     pub struct AnExternalEvent {}

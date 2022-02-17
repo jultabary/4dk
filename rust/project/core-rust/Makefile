@@ -7,13 +7,17 @@ help: ## provides cli help for this makefile (default) 📖
 	@grep -E '^[a-zA-Z_0-9-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: start
-start: ## build app ✓
+start: ## start app ✓
 	cargo run
 
 .PHONY: build
-build: ## run test ✓
+build: ## build app ✓
 	cargo build
 
 .PHONY: clean
 clean: ## clean compiled code ✓
 	cargo clean
+
+.PHONY: test
+test: ## run test ✓
+	cargo test
