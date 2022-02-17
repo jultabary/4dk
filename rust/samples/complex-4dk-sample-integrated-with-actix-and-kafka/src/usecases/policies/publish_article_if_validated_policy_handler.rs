@@ -1,9 +1,7 @@
-use std::any::{Any, TypeId};
 use dddk_core::dddk::aliases::Commands;
 use dddk_core::dddk::command::command::Command;
 use dddk_macro::PolicyHandlerInBus;
-use dddk_core::dddk::external_event::policy_handler::{PolicyHandler, PolicyHandlerInBus};
-use dddk_core::dddk::external_event::external_event::ExternalEvent;
+use dddk_core::dddk::external_event::policy_handler::PolicyHandler;
 use crate::usecases::policies::article_has_been_reviewed_event::ArticleHasBeenReviewedEvent;
 use crate::usecases::commands::publish_article_command_handler::PublishArticleCommand;
 

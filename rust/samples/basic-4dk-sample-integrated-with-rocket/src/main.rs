@@ -1,6 +1,5 @@
 #[macro_use]
 extern crate rocket;
-extern crate dddk_core;
 #[macro_use]
 extern crate diesel;
 
@@ -65,7 +64,7 @@ static LOGGER: SimpleLogger = SimpleLogger {};
 
 #[rocket::main]
 async fn main() {
-    let _result = log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Info));
+    let _result = log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Debug));
     let context = Context::new();
     let _server = rocket::build()
         .manage(context)

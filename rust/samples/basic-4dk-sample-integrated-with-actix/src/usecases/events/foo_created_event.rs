@@ -1,9 +1,6 @@
-use std::any::{Any, TypeId};
 use std::fmt::{Debug, Formatter};
-use std::sync::Arc;
 use dddk_core::dddk::aliases::GenericError;
-use dddk_core::dddk::event::event::Event;
-use dddk_core::dddk::event::event_handler::{EventHandler, EventHandlerInBus};
+use dddk_core::dddk::event::event_handler::EventHandler;
 use dddk_macro::Event;
 use dddk_macro::EventHandlerInBus;
 use uuid::Uuid;

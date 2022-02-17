@@ -156,14 +156,14 @@ dependencies = [
 
 [[package]]
 name = "dddk_core"
-version = "0.2.0"
+version = "0.4.0"
 dependencies = [
  "log",
 ]
 
 [[package]]
 name = "dddk_macro"
-version = "0.2.0"
+version = "0.4.0"
 dependencies = [
  "quote",
  "syn",

@@ -1,6 +1,4 @@
 use crate::domain::foo::Foo;
-use dddk_core::dddk::query::response::Response;
-use std::any::Any;
 use dddk_macro::Response;
 
 #[derive(Response)]

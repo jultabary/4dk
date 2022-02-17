@@ -1,10 +1,8 @@
-use dddk_core::dddk::aliases::Events;
-use dddk_core::dddk::command::command::Command;
-use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
+use dddk_core::dddk::command::command_handler::CommandHandler;
 use dddk_macro::Command;
 use dddk_macro::CommandHandlerInBus;
-use std::any::{Any, TypeId};
 use std::rc::Rc;
+use dddk_core::dddk::aliases::Events;
 use crate::domain::error::NewsPaperDoesNotExist;
 use crate::domain::news_paper_repository::NewsPaperRepository;
 

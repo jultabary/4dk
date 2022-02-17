@@ -1,9 +1,6 @@
-use std::any::{Any, TypeId};
 use std::rc::Rc;
-use std::sync::Arc;
 use dddk_core::dddk::aliases::GenericError;
-use dddk_core::dddk::event::event::Event;
-use dddk_core::dddk::event::event_handler::{EventHandler, EventHandlerInBus};
+use dddk_core::dddk::event::event_handler::EventHandler;
 use dddk_macro::EventHandlerInBus;
 use crate::ScreenRepository;
 use crate::usecases::event::new_car_is_registered_event::ANewCarIsParkedEvent;

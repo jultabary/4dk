@@ -1,9 +1,7 @@
-use std::any::{Any, TypeId};
 use std::fmt::{Debug, Formatter};
 use std::rc::Rc;
 use dddk_core::dddk::aliases::Events;
-use dddk_core::dddk::command::command::Command;
-use dddk_core::dddk::command::command_handler::{CommandHandlerInBus, CommandHandler};
+use dddk_core::dddk::command::command_handler::CommandHandler;
 use dddk_macro::Command;
 use dddk_macro::CommandHandlerInBus;
 use crate::domain::article::Article;

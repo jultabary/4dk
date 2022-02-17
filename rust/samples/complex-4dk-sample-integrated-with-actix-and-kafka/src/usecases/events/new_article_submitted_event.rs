@@ -1,11 +1,7 @@
 use dddk_macro::Event;
-use std::sync::Arc;
-use dddk_core::dddk::event::event::Event;
-use std::any::{Any, TypeId};
 use dddk_core::dddk::aliases::GenericError;
 use dddk_core::dddk::event::event_handler::EventHandler;
 use dddk_macro::EventHandlerInBus;
-use dddk_core::dddk::event::event_handler::EventHandlerInBus;
 use crate::domain::article::Article;
 use crate::domain::review_application_repository::ReviewApplicationRepository;
 

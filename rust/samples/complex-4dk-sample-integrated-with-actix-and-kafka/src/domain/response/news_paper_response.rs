@@ -1,7 +1,5 @@
 use serde::Serialize;
 use dddk_macro::Response;
-use std::any::Any;
-use dddk_core::dddk::query::response::Response;
 
 #[derive(Serialize)]
 pub struct NewsPaperResponse {
