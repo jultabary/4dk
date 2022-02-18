@@ -3,10 +3,10 @@ pub mod external_event_macro_tests {
     use std::any::{Any, TypeId};
     use dddk_core::dddk::aliases::Commands;
     use dddk_core::dddk::external_event::policy_handler::PolicyHandler;
-    use dddk_macro::{ExternalEvent, PolicyHandlerInBus};
-    use crate::test_macro::command_macro_test::command_macro_tests::ACommand;
     use dddk_core::dddk::external_event::external_event::ExternalEvent;
     use dddk_core::dddk::external_event::policy_handler::PolicyHandlerInBus;
+    use crate::macro_tests::command_macro_test::command_macro_tests::ACommand;
+    use dddk_macro::{ExternalEvent, PolicyHandlerInBus};
 
     #[derive(ExternalEvent, Debug)]
     pub struct AnExternalEvent {}

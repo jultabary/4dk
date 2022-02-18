@@ -6,8 +6,8 @@ pub mod query_macro_tests {
     use dddk_core::dddk::aliases::ResponseFromHandler;
     use dddk_core::dddk::query::query_handler::QueryHandler;
     use dddk_core::dddk::query::query::Query;
-    use dddk_macro::Query;
     use dddk_core::dddk::query::query_handler::QueryHandlerInBus;
+    use dddk_macro::Query;
     use dddk_macro::QueryHandlerInBus;
     use dddk_macro::Response;
 

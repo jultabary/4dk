@@ -551,7 +551,7 @@ dependencies = [
 
 [[package]]
 name = "dddk_macro"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "quote",
  "syn",

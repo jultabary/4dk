@@ -19,3 +19,5 @@ proc-macro = true
 syn = "1.0"
 quote = "1.0"
 
+[dev-dependencies]
+dddk_core = { path = "../core-rust" }

@@ -5,11 +5,10 @@ pub mod command_macro_tests {
     use std::sync::Arc;
     use dddk_core::dddk::aliases::Events;
     use dddk_core::dddk::command::command_handler::CommandHandler;
-    use dddk_macro::Command;
-    use dddk_core::dddk::command::command::Command;
-    use dddk_macro::CommandHandlerInBus;
     use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
-    use crate::test_macro::event_macro_test::event_macro_tests::AnEvent;
+    use dddk_core::dddk::command::command::Command;
+    use dddk_macro::{Command, CommandHandlerInBus};
+    use crate::macro_tests::event_macro_test::event_macro_tests::AnEvent;
 
     #[derive(Command)]
     pub struct ACommand {}

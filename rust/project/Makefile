@@ -6,7 +6,6 @@ DIR:=$(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 CORE_RUST_DIR:=$(DIR)/core-rust
 SECURITY_RUST_DIR := $(DIR)/security-rust
 MACRO_RUST_DIR := $(DIR)/fourdk-macro
-MACRO_TEST_RUST_DIR := $(DIR)/fourdk-macro-test
 
 .PHONY: help
 help: ## provides cli help for this makefile (default) 📖
@@ -20,7 +19,7 @@ test: ## run unit tests✓
 	cd $(SECURITY_RUST_DIR)
 	cargo test	
 	cd -
-	cd $(MACRO_TEST_RUST_DIR)
+	cd $(MACRO_RUST_DIR)
 	cargo test
 
 .PHONY: release
