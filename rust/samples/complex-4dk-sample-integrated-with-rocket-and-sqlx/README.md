@@ -1,8 +1,6 @@
 # Sample
-For this sample, we will use the following fictive event storming. <br/>
-![](../../../docs/news_paper_event_storming.png)
 
-## complex-4dk-sample-integrated-with-actix-and-kafka
+## complex-4dk-sample-integrated-with-rocket-and-sqlx
 
 ### SQLx
 <a href="https://github.com/launchbadge/sqlx">SQLx</a> is a famous SQL library.
