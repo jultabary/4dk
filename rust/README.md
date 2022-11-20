@@ -25,4 +25,6 @@ execute following command `make test`.<br />
 ### Samples
 Check `/rust/samples` folder. <br/>
 `basic-4dk-sample` is a standalone sample. (there is a fictive events storming to understand the crate integration<br />
-`basic-4dk-sample-integrated-with-rocket` and `securized-4dk-sample-integrated-with-rocket` are samples which are integrated in a web context. (with `rocket` and `diesel`)
+`basic-4dk-sample-integrated-with-rocket-and-diesel` and `securized-4dk-sample-integrated-with-rocket-diesel` are samples which are integrated in a web context. (with `rocket` and `diesel`)<br />
+`basic-4dk-sample-integrated-with-actix-and-diesel` and `basic-4dk-sample-integrated-with-actix-and-kafka-and-diesel` are samples which are integrated in a web context. (with `actix` and `diesel`)<br />
+`complex-4dk-sample-integrated-with-rocket-and-sqlx` is a sample which are integrated in a web context. (with `rocket` and `sqlx`)<br />
