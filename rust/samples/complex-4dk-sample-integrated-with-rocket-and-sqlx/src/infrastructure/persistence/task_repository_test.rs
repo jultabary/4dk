@@ -7,8 +7,9 @@ mod tests {
         let app = App::new(prod);
         if prod == true {
             let task_repository = app.task_repository().as_any().downcast_ref::<TaskRepositorySqlXImpl>().unwrap();
-            let pool = task_repository.pool();
-            block_on(sqlx::query("DELETE FROM task").execute(pool)).unwrap();
+            let pool_arc = task_repository.pool();
+            let pool_ref = pool_arc.as_ref();
+            block_on(sqlx::query("DELETE FROM task").execute(pool_ref)).unwrap();
         }
         return app;
     }

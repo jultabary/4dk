@@ -1,5 +1,6 @@
 use std::any::Any;
 use std::str::FromStr;
+use std::sync::Arc;
 use chrono::{DateTime, Utc};
 use sqlx::{Pool, Postgres, Row};
 use sqlx::postgres::{PgRow};
@@ -10,11 +11,11 @@ use crate::TaskRepository;
 use futures::executor::block_on;
 
 pub struct TaskRepositorySqlXImpl {
-    pool: Pool<Postgres>,
+    pool: Arc<Pool<Postgres>>,
 }
 
 impl TaskRepositorySqlXImpl {
-    pub fn new(pool: Pool<Postgres>) -> Self {
+    pub fn new(pool: Arc<Pool<Postgres>>) -> Self {
         TaskRepositorySqlXImpl { pool }
     }
 
@@ -25,32 +26,39 @@ impl TaskRepositorySqlXImpl {
         let datetime: Option<DateTime<Utc>> = if row.try_get::<Option<DateTime<Utc>>, _>("datetime").is_ok() { row.try_get::<Option<DateTime<Utc>>, _>("datetime").unwrap() } else { None };
         Task::reconstitute(TaskId::from(id), title, description, datetime.is_some(), datetime)
     }
+
+    pub fn pool(&self) -> Arc<Pool<Postgres>> {
+        self.pool.clone()
+    }
 }
 
 impl TaskRepository for TaskRepositorySqlXImpl {
     fn save(&self, task: &Task) {
-            block_on(sqlx::query("INSERT INTO task(id, title, description) values($1, $2, $3)")
+        let pool = self.pool.as_ref();
+        block_on(sqlx::query("INSERT INTO task(id, title, description) values($1, $2, $3)")
                 .bind(task.id().to_uuid().to_string())
                 .bind(task.title().to_string())
                 .bind(task.description().to_string())
-                .execute(&self.pool)).unwrap();
+                .execute(pool)).unwrap();
     }
 
     fn update(&self, task: &Task) {
+        let pool_ref = self.pool.as_ref();
         block_on(sqlx::query("UPDATE task set datetime = $1 where id = $2")
             .bind(task.date().unwrap())
             .bind(task.id().to_uuid().to_string())
-            .execute(&self.pool)).unwrap();
+            .execute(pool_ref)).unwrap();
     }
 
     fn find_by_id(&self, task_id: &TaskId) -> Result<Task, TaskNotFound> {
+        let pool_ref = self.pool.as_ref();
         let id = task_id.to_uuid().to_string();
         let result = block_on(sqlx::query("SELECT * FROM task WHERE id = $1")
             .bind(id)
             .map(|row: PgRow| {
                 self.to_task(row)
             })
-            .fetch_optional(&self.pool)).unwrap();
+            .fetch_optional(pool_ref)).unwrap();
         if result.is_some() {
             Ok(result.unwrap())
         } else {
@@ -59,18 +67,20 @@ impl TaskRepository for TaskRepositorySqlXImpl {
     }
 
     fn find_all(&self) -> Vec<Task> {
+        let pool_ref = self.pool.as_ref();
         block_on(sqlx::query("SELECT * FROM task")
             .map(|row: PgRow| {
                 self.to_task(row)
             })
-            .fetch_all(&self.pool)).unwrap()
+            .fetch_all(pool_ref)).unwrap()
     }
 
     fn delete_by_id(&self, task_id: &TaskId) {
+        let pool_ref = self.pool.as_ref();
         let id = task_id.to_uuid().to_string();
         block_on(sqlx::query("DELETE FROM task where id = $1")
             .bind(id)
-            .execute(&self.pool)).unwrap();
+            .execute(pool_ref)).unwrap();
     }
 
     fn as_any(&self) -> &dyn Any {
