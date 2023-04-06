@@ -50,13 +50,13 @@ impl CustomBus {
                query_handlers: Vec<Box<dyn QueryHandlerInBus>>,
                pool: Arc<Pool<Postgres>>) -> CustomBus {
         let command_dispatcher = CommandDispatcher::new(command_handlers);
-        let command_logging_middleware = CommandLoggingMiddleware::new(Box::new(command_dispatcher));
-        let command_persistence_middleware = PersistenceMiddleware::new(pool, Box::new(command_logging_middleware));
+        let command_persistence_middleware = PersistenceMiddleware::new(pool, Box::new(command_dispatcher));
+        let command_logging_middleware = CommandLoggingMiddleware::new(Box::new(command_persistence_middleware));
 
         let query_dispatcher = QueryDispatcher::new(query_handlers);
         let query_logging_middleware = QueryLoggingMiddleware::new(Box::new(query_dispatcher));
         CustomBus {
-            command_bus: Box::new(command_persistence_middleware),
+            command_bus: Box::new(command_logging_middleware),
             query_bus: query_logging_middleware,
         }
     }
