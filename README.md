@@ -12,7 +12,7 @@ This projects presents an implementation in <b>Java</b> and another in <b>Rust</
 Event storming is a tool to help you to identify your core business. One of the event storming (most famous strategic DDD tool)  goal is to help you to design your domains.<br/>
 At the end of your "event storming", the result will look such as something like this: </br>
 
-<img src="https://i2.wp.com/cleandojo.com/wp-content/uploads/2019/06/Bounded-Context-1050x383.png?ssl=1" style="float: left; margin-right: 10px;" />
+<img src="https://mrpicky.dev/wp-content/uploads/2021/12/DLES-Brandolini.png" style="float: left; margin-right: 10px;" />
 
 The next step is to transpose it into your code. (tactic DDD pattern)<br/>
 
