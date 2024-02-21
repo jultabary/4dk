@@ -23,16 +23,16 @@ use crate::dddk::query::query_handler::QueryHandlerInBus;
 
 pub mod dddk;
 
-pub struct Bus {
+pub struct AppBus {
     external_event_bus: CommandProducedByExternalEventBusDispatcher,
     query_bus: QueryLoggingMiddleware,
 }
 
-impl Bus {
+impl AppBus {
     pub fn new(command_handlers: Vec<Box<dyn CommandHandlerInBus>>,
                event_handlers: Vec<Box<dyn EventHandlerInBus>>,
                query_handlers: Vec<Box<dyn QueryHandlerInBus>>,
-               policy_handlers: Vec<Box<dyn PolicyHandlerInBus>>) -> Bus {
+               policy_handlers: Vec<Box<dyn PolicyHandlerInBus>>) -> AppBus {
         let command_dispatcher = CommandDispatcher::new(command_handlers);
         let command_logging_middleware = CommandLoggingMiddleware::new(Box::new(command_dispatcher));
 
@@ -54,7 +54,7 @@ impl Bus {
 
         let query_dispatcher = QueryDispatcher::new(query_handlers);
         let query_logging_middleware = QueryLoggingMiddleware::new(Box::new(query_dispatcher));
-        Bus {
+        AppBus {
             external_event_bus: command_produced_by_policy_dispatcher,
             query_bus: query_logging_middleware,
         }
@@ -65,7 +65,7 @@ impl Bus {
     }
 
     pub fn dispatch_command(&self, command: &dyn Command) -> Events {
-        self.external_event_bus.get_command_bus().dispatch(command)
+        self.external_event_bus.get_command_bus().dispatch(command, None)
     }
 
     pub fn dispatch_query(&self, query: &dyn Query) -> ResponseFromHandler {

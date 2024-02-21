@@ -2,6 +2,7 @@ use std::any::TypeId;
 use std::collections::HashMap;
 use log::debug;
 use crate::dddk::aliases::Events;
+use crate::dddk::bus::Bus;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
 use crate::dddk::command::command_handler::CommandHandlerInBus;
@@ -35,9 +36,9 @@ impl CommandDispatcher {
 }
 
 impl CommandBus for CommandDispatcher {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Events {
+    fn dispatch<'b>(&self, command: &'b dyn Command, bus_opt: Option<& dyn Bus>) -> Events {
         if let Option::Some(command_handler) = self.command_handlers.get(&command.as_any().type_id()) {
-            let events = command_handler.handle_from_bus(command);
+            let events = command_handler.handle_from_bus(command, bus_opt);
             return events;
         }
         Err(Box::new(NoCommandHandlerRegisterForGivenCommand {}))

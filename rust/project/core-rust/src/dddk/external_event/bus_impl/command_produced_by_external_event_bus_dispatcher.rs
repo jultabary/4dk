@@ -31,7 +31,7 @@ impl ExternalEventBus for CommandProducedByExternalEventBusDispatcher {
         let commands = commands.unwrap();
         commands.iter()
             .for_each(|command| {
-                let _events = self.command_bus.dispatch(command.as_ref());
+                let _events = self.command_bus.dispatch(command.as_ref(), None);
             });
         return Ok(commands);
     }

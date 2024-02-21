@@ -7,8 +7,8 @@ pub fn impl_command_handler_in_bus(ast: &DeriveInput) -> TokenStream {
     let gen = quote! {
         impl dddk_core::dddk::command::command_handler::CommandHandlerInBus for #name {
 
-            fn handle_from_bus(&self, command: &dyn dddk_core::dddk::command::command::Command) -> dddk_core::dddk::aliases::Events {
-                self.handle_generic_command(command)
+            fn handle_from_bus(&self, command: &dyn dddk_core::dddk::command::command::Command, bus_opt: Option<& dyn dddk_core::dddk::bus::Bus>) -> dddk_core::dddk::aliases::Events {
+                self.handle_generic_command(command, bus_opt)
             }
 
             fn get_associated_command_from_bus(&self) -> std::any::TypeId {

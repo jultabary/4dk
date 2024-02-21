@@ -1,6 +1,6 @@
 [package]
 name = "dddk_macro"
-version = "0.5.0"
+version = "0.6.0"
 edition = "2021"
 authors = ["Julien TABARY <julien@tabary.net>"]
 description = "Derive macro lib for dddk_core"
@@ -16,8 +16,8 @@ publish = ["crates-io"]
 proc-macro = true
 
 [dependencies]
-syn = "1.0"
-quote = "1.0"
+syn = "2.0.50"
+quote = "1.0.35"
 
 [dev-dependencies]
 dddk_core = { path = "../core-rust" }

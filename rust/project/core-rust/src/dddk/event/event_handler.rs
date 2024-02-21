@@ -6,7 +6,7 @@ use crate::dddk::aliases::GenericError;
 pub trait EventHandler<E: Sized + Any + Event> {
     fn handle_generic_event(&self, event: Arc<dyn Event>) -> Result<(), GenericError> {
         if let Some(event_ref) = event.as_any().downcast_ref::<E>() {
-            return self.handle(event_ref.clone());
+            return self.handle(event_ref);
         } else {
             panic!("Given event is not associated with the handler !");
         }

@@ -2,6 +2,7 @@
 pub mod some_secured_command_handler_for_test {
     use std::sync::Arc;
     use dddk_core::dddk::aliases::Events;
+    use dddk_core::dddk::bus::Bus;
     use dddk_core::dddk::command::command_handler::CommandHandler;
     use dddk_core::dddk::event::event::Event;
     use dddk_macro::CommandHandlerInBus;
@@ -20,7 +21,7 @@ pub mod some_secured_command_handler_for_test {
     }
 
     impl CommandHandler<ACommand> for ACommandHandler {
-        fn handle(&self, _command: &ACommand) -> Events {
+        fn handle(&self, _command: &ACommand, _bus_opt: Option<&dyn Bus>) -> Events {
             let event = Arc::new(AnEvent::new()) as Arc<dyn Event>;
             Ok(vec![event])
         }
@@ -43,7 +44,7 @@ pub mod some_secured_command_handler_for_test {
     }
 
     impl CommandHandler<AnotherCommand> for AnotherCommandHandler {
-        fn handle(&self, _command: &AnotherCommand) -> Events {
+        fn handle(&self, _command: &AnotherCommand, _bus_opt: Option<&dyn Bus>) -> Events {
             let event = Arc::new(AnotherEvent::new()) as Arc<dyn Event>;
             Ok(vec![event])
         }

@@ -1,6 +1,7 @@
 use std::sync::Arc;
 use std::thread;
 use crate::dddk::aliases::Events;
+use crate::dddk::bus::Bus;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
 use crate::dddk::event::event_bus::EventBus;
@@ -22,8 +23,8 @@ impl EventsProducedByCommandBusDispatcher {
 }
 
 impl CommandBus for EventsProducedByCommandBusDispatcher {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Events {
-        let events = self.command_bus.dispatch(command);
+    fn dispatch<'b>(&self, command: &'b dyn Command, bus_opt: Option<& dyn Bus>) -> Events {
+        let events = self.command_bus.dispatch(command,  bus_opt);
         if events.is_err() {
             return events;
         }

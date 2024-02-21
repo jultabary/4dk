@@ -4,6 +4,7 @@ pub mod command_macro_tests {
     use std::fmt::{Debug, Formatter};
     use std::sync::Arc;
     use dddk_core::dddk::aliases::Events;
+    use dddk_core::dddk::bus::Bus;
     use dddk_core::dddk::command::command_handler::CommandHandler;
     use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
     use dddk_core::dddk::command::command::Command;
@@ -23,7 +24,7 @@ pub mod command_macro_tests {
     struct ACommandHandler {}
 
     impl CommandHandler<ACommand> for ACommandHandler {
-        fn handle(&self, _command: &ACommand) -> Events {
+        fn handle(&self, _command: &ACommand, _bus_opt: Option<& dyn Bus>) -> Events {
             Ok(vec![Arc::new(AnEvent {})])
         }
     }
@@ -49,7 +50,7 @@ pub mod command_macro_tests {
         let a_command_handler = ACommandHandler {};
 
         // When
-        let events: Events = a_command_handler.handle_from_bus(&a_command);
+        let events: Events = a_command_handler.handle_from_bus(&a_command, None);
         let command_handler_name = a_command_handler.get_command_handler_name();
         let command_type_id = a_command_handler.get_associated_command_from_bus();
 

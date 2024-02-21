@@ -1,5 +1,6 @@
 use std::any::{Any, TypeId};
 use dddk_core::dddk::aliases::Events;
+use dddk_core::dddk::bus::Bus;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
 use crate::dddk::security::permission::Permission;
@@ -27,8 +28,8 @@ impl SecuredCommandHandler {
 }
 
 impl CommandHandlerInBus for SecuredCommandHandler {
-    fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Events {
-        self.command_handler.handle_from_bus(command)
+    fn handle_from_bus<'a>(&self, command: &'a dyn Command, bus_opt: Option<&dyn Bus>) -> Events {
+        self.command_handler.handle_from_bus(command, bus_opt)
     }
 
     fn get_associated_command_from_bus(&self) -> TypeId {

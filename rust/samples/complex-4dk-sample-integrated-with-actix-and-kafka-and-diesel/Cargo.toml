@@ -8,8 +8,8 @@ edition = "2021"
 [dependencies]
 diesel = { version = "1.4.4", features = ["postgres", "uuid"] }
 uuid = { version = "0.6.5", features = ["v4"] }
-dddk_core = { path = "../../project/core-rust" }
-dddk_macro = { path = "../../project/fourdk-macro" }
+dddk_core = "0.4.0"
+dddk_macro = "0.5.0"
 log = "0.4"
 actix-web = "3"
 derive_more="0.99"

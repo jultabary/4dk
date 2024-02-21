@@ -3,6 +3,7 @@ mod command_produced_by_external_bus_dispatcher_test {
     use std::cell::RefCell;
     use std::rc::Rc;
     use crate::{Command, CommandBus, Events};
+    use crate::dddk::bus::Bus;
     use crate::dddk::external_event::bus_impl::command_produced_by_external_event_bus_dispatcher::CommandProducedByExternalEventBusDispatcher;
     use crate::dddk::external_event::bus_impl::external_event_dispatcher::ExternalEventDispatcher;
     use crate::dddk::external_event::external_event_bus::ExternalEventBus;
@@ -14,7 +15,7 @@ mod command_produced_by_external_bus_dispatcher_test {
     }
 
     impl CommandBus for FakeCommandBus {
-        fn dispatch<'b>(&self, _command: &'b dyn Command) -> Events {
+        fn dispatch<'b>(&self, _command: &'b dyn Command, _bus_opt: Option<&dyn Bus>) -> Events {
             self.has_been_called.replace(true);
             Ok(vec![])
         }

@@ -19,7 +19,7 @@ pub mod command_logging_middleware_test {
         let a_command = ACommand {};
 
         // When
-        let events = command_logging_middleware.dispatch(&a_command);
+        let events = command_logging_middleware.dispatch(&a_command, None);
 
         // Then
         assert_eq!(true, events.is_ok());
@@ -41,7 +41,7 @@ pub mod command_logging_middleware_test {
         let a_command = AnotherCommand {};
 
         // When
-        let error = command_logging_middleware.dispatch(&a_command);
+        let error = command_logging_middleware.dispatch(&a_command, None);
 
         // Then
         assert_eq!(true, error.is_err());

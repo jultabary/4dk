@@ -13,7 +13,7 @@ mod tests {
         let a_command = ACommand { };
 
         // When
-        let events = a_command_handler.handle_generic_command(&a_command);
+        let events = a_command_handler.handle_generic_command(&a_command, None);
 
         // Then
         assert_eq!(true, events.is_ok());
@@ -31,7 +31,7 @@ mod tests {
         let another_command = AnotherCommand { };
 
         // When
-        let events = a_command_handler.handle_generic_command(&another_command);
+        let events = a_command_handler.handle_generic_command(&another_command, None);
 
         // Then
         assert_eq!(true, events.is_err());

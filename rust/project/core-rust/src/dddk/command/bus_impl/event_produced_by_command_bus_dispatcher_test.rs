@@ -38,7 +38,7 @@ mod tests {
         let a_command = ACommand { };
 
         // When
-        let events = command_bus.dispatch(&a_command);
+        let events = command_bus.dispatch(&a_command, None);
 
         // Then
         assert_eq!(true, events.is_ok());

@@ -1,5 +1,6 @@
 use log::{error, info};
 use crate::dddk::aliases::Events;
+use crate::dddk::bus::Bus;
 use crate::dddk::command::command::Command;
 use crate::dddk::command::command_bus::CommandBus;
 
@@ -16,11 +17,11 @@ impl CommandLoggingMiddleware {
 }
 
 impl CommandBus for CommandLoggingMiddleware {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Events {
+    fn dispatch<'b>(&self, command: &'b dyn Command, bus_opt: Option<&'b dyn Bus>) -> Events {
         info!("Dispatching a command [{}] [{:?}].",
             command.get_command_name(),
             command);
-        let events = self.command_bus.dispatch(command);
+        let events = self.command_bus.dispatch(command, bus_opt);
         if events.is_err() {
             let error = events.err().unwrap();
             let error_message = error.to_string();

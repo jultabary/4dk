@@ -100,7 +100,7 @@ pub mod test {
         let unsecured_command = ACommand::new();
 
         // When
-        let events = secured_command_dispatcher.dispatch(&unsecured_command);
+        let events = secured_command_dispatcher.dispatch(&unsecured_command, None);
 
         // Then
         assert_eq!(true, events.is_err());
@@ -123,7 +123,7 @@ pub mod test {
         let secured_command = get_a_command_secured(vec![String::from("a_role")]);
 
         // When
-        let events = secured_command_dispatcher.dispatch(&secured_command);
+        let events = secured_command_dispatcher.dispatch(&secured_command, None);
 
         // Then
         let events = events.unwrap();
@@ -145,7 +145,7 @@ pub mod test {
         let command = AnotherCommand::new();
 
         // When
-        let events = secured_command_dispatcher.dispatch(&command);
+        let events = secured_command_dispatcher.dispatch(&command, None);
 
         // Then
         let events = events.unwrap();
@@ -171,7 +171,7 @@ pub mod test {
         let command = SecuredCommand::new(Box::new(ACommand::new()), vec![not_enough_privilege_role]);
 
         // When
-        let events = secured_command_dispatcher.dispatch(&command);
+        let events = secured_command_dispatcher.dispatch(&command, None);
 
         // Then
         assert_eq!(true, events.is_err());
@@ -198,7 +198,7 @@ pub mod test {
         let command = SecuredCommand::new(Box::new(ACommand::new()), vec![user_role]);
 
         // When
-        let events = secured_command_dispatcher.dispatch(&command);
+        let events = secured_command_dispatcher.dispatch(&command, None);
 
         // Then
         let events = events.unwrap();

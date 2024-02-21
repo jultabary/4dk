@@ -2,6 +2,7 @@ use std::any::TypeId;
 use std::collections::HashMap;
 use std::rc::Rc;
 use dddk_core::dddk::aliases::Events;
+use dddk_core::dddk::bus::Bus;
 use dddk_core::dddk::command::command::Command;
 use dddk_core::dddk::command::command_bus::CommandBus;
 use dddk_core::dddk::command::command_handler::CommandHandlerInBus;
@@ -68,7 +69,7 @@ impl SecuredCommandDispatcher {
 }
 
 impl CommandBus for SecuredCommandDispatcher {
-    fn dispatch<'b>(&self, command: &'b dyn Command) -> Events {
+    fn dispatch<'b>(&self, command: &'b dyn Command, bus_opt: Option<& dyn Bus>) -> Events {
         return if let Some(secured_command) = command.as_any().downcast_ref::<SecuredCommand>() {
             let command_handler_result = self.get_command_handler_from_secured_command(secured_command);
             if command_handler_result.is_err() {
@@ -81,7 +82,7 @@ impl CommandBus for SecuredCommandDispatcher {
                 secured_command.get_roles_names(),
             );
             if authorization.is_authorized() {
-                return command_handler.handle_from_bus(secured_command.get_command());
+                return command_handler.handle_from_bus(secured_command.get_command(), bus_opt);
             }
             return Err(Box::new(Forbidden {}));
         } else {
@@ -93,7 +94,7 @@ impl CommandBus for SecuredCommandDispatcher {
             if let Some(_) = command_handler.as_any().downcast_ref::<SecuredCommandHandler>() {
                 return Err(Box::new(TryToExecuteASecuredCommandHandlerWithAnUnSecuredCommand {}));
             }
-            command_handler.handle_from_bus(command)
+            command_handler.handle_from_bus(command, bus_opt)
         };
     }
 }

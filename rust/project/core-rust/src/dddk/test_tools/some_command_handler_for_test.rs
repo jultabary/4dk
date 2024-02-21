@@ -3,6 +3,7 @@ pub mod some_command_handler_for_test {
     use std::any::{Any, TypeId};
     use std::sync::Arc;
     use crate::dddk::aliases::Events;
+    use crate::dddk::bus::Bus;
     use crate::dddk::command::command::Command;
     use crate::dddk::command::command_handler::{CommandHandler, CommandHandlerInBus};
     use crate::dddk::test_tools::some_command_for_test::some_command_for_tests::{ACommand, AnotherCommand};
@@ -22,14 +23,14 @@ pub mod some_command_handler_for_test {
     }
 
     impl CommandHandler<ACommand> for ACommandHandler {
-        fn handle(&self, _command: &ACommand) -> Events {
+        fn handle(&self, _command: &ACommand, _bus_opt: Option<& dyn Bus>) -> Events {
             Ok(vec![Arc::new(AnEvent::new(1))])
         }
     }
 
     impl CommandHandlerInBus for ACommandHandler {
-        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Events {
-            self.handle_generic_command(command)
+        fn handle_from_bus<'a>(&self, command: &'a dyn Command, bus_opt: Option<& dyn Bus>) -> Events {
+            self.handle_generic_command(command, bus_opt)
         }
 
         fn get_associated_command_from_bus(&self) -> TypeId {
@@ -48,8 +49,8 @@ pub mod some_command_handler_for_test {
     pub struct AnotherCommandHandler {}
 
     impl CommandHandlerInBus for AnotherCommandHandler {
-        fn handle_from_bus<'a>(&self, command: &'a dyn Command) -> Events {
-            self.handle_generic_command(command)
+        fn handle_from_bus<'a>(&self, command: &'a dyn Command, bus_opt: Option<& dyn Bus>) -> Events {
+            self.handle_generic_command(command, bus_opt)
         }
 
         fn get_associated_command_from_bus(&self) -> TypeId {
@@ -72,7 +73,7 @@ pub mod some_command_handler_for_test {
     }
 
     impl CommandHandler<AnotherCommand> for AnotherCommandHandler {
-        fn handle(&self, _command: &AnotherCommand) -> Events {
+        fn handle(&self, _command: &AnotherCommand, _bus_opt: Option<& dyn Bus>) -> Events {
             Ok(vec![Arc::new(AnotherEvent::new(2))])
         }
     }
